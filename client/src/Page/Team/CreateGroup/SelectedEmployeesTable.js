@@ -14,6 +14,7 @@ import {
   Button,
   TablePagination,
 } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const SelectedEmployeesTable = ({
   selectedEmployees,
@@ -34,11 +35,11 @@ const SelectedEmployeesTable = ({
 
   return (
     <div
-      style={{ backgroundColor: "#f9f9f9", height: "300px", marginTop: "20px" }}
+      style={{ width:"100%", padding:"20px" }}
     >
       <TableContainer
         component={Paper}
-        style={{ maxWidth: "1000px", margin: "auto" }}
+        style={{ maxWidth: "100%", margin: "auto" }}
       >
         <Table aria-label="employee table">
           <TableHead>
@@ -78,9 +79,10 @@ const SelectedEmployeesTable = ({
                 </TableCell>
                 <TableCell>{employee.EmploymentStatus}</TableCell>
                 <TableCell>
-                  <Button
+                  <DeleteIcon 
                     variant="contained"
                     color="error"
+                    sx={{cursor:"pointer"}}
                     onClick={() =>
                       dispatch(
                         removeSelectedEmployee({
@@ -88,9 +90,9 @@ const SelectedEmployeesTable = ({
                         })
                       )
                     }
-                  >
-                    Delete
-                  </Button>
+                  />
+                    
+                
                 </TableCell>
               </TableRow>
             ))}
@@ -102,6 +104,7 @@ const SelectedEmployeesTable = ({
             display: "flex",
             justifyContent: "flex-end",
             marginRight: "10px",
+            marginTop:"10px"
           }}
         >
           <Button

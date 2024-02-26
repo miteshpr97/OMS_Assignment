@@ -10,6 +10,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const WorkGroup = ({
   profileData,
@@ -41,16 +42,16 @@ const WorkGroup = ({
   };
 
   return (
-    <div style={{ padding: "3px", border: "1px solid black" }}>
+    <div style={{ padding:"20px"}}>
       {profileData &&
         profileData.length > 0 &&
         profileData.map((employee) => (
           <div
-            style={{ padding: "10px", textTransform: "capitalize" }}
+            style={{ padding: "10px"}}
             key={employee.EmployeeID}
           >
-            <Typography style={{ fontSize: "1.3rem", fontWeight: "600" }}>
-              {employee.FirstName} {employee.LastName} -- Teams's
+            <Typography style={{ fontSize: "1.3rem", fontWeight: "600" , textTransform: "capitalize" }}>
+              {employee.FirstName} {employee.LastName} - Teams
             </Typography>
           </div>
         ))}
@@ -86,13 +87,13 @@ const WorkGroup = ({
                 </TableCell>
                 <TableCell>{employee.Department_Name}</TableCell>
                 <TableCell>
-                  <Button
+                  <DeleteIcon
                     variant="contained"
                     color="error"
                     onClick={() => handleDeleteWorkGroup(employee.WorkGroupID)}
-                  >
-                    Delete
-                  </Button>
+                  />
+                  
+                 
                 </TableCell>
               </TableRow>
             ))}

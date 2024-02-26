@@ -9,9 +9,11 @@ import {
   Typography,
   Grid,
   Container,
+  IconButton,
 } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { fetchDepartmentData } from "../../features/department/departmentActions";
+import CloseIcon from '@mui/icons-material/Close';
 
 import "./RegisterPage.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -346,17 +348,30 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
     // </div>
 
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop:'10px'}}>
         <Button
           onClick={handleClickOpen}
           variant="contained"
-          sx={{ backgroundColor: "#055f85", color: "#fff" }}
+          sx={{ backgroundColor: "#055f85", color: "#fff",padding:'8px 16px'}}
         >
           CREATE NEW EMPLOYEE
         </Button>
       </div>
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>New Employee</DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+        <DialogTitle sx={{fontSize:"22px", padding:"16px 24px 10px 24px"}}>New Employee</DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 15,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+           
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <DialogContent>
           <div className="Employee-container">
             <div className="register">
@@ -464,7 +479,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                   </Grid>
                   <Grid item xs={4}>
                     <TextField
-                      // label="Date of Birth"
+                      label="Date of Birth"
                       type="date"
                       variant="outlined"
                       name="DateOfBirth"
@@ -473,6 +488,9 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       required
                       fullWidth
                       size="medium"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={4} md={4}>
@@ -556,8 +574,9 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         type="submit"
                         variant="contained"
                         // color="primary"
+                      
                         disabled={isLoading}
-                        sx={{ backgroundColor: "#055f85" }}
+                        sx={{ backgroundColor: "#055f85", marginTop:"10px" }}
                       >
                         {isLoading ? "Submitting..." : "Submit"}
                       </Button>

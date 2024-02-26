@@ -96,19 +96,21 @@ export default function MyTeam() {
         {/* page uper header work */}
         <div
           style={{
-            height: "80px",
+            height: "70px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            // boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            border:"1px solid black",
             backgroundColor: "white",
             color: "black",
-            padding: "0px 10px",
+            padding:'0px 10px',
+            marginTop:"10px"
           }}
         >
           <Typography
             variant="h5"
-            sx={{ textTransform: "capitalize", textAlign: "start" }}
+            sx={{ textTransform: "capitalize", textAlign: "start" ,fontWeight: "500" }}
           >
             {userData && `${userData.FirstName} ${userData.LastName}`} Team's
           </Typography>
@@ -130,16 +132,13 @@ export default function MyTeam() {
               renderInput={(params) => (
                 <TextField {...params} label="Department" />
               )}
-              style={{ marginRight: "50px" }}
+              style={{ marginRight:"30px"}}
             />
             <Button
               component={Link}
               to="/assignment"
-              style={{
-                cursor: "pointer",
-                //   backgroundColor: "#d6d1d1", // Set initial background color
-                transition: "background-color 0.3s ease", // Add transition effect
-              }}
+              variant="contained"
+              sx={{ backgroundColor: "#055f85", color: "#fff", margin:"10px 0px"}}
             >
               Create Assignment
             </Button>
@@ -151,9 +150,10 @@ export default function MyTeam() {
             <Card
               key={item.EmployeeID_AssignTo}
               sx={{
-                maxWidth: 300,
+                width: 180,
                 margin: "10px",
                 transition: "transform 0.3s ease-in-out",
+                boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
               }}
             >
               <CardActionArea>
