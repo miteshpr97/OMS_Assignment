@@ -92,7 +92,6 @@ exports.updateUserDetails = async (req, res) => {
 
 
 // Deleting user details
-
 exports.deleteUserDetails = (req, res) => {
   const employeeId = req.params.EmployeeID;
   const query = "DELETE FROM tb_userdetails WHERE EmployeeID = ?";
@@ -116,7 +115,6 @@ exports.deleteUserDetails = (req, res) => {
 
 
 // login user
-
 exports.loginUser = async (req, res) => {
   const { EmployeeID, Password } = req.body;
 

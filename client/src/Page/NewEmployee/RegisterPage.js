@@ -23,7 +23,6 @@ const RegisterPage = () => {
   );
 
   useEffect(() => {
-   
     dispatch(showEmployee());
     dispatch(fetchNextEmployeeId());
   }, [dispatch]);
@@ -123,6 +122,7 @@ const RegisterPage = () => {
             addEmployee={addEmployee}
             nextEmployeeId={nextEmployeeId}
           />
+          <br></br>
           <ViewRegistrationData
             employeeData={employee}
             deleteEmployee={deleteEmployee}

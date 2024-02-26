@@ -5,22 +5,22 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
-import TableRowsIcon from '@mui/icons-material/TableRows';
+
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ViewListIcon from '@mui/icons-material/ViewList';
 
-const userData = JSON.parse(sessionStorage.getItem("userData"));
+
 
 
 export const menuItems = [
   { text: "Home", icon: <HomeIcon />, path: "/"},
-  { text: "New Employee", icon: <AppRegistrationIcon/>, path: "/registeration"},
-  { text: "View Employee", icon: <TableRowsIcon/>, path: "/viewEmployee"},
-  { text: "New Department", icon: <ViewListIcon/>, path: "/Department"},
-  { text: "New Designation", icon: <ViewListIcon/>, path: "/newdesignation"},
+  { text: "Employee", icon: <AppRegistrationIcon/>, path: "/registeration"},
+  // { text: "View Employee", icon: <TableRowsIcon/>, path: "/viewEmployee"},
+  { text: "Department", icon: <ViewListIcon/>, path: "/Department"},
+  { text: "Designation", icon: <ViewListIcon/>, path: "/newdesignation"},
   { text: "Team", icon: <GroupsIcon/>, path: "/team" },
   { text: "My Team", icon: <GroupsIcon/>, path: "/myteam" },
-  { text: "New Assignment", icon: <AssignmentIcon />, path: "/assignment" },
+  { text: "Assignment", icon: <AssignmentIcon />, path: "/assignment" },
   { text: "MY Task", icon: <AssignmentIcon />, path: "/view-assignment" },
   { text: "Task", icon: <AddCircleIcon />, path: "/Newtask" },
   { text: "Settings", icon: <SettingsIcon />, path: "/settings" },

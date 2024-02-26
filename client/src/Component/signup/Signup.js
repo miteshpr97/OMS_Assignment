@@ -17,15 +17,15 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Card from "@mui/material/Card"; // Import Card component
-import CardContent from "@mui/material/CardContent"; // Import CardContent component
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import HeaderSignUp from "./HeaderSignUp";
 import TextField from "@mui/material/TextField";
 
 const customTheme = createTheme({
   palette: {
     background: {
-      default: '#c3ddd9',
+      default: "#c3ddd9",
     },
   },
 });
@@ -36,22 +36,10 @@ export default function SignUp() {
     EmployeeID: "",
     Username: "",
     Password: "",
-    ConfirmPassword: "", // Include ConfirmPassword field in formData
+    ConfirmPassword: "",
+    role: "user", // Default role
     acceptTerms: false,
   });
-
-  console.log(data, "dkdhd");
-
-  const handleChange = (event) => {
-    const { name, value, checked, type } = event.target;
-    const newValue = type === "checkbox" ? checked : value;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: newValue,
-    }));
-  };
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +62,15 @@ export default function SignUp() {
     fetchData();
   }, []);
 
+  const handleChange = (event) => {
+    const { name, value, checked, type } = event.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: newValue,
+    }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -83,6 +80,7 @@ export default function SignUp() {
       return; // Do not proceed with form submission
     }
     console.log(formData);
+    // You can proceed with form submission logic here
   };
 
   return (
@@ -100,7 +98,6 @@ export default function SignUp() {
         >
           <Card>
             <CardContent>
-              {" "}
               <span style={{ display: "flex", justifyContent: "center" }}>
                 <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
                   <LockOutlinedIcon />
@@ -121,7 +118,7 @@ export default function SignUp() {
               >
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth variant="outlined">
                       <InputLabel id="employee-id-label">
                         Employee ID
                       </InputLabel>
@@ -131,9 +128,10 @@ export default function SignUp() {
                         name="EmployeeID"
                         value={formData.EmployeeID}
                         onChange={handleChange}
+                        label="Employee ID"
                       >
                         {data.map((item) => (
-                          <MenuItem key={item.id} value={item.id}>
+                          <MenuItem key={item.id} value={item.EmployeeID}>
                             {item.EmployeeID} -- {item.FirstName}{" "}
                             {item.LastName}
                           </MenuItem>
@@ -142,7 +140,7 @@ export default function SignUp() {
                     </FormControl>
                   </Grid>
                   <Grid item xs={6}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth variant="outlined">
                       <InputLabel id="username-label">Username</InputLabel>
                       <Select
                         labelId="username-label"
@@ -150,15 +148,17 @@ export default function SignUp() {
                         name="Username"
                         value={formData.Username}
                         onChange={handleChange}
+                        label="Username"
                       >
                         {data.map((item) => (
-                          <MenuItem key={item.id} value={item.username}>
-                            {item.username}
+                          <MenuItem key={item.id} value={item.Username}>
+                            {item.Username}
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </Grid>
+
                   <Grid item xs={12}>
                     <TextField
                       required
@@ -184,6 +184,23 @@ export default function SignUp() {
                       value={formData.ConfirmPassword}
                       onChange={handleChange}
                     />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControl fullWidth variant="outlined">
+                      <InputLabel id="role-label">Role</InputLabel>
+                      <Select
+                        labelId="role-label"
+                        id="role"
+                        name="role"
+                        value={formData.role}
+                        onChange={handleChange}
+                        label="Role"
+                      >
+                        <MenuItem value="admin">Admin</MenuItem>
+                        <MenuItem value="user">User</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
 
                   <Grid item xs={12}>

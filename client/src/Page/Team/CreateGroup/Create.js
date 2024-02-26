@@ -51,6 +51,10 @@ const Create = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
+ 
+  
+
   useEffect(() => {
     dispatch(fetchEmployeeProfileData(EmployeeID));
     dispatch(fetchDepartmentData());
@@ -68,6 +72,7 @@ const Create = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
+
       const filteredData = data.filter(
         (employee) => employee.DepartmentID === department.DepartmentID
       );
@@ -107,6 +112,9 @@ const Create = () => {
   const handleDeleteWorkGroup = (workgroupID) => {
     dispatch(deleteWorkGroupData(workgroupID));
   };
+
+
+
 
   const filteremployeData = departmentData
     ? departmentData.filter(
