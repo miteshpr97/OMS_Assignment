@@ -150,29 +150,24 @@ const Create = () => {
       <Box sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
         <div
           style={{
-            height: "80px",
+            height: "70px",
             display: "flex",
+            justifyContent: "space-between",
             alignItems: "center",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            // boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            border:"1px solid black",
             backgroundColor: "white",
             color: "black",
+            padding:'0px 10px',
+            marginTop:"10px"
           }}
         >
-          <div style={{ width: "30%" }}>
-            <Typography variant="h5" sx={{ textAlign: "start" }}>
+          
+            <Typography variant="h5" sx={{ textAlign: "start",fontWeight: "500"   }}>
               CREATE TEAM
             </Typography>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              width: "70%",
-              marginRight: "10px",
-            }}
-          >
+         
+        
             <Autocomplete
               disablePortal
               id="combo-box-demo"
@@ -183,7 +178,11 @@ const Create = () => {
                 setSelectedDepartment(newValue);
                 handleDepartmentSelect(newValue);
               }}
-              sx={{ width: 300 }}
+              sx={{
+                m: 1,
+                width: 400,
+                backgroundColor: "whitesmoke",
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -193,34 +192,36 @@ const Create = () => {
               )}
             />
           </div>
-        </div>
-        <br />
+    <br />
 
         <Box
           className="createTeam-container"
           sx={{
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: "space-between",
+
             marginTop: "10px",
-            padding: "10px",
-            backgroundColor: "#f9f9f9",
-            height: "400px",
+            padding: "20px",
+            backgroundColor: "whitesmoke",
+            border: "1px solid black",
+            height: "450px",
+            width: "auto",
           }}
         >
-          <div>
+          <div style={{ width: 180, marginLeft:"10px" }}>
             {profileData &&
               profileData.map((items) => (
                 <Card
                   key={items.EmployeeID}
                   sx={{
-                    width: 200,
-                    height: 200,
+                    width: 180,
                     margin: "10px",
                     padding: "10px",
+                     border:"1px solid grey"
                   }}
                 >
                   <CardActionArea>
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Box sx={{ display: "flex", justifyContent: "center", padding:"10px"  }}>
                       {/* <CardMedia
                         component="img"
                         image={profile}
@@ -230,7 +231,7 @@ const Create = () => {
 
                       <CardMedia
                         component="img"
-                        sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                        sx={{ height: 100, width: 100, borderRadius: "50%" }}
                         src={
                           items.Employee_Profile
                             ? `http://localhost:3306/api/employee/${items.Employee_Profile}`
@@ -239,7 +240,7 @@ const Create = () => {
                         alt="Employee Profile"
                       />
                     </Box>
-                    <CardContent sx={{ textAlign: "center" }}>
+                    <CardContent sx={{ textAlign: "center", textTransform:'capitalize'  }}>
                       <Typography gutterBottom variant="h6" component="div">
                         {items.FirstName} {items.LastName}
                       </Typography>
@@ -251,7 +252,7 @@ const Create = () => {
                 </Card>
               ))}
           </div>
-          <Box sx={{ marginLeft: "50px" }}>
+          <Box sx={{ marginLeft: "50px", width: "75%"  }}>
             <div
               style={{
                 display: "flex",
@@ -259,9 +260,9 @@ const Create = () => {
                 alignItems: "flex-start",
               }}
             >
-              <div style={{ width: "900px" }}>
+              <div style={{ width: "100%" }}>
                 <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <Table  aria-label="simple table">
                     <TableHead>
                       <TableRow style={{ backgroundColor: "#44756d" }}>
                         <TableCell
@@ -345,24 +346,24 @@ const Create = () => {
           </Box>
         </Box>
 
-        <br />
-        <br />
+       
 
+        <div style={{ backgroundColor: "whitesmoke", height: "450px" , marginTop:"40px", border:"1px solid black"}}>
         <SelectedEmployeesTable
           selectedEmployees={selectedEmployees}
           handleSubmitSelectEmployee={handleSubmitSelectEmployee}
         />
-
-        <br />
-        <br />
-        <div>
+</div>
+        
+        <div style={{ backgroundColor: "whitesmoke", height: "450px" , marginTop:"40px", border:"1px solid black"}}>
           <WorkGroup
             profileData={profileData}
             workGroupData={workGroupData}
             updateAssignedEmployees={setAssignedEmployees}
             handleDeleteWorkGroupData={handleDeleteWorkGroup}
           />
-        </div>
+          </div>
+       
       </Box>
     </Box>
   );

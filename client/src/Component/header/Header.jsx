@@ -324,28 +324,37 @@ export default function Header({ open, handleDrawerOpen }) {
             <MenuIcon />
           </IconButton>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {userData && (
-            <CardMedia
-              component="img"
-              sx={{
-                borderRadius: "50%",
-                height: "auto",
-                width: "5vw", // Set width relative to viewport width
-                maxWidth: "40px", // Maximum width
-                border: "1px solid white"
-              }}
-              src={
-                userData.Employee_Profile
-                  ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
-                  : ""
-              }
-              alt="Employee Profile"
-              aria-describedby={id}
-              type="button"
-              onClick={handleClick}
-            />
-          )}
+        <div style={{ display: "flex", alignItems: "center", marginRight:"5px" }}>
+        {userData ? (
+              <CardMedia
+                component="img"
+                sx={{
+                  borderRadius: "50%",
+                  height: "40px",
+                  width: "40px",
+                  border: "none",
+                }}
+                src={
+                  userData.Employee_Profile
+                    ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
+                    : ""
+                }
+                alt="Employee Profile"
+                aria-describedby={id}
+                type="button"
+                onClick={handleClick}
+              />
+            ) : (
+              <AccountCircleIcon
+                sx={{
+                  width: 40,
+                  height: 40,
+                }}
+                aria-describedby={id}
+                type="button"
+                onClick={handleClick}
+              />
+            )}
 
           <Popper id={id} open={isOpen} anchorEl={anchorEl}>
             <Box
@@ -353,7 +362,8 @@ export default function Header({ open, handleDrawerOpen }) {
                 border: "none",
                 p: 1,
                 bgcolor: "#5c7c77",
-                marginTop: "20px",
+                marginTop: "15px",
+                
               }}
             >
               <List>

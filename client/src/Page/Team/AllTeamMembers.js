@@ -69,22 +69,25 @@ export default function AllTeamMembers() {
       <SideBar />
       <Box
         component="main"
-        sx={{ flexGrow: 1, marginTop: "55px", padding: "20px" }}
+        sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}
       >
         {/* page uper header work */}
         <div
           style={{
-            height: "80px",
+            height: "70px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            // boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            border:"1px solid black",
             backgroundColor: "white",
             color: "black",
+            padding:'0px 10px',
+            marginTop:"10px"
           }}
         >
-          <Typography variant="h5" sx={{ textAlign: "start" }}>
-            Create Team
+          <Typography variant="h5" sx={{ textAlign: "start" ,fontWeight: "500"  }}>
+            All Team
           </Typography>
 
           <Autocomplete
@@ -111,17 +114,19 @@ export default function AllTeamMembers() {
             <Card
               key={item.EmployeeID}
               sx={{
-                maxWidth: 300,
+                width: 180,
                 margin: "10px",
                 transition: "transform 0.3s ease-in-out",
+                boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
+                
               }}
             >
-              <CardActionArea>
+              <CardActionArea >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "center",
-                    paddingTop: "20px",
+                    paddingTop: "10px",
                   }}
                 >
                   {/* <CardMedia

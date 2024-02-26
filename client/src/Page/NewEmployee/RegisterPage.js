@@ -118,6 +118,7 @@ const RegisterPage = () => {
           </div>
 
           {/* Pass nextEmployeeId to NewRegistration component */}
+         
           <NewRegistration
             addEmployee={addEmployee}
             nextEmployeeId={nextEmployeeId}
@@ -127,6 +128,7 @@ const RegisterPage = () => {
             employeeData={employee}
             deleteEmployee={deleteEmployee}
           />
+       
         </div>
       </Box>
     </Box>
