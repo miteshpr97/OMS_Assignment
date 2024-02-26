@@ -58,23 +58,6 @@ exports.getAllDataOfEmployeesByEmployeeId = (req, res) => {
 
 
 
-
-// // Getting data of employees with their department and designation name
-
-// exports.getDataOfEmployeesWithTheirDNames = (req, res) => {
-//   const employeeId = req.params.EmployeeID;
-//   const query = "SELECT tb_employee.EmployeeID,tb_employee.FirstName,tb_employee.LastName,tb_employee.EmploymentStatus,tb_employee.DepartmentID,tb_department.DepartmentName,tb_employee.DesignationID,tb_designation.DesignationName FROM tb_employee JOIN tb_department ON tb_employee.DepartmentID = tb_department.DepartmentID JOIN tb_designation ON tb_employee.DesignationID = tb_designation.DesignationID WHERE tb_employee.EmployeeID = ?";
-//   db.query(query, employeeId,(err, results) => {
-//     if (err) {
-//       console.error("Error executing query:", err);
-//       res.status(500).json({ error: "Internal Server Error" });
-//       return;
-//     }
-//     res.status(200).json(results);
-//   });
-// };
-
-
 // Getting data of employees with their department and designation name
 
 exports.getDataOfEmployeesWithTheirDNames = (req, res) => {

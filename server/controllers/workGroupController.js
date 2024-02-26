@@ -62,43 +62,43 @@ exports.insertMultipleWorkGroup = (req, res) => {
 }
 
 
-// inserting work group data
+// // inserting work group data  for single data insert
 
-exports.addWorkGroup = (req, res) => {
-  const newWorkGroup = req.body;
+// exports.addWorkGroup = (req, res) => {
+//   const newWorkGroup = req.body;
 
-  const query =
-    "SELECT MAX(SUBSTRING(WorkGroupID, 3)) AS maxID FROM tb_workGroup";
+//   const query =
+//     "SELECT MAX(SUBSTRING(WorkGroupID, 3)) AS maxID FROM tb_workGroup";
 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max WorkGroupID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
+//   db.query(query, (err, results) => {
+//     if (err) {
+//       console.error("Error getting max WorkGroupID: ", err);
+//       res.status(500).json({ error: "Internal server error" });
+//       return;
+//     }
 
-    let nextID = 1;
+//     let nextID = 1;
 
-    if (results && results[0].maxID !== null) {
-      nextID = parseInt(results[0].maxID, 10) + 1;
-    }
+//     if (results && results[0].maxID !== null) {
+//       nextID = parseInt(results[0].maxID, 10) + 1;
+//     }
 
-    const formattedID = `WG${nextID.toString().padStart(3, "0")}`;
+//     const formattedID = `WG${nextID.toString().padStart(3, "0")}`;
 
-    newWorkGroup.WorkGroupID = formattedID;
+//     newWorkGroup.WorkGroupID = formattedID;
 
-    const query = "INSERT INTO tb_workGroup SET ?";
+//     const query = "INSERT INTO tb_workGroup SET ?";
 
-    db.query(query, newWorkGroup, (err, results) => {
-      if (err) {
-        console.error("Error executing query: ", err);
-        res.status(500).json({ error: "Internal server error" });
-      } else {
-        res.status(201).json({ message: "Work group added successfully" });
-      }
-    });
-  });
-};
+//     db.query(query, newWorkGroup, (err, results) => {
+//       if (err) {
+//         console.error("Error executing query: ", err);
+//         res.status(500).json({ error: "Internal server error" });
+//       } else {
+//         res.status(201).json({ message: "Work group added successfully" });
+//       }
+//     });
+//   });
+// };
 
 
 //get all data form employees table

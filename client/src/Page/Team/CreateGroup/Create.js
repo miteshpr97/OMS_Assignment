@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import SideBar from "../../../Component/SideBar";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CheckIcon from "@mui/icons-material/Check";
-import profile from "./profilenn.png";
+// import profile from "./profilenn.png";
 import {
   Card,
   Paper,
@@ -51,9 +51,7 @@ const Create = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-
- 
-  
+  console.log(departmentData, "fkfjjfjfjfjfj")
 
   useEffect(() => {
     dispatch(fetchEmployeeProfileData(EmployeeID));
@@ -112,9 +110,6 @@ const Create = () => {
   const handleDeleteWorkGroup = (workgroupID) => {
     dispatch(deleteWorkGroupData(workgroupID));
   };
-
-
-
 
   const filteremployeData = departmentData
     ? departmentData.filter(

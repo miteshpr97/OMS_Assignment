@@ -23,6 +23,7 @@ const upload = multer({ storage: storage });
 // Get all employees
 router.get("/", employeeController.getAllEmployees);
 
+
 // Get all data of employees
 router.get("/allData", employeeController.getAllDataOfEmployees);
 
