@@ -84,33 +84,34 @@ const RegisterPage = () => {
   const deleteEmployee = async (employeeID) => {
     setLoading(true);
     try {
-        // Ask for confirmation before deleting
-        const confirmed = window.confirm("Are you sure you want to delete this employee?");
-        if (!confirmed) {
-            setLoading(false);
-            return; // Exit function if user cancels deletion
-        }
-
-        await dispatch(deleteEmployeeAction(employeeID)); // Dispatch the deleteEmployee action with the employee ID
-        setSuccessMessage("Employee deleted successfully!");
-        setTimeout(() => {
-            setSuccessMessage("");
-        }, 2000);
-        dispatch(showEmployee()); // Refetch employee data after deletion
-    } catch (error) {
-        console.error("Error deleting employee", error);
-        setError("Error deleting employee");
-    } finally {
+      // Ask for confirmation before deleting
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this employee?"
+      );
+      if (!confirmed) {
         setLoading(false);
-    }
-};
+        return; // Exit function if user cancels deletion
+      }
 
+      await dispatch(deleteEmployeeAction(employeeID)); // Dispatch the deleteEmployee action with the employee ID
+      setSuccessMessage("Employee deleted successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+      dispatch(showEmployee()); // Refetch employee data after deletion
+    } catch (error) {
+      console.error("Error deleting employee", error);
+      setError("Error deleting employee");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <div>
+        <div style={{ border: "1px solid #5c7c77" }}>
           <div
             style={{
               backgroundColor: successMessage
@@ -126,7 +127,7 @@ const RegisterPage = () => {
           </div>
 
           {/* Pass nextEmployeeId to NewRegistration component */}
-         
+
           <NewRegistration
             addEmployee={addEmployee}
             nextEmployeeId={nextEmployeeId}
@@ -136,7 +137,6 @@ const RegisterPage = () => {
             employeeData={employee}
             deleteEmployee={deleteEmployee}
           />
-       
         </div>
       </Box>
     </Box>

@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import { fetchDepartmentData } from "../../features/department/departmentActions";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 
 import "./RegisterPage.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -348,26 +348,42 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
     // </div>
 
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop:'10px'}}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems:'center',
+          marginTop: "10px",
+          padding:'10px'
+        }}
+      >
+        <Typography variant="h5" style={{ fontWeight: "500" }}>
+          Employee Data
+        </Typography>
         <Button
           onClick={handleClickOpen}
           variant="contained"
-          sx={{ backgroundColor: "#055f85", color: "#fff",padding:'8px 16px'}}
+          sx={{
+            backgroundColor: "#055f85",
+            color: "#fff",
+            padding: "8px 16px",
+          }}
         >
           CREATE NEW EMPLOYEE
         </Button>
       </div>
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-        <DialogTitle sx={{fontSize:"22px", padding:"16px 24px 10px 24px"}}>New Employee</DialogTitle>
+        <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 10px 24px" }}>
+          New Employee
+        </DialogTitle>
         <IconButton
           aria-label="close"
           onClick={handleClose}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 15,
             top: 8,
             color: (theme) => theme.palette.grey[500],
-           
           }}
         >
           <CloseIcon />
@@ -574,9 +590,9 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         type="submit"
                         variant="contained"
                         // color="primary"
-                      
+
                         disabled={isLoading}
-                        sx={{ backgroundColor: "#055f85", marginTop:"10px" }}
+                        sx={{ backgroundColor: "#055f85", marginTop: "10px" }}
                       >
                         {isLoading ? "Submitting..." : "Submit"}
                       </Button>

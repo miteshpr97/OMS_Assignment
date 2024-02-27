@@ -240,9 +240,9 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
   return (
     <div className="Employee-table">
       <div>
-        <Typography variant="h5" style={{ fontWeight: "500" }}>
+        {/* <Typography variant="h5" style={{ fontWeight: "500" }}>
           Employee Data
-        </Typography>
+        </Typography> */}
       </div>
       <br />
       <Table>
