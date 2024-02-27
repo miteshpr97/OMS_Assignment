@@ -1,6 +1,5 @@
 const db = require("../db");
 
-
 // Getting all designations
 
 exports.getAllDesignations = (req, res) => {
@@ -15,6 +14,20 @@ exports.getAllDesignations = (req, res) => {
   });
 };
 
+// Getting particular designation's data by id
+
+exports.getDesignationById = (req, res) => {
+  const designationId = req.params.DesignationID;
+  const query = "SELECT * FROM tb_designation WHERE DesignationID = ?";
+  db.query(query, designationId, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
 
 // Inserting designation
 
@@ -32,30 +45,7 @@ exports.addDesignation = (req, res) => {
   });
 };
 
-
-// getting latest or last designation id
-
-exports.getLastDesignationId = (req, res) => {
-  const query = "SELECT MAX(DesignationID) AS maxID FROM tb_designation ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-    if (results[0].maxID === null) {
-      const DesignationId = (results[0].maxID = "DESIG000");
-      res.status(200).json({ lastDesignationId: DesignationId });
-      return;
-    }
-    const lastDesignationId = results[0].maxID;
-    res.status(200).json({ lastDesignationId: lastDesignationId });
-  });
-};
-
-
-// getting next designation id 
+// getting next designation id
 
 exports.getNextDesignationId = (req, res) => {
   const query = "SELECT MAX(DesignationID) AS maxID FROM tb_designation ";
@@ -73,13 +63,12 @@ exports.getNextDesignationId = (req, res) => {
     } else {
       const lastDesignationId = results[0].maxID;
       const numericPart = parseInt(lastDesignationId.substr(5), 10) + 1;
-      nextDesignationId = "DESIG" + numericPart.toString().padStart(3, '0');
+      nextDesignationId = "DESIG" + numericPart.toString().padStart(3, "0");
     }
 
     res.status(200).json({ nextDesignationId: nextDesignationId });
   });
 };
-
 
 // updating designation's data
 
@@ -105,7 +94,6 @@ exports.updateDesignation = (req, res) => {
     }
   });
 };
-
 
 // Deleting designation's data
 

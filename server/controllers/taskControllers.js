@@ -1,6 +1,5 @@
 const db = require("../db");
 
-
 // Getting all tasks
 
 exports.getAllTasks = (req, res) => {
@@ -15,77 +14,59 @@ exports.getAllTasks = (req, res) => {
   });
 };
 
+// Getting particular task's data by id
 
-// Inserting task
-
-exports.addTask = (req, res) => {
-  const newTask = req.body;
-
-  // Set default values if not provided
-  newTask.TaskStatus = newTask.TaskStatus || "Pending";
-  newTask.Type = newTask.Type || 'T';
-
-  const query = "INSERT INTO tb_task SET ?";
-  db.query(query, newTask, (err, results) => {
+exports.getTaskById = (req, res) => {
+  const taskId = req.params.TaskID;
+  const query = "SELECT * FROM tb_task WHERE TaskID = ?";
+  db.query(query, taskId, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       res.status(500).json({ error: "Internal Server Error" });
     } else {
-      res.status(200).json({ message: "Task added successfully" });
+      res.status(200).json(results);
     }
   });
 };
 
+// inserting task with auto generated id from backend
 
-// getting latest or last task id
+exports.addTaskWithId = (req, res) => {
+  const newTask = req.body;
 
-exports.getLastTaskId = (req, res) => {
-  const query =
-    "SELECT MAX(TaskID) AS maxID FROM tb_task ";
+  newTask.TaskStatus = newTask.TaskStatus || "Pending";
+  newTask.Type = newTask.Type || "T";
 
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+  const query = "SELECT MAX(SUBSTRING(TaskID, 2)) AS maxID FROM tb_task";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error getting max TaskID: ", err);
+      res.status(500).json({ error: "Internal server error" });
       return;
     }
-    if (results[0].maxID === null) {
-      const taskId = results[0].maxID="T000";
-      res.status(200).json({lastTaskId: taskId})
-      return;
+
+    let nextID = 1;
+
+    if (results && results[0].maxID !== null) {
+      nextID = parseInt(results[0].maxID, 10) + 1;
     }
-    const lastTaskId = results[0].maxID;
-    res.status(200).json({ lastTaskId: lastTaskId });
+
+    const formattedID = `T${nextID.toString().padStart(3, "0")}`;
+
+    newTask.TaskID = formattedID;
+
+    const query = "INSERT INTO tb_task SET ?";
+    db.query(query, newTask, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json({ message: "Task added successfully" });
+      }
+    });
   });
 };
-
-
-// getting next task id 
-
-exports.getNextTaskId = (req, res) => {
-  const query = "SELECT MAX(TaskID) AS maxID FROM tb_task ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    let nextTaskId;
-    if (results.length === 0 || results[0].maxID === null) {
-      nextTaskId = "T001";
-    } else {
-      const lastTaskId = results[0].maxID;
-      const numericPart = parseInt(lastTaskId.substr(1), 10) + 1;
-      nextTaskId = "T" + numericPart.toString().padStart(3, '0');
-    }
-
-    res.status(200).json({ nextTaskId: nextTaskId });
-  });
-};
-
-
 
 // updating task's data
 
@@ -112,7 +93,6 @@ exports.updateTask = (req, res) => {
   });
 };
 
-
 // Deleting Task's data
 
 exports.deleteTask = (req, res) => {
@@ -127,9 +107,7 @@ exports.deleteTask = (req, res) => {
         res.status(404).json({ error: "Task not found" });
         return;
       } else {
-        res
-          .status(200)
-          .json({ message: "Task deleted successfully" });
+        res.status(200).json({ message: "Task deleted successfully" });
       }
     }
   });

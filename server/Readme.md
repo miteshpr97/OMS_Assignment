@@ -1,6 +1,9 @@
 tb_employee's Api
 
-// Get all data of employees
+// Get all employees
+http://localhost:3306/api/employee/
+
+// Get overall data of employees
 http://localhost:3306/api/employee/allData
 
 // Get all data of employees with their department and designation names
@@ -8,9 +11,6 @@ http://localhost:3306/api/employee/dNames
 
 // Add a new employee
 http://localhost:3306/api/employee
-
-// Get latest or last employee id
-http://localhost:3306/api/employee/lastEmployeeId
 
 // Getting next employee id
 http://localhost:3306/api/employee/nextEmployeeId
@@ -54,11 +54,11 @@ tb_department's Api
 // Get all departments
 http://localhost:3306/api/department
 
+// Get particular department by id
+http://localhost:3306/api/department/:DepartmentID
+
 // Insert department's data
 http://localhost:3306/api/department
-
-// Get last department id
-http://localhost:3306/api/department/lastDepartmentId
 
 // Getting next department id
 http://localhost:3306/api/designation/nextDepartmentId
@@ -75,11 +75,11 @@ tb_designation's Api
 // Get all designations
 http://localhost:3306/api/designation
 
+// Get particular designation by id
+http://localhost:3306/api/designation/:DesignationID
+
 // Insert designation's data
 http://localhost:3306/api/designation
-
-// Get last designation id
-http://localhost:3306/api/designation/lastDesignationId
 
 // Getting next designation id
 http://localhost:3306/api/designation/nextDesignationId
@@ -102,9 +102,6 @@ http://localhost:3306/api/workGroup/allData
 // Get all data about a particular group
 http://localhost:3306/api/workGroup/:EmployeeID_Assigner
 
-// Add a new work group (single)
-http://localhost:3306/api/workGroup
-
 // Add a new work group (multiple)
 http://localhost:3306/api/workGroup/multiple
 
@@ -120,20 +117,11 @@ tb_assignment's Api
 // get all Assignment
 http://localhost:3306/api/assignmentDetails
 
-// Post or add Assignment
-http://localhost:3306/api/assignmentDetails
+// get particular Assignment by id
+http://localhost:3306/api/assignmentDetails/:AssignmentID
 
-// add Assignment Data (Mitesh)
-http://localhost:3306/api/assignmentDetails/data
-
-// all data show with name(Mitesh)
-http://localhost:3306/api/assignmentDetails/allData
-
-// get last assignment id
-http://localhost:3306/api/assignmentDetails/lastAssignmentId
-
-// Getting next assignment id
-http://localhost:3306/api/assignmentDetails/nextAssignmentId
+// Post or add Assignment with auto generated id
+http://localhost:3306/api/assignmentDetails/withID
 
 // update assignment
 http://localhost:3306/api/assignmentDetails/update/:AssignmentID
@@ -144,23 +132,8 @@ http://localhost:3306/api/assignmentDetails/:AssignmentID/progress
 // update assignment status from progress to completed
 http://localhost:3306/api/assignmentDetails/:AssignmentID/completed
 
-// number of pending assignments
-http://localhost:3306/api/assignmentDetails/pending-assignments
-
-// number of pending assignments of an employee
-http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/pending-assignments
-
-// number of progress assignments
-http://localhost:3306/api/assignmentDetails/progress-assignments
-
-// number of progress assignments of an employee
-http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/progress-assignments
-
-// number of completed assignments
-http://localhost:3306/api/assignmentDetails/completed-assignments
-
-// number of completed assignments of an employee
-http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/completed-assignments
+// number of pending progress and completed assignments of a particular employee
+http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/assignmentCounts
 
 // delete assignment
 http://localhost:3306/api/assignmentDetails/delete/:AssignmentID
@@ -171,14 +144,11 @@ tb_task's Api
 // get all task details
 http://localhost:3306/api/taskDetails
 
-// add task details
-http://localhost:3306/api/taskDetails
+// get particular task details by id
+http://localhost:3306/api/taskDetails/:TaskID
 
-// get all task details
-http://localhost:3306/api/taskDetails/lastTaskId
-
-// Getting next task id
-http://localhost:3306/api/taskDetails/nextTaskId
+// add task with auto generated id
+http://localhost:3306/api/taskDetails/withID
 
 // update task details
 http://localhost:3306/api/taskDetails/update/:TaskID
