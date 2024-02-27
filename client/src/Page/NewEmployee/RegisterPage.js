@@ -84,19 +84,27 @@ const RegisterPage = () => {
   const deleteEmployee = async (employeeID) => {
     setLoading(true);
     try {
-      await dispatch(deleteEmployeeAction(employeeID)); // Dispatch the deleteEmployee action with the employee ID
-      setSuccessMessage("Employee deleted successfully!");
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 2000);
-      dispatch(showEmployee()); // Refetch employee data after deletion
+        // Ask for confirmation before deleting
+        const confirmed = window.confirm("Are you sure you want to delete this employee?");
+        if (!confirmed) {
+            setLoading(false);
+            return; // Exit function if user cancels deletion
+        }
+
+        await dispatch(deleteEmployeeAction(employeeID)); // Dispatch the deleteEmployee action with the employee ID
+        setSuccessMessage("Employee deleted successfully!");
+        setTimeout(() => {
+            setSuccessMessage("");
+        }, 2000);
+        dispatch(showEmployee()); // Refetch employee data after deletion
     } catch (error) {
-      console.error("Error deleting employee", error);
-      setError("Error deleting employee");
+        console.error("Error deleting employee", error);
+        setError("Error deleting employee");
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   return (
     <Box sx={{ display: "flex" }}>
