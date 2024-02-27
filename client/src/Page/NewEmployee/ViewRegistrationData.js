@@ -279,8 +279,9 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
               <TableCell className={classes.name}>{item.EmployeeID}</TableCell>
               <TableCell
                 className={classes.name}
+                sx={{ textTransform:'capitalize' }}
               >{`${item.FirstName} ${item.LastName}`}</TableCell>
-              <TableCell className={classes.name}>
+              <TableCell className={classes.name} >
                 {item.DesignationID}
               </TableCell>
               <TableCell className={classes.name}>

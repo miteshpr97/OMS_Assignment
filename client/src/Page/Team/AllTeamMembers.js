@@ -64,6 +64,7 @@ export default function AllTeamMembers() {
       )
     : data;
 
+   
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -153,6 +154,7 @@ export default function AllTeamMembers() {
                     variant="h6"
                     component="div"
                     align="center"
+                    sx={{ textTransform:'capitalize' }}
                   >
                     {item.FirstName} {item.LastName}
                   </Typography>
