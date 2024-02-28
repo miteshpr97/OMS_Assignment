@@ -25,6 +25,7 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 export default function App() {
   return (
+    
     <>
       <Routes>
         <Route path="/loginpage" element={<Login />}></Route>

@@ -1,47 +1,41 @@
-const db = require("../db");
+const { queryAsync } = require("../db");
 
-// Getting all designations
+// Get All Designations
 
-exports.getAllDesignations = (req, res) => {
-  const query = "SELECT * FROM tb_designation";
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+exports.getAllDesignations = async (req, res) => {
+  try {
+    const query = "SELECT * FROM tb_designation";
+    const results = await queryAsync(query);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Getting particular designation's data by id
+// Get Designation By ID
 
-exports.getDesignationById = (req, res) => {
+exports.getDesignationById = async (req, res) => {
   const designationId = req.params.DesignationID;
-  const query = "SELECT * FROM tb_designation WHERE DesignationID = ?";
-  db.query(query, designationId, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+  try {
+    const query = "SELECT * FROM tb_designation WHERE DesignationID = ?";
+    const results = await queryAsync(query, [designationId]);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// inserting designation with auto generated id from backend
+// Add Designation With ID
 
-exports.addDesignationWithId = (req, res) => {
+exports.addDesignationWithId = async (req, res) => {
   const newDesignation = req.body;
 
-  const query = "SELECT MAX(SUBSTRING(DesignationID, 6)) AS maxID FROM tb_designation";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max DesignationID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
+  try {
+    const maxIDQuery =
+      "SELECT MAX(SUBSTRING(DesignationID, 6)) AS maxID FROM tb_designation";
+    const results = await queryAsync(maxIDQuery);
 
     let nextID = 1;
 
@@ -50,105 +44,62 @@ exports.addDesignationWithId = (req, res) => {
     }
 
     const formattedID = `DESIG${nextID.toString().padStart(3, "0")}`;
-
     newDesignation.DesignationID = formattedID;
 
-    const query = "INSERT INTO tb_designation SET ?";
-    db.query(query, newDesignation, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        res.status(200).json({ message: "Designation added successfully" });
-      }
-    });
-  });
+    const insertQuery = "INSERT INTO tb_designation SET ?";
+    await queryAsync(insertQuery, newDesignation);
+
+    res.status(200).json({ message: "Designation added successfully" });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Inserting designation
+// Update Designation
 
-exports.addDesignation = (req, res) => {
-  const newDesignation = req.body;
-
-  const query = "INSERT INTO tb_designation SET ?";
-  db.query(query, newDesignation, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json({ message: "Designation added successfully" });
-    }
-  });
-};
-
-// getting next designation id
-
-exports.getNextDesignationId = (req, res) => {
-  const query = "SELECT MAX(DesignationID) AS maxID FROM tb_designation ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    let nextDesignationId;
-    if (results.length === 0 || results[0].maxID === null) {
-      nextDesignationId = "DESIG001";
-    } else {
-      const lastDesignationId = results[0].maxID;
-      const numericPart = parseInt(lastDesignationId.substr(5), 10) + 1;
-      nextDesignationId = "DESIG" + numericPart.toString().padStart(3, "0");
-    }
-
-    res.status(200).json({ nextDesignationId: nextDesignationId });
-  });
-};
-
-// updating designation's data
-
-exports.updateDesignation = (req, res) => {
+exports.updateDesignation = async (req, res) => {
   const designationId = req.params.DesignationID;
   const updatedDesignation = req.body;
-  const query = "UPDATE tb_designation SET ? WHERE DesignationID = ?";
+  const updateQuery = "UPDATE tb_designation SET ? WHERE DesignationID = ?";
 
-  db.query(query, [updatedDesignation, designationId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  try {
+    const results = await queryAsync(updateQuery, [
+      updatedDesignation,
+      designationId,
+    ]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Designation not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Designation's data is up to date already");
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Designation not found" });
-        return;
-      } else if (results.affectedRows > 0 && results.changedRows === 0) {
-        res.status(200).json("Designation's data is up to date already");
-        return;
-      } else {
-        res.status(200).json({ message: "Designation updated successfully" });
-      }
+      res.status(200).json({ message: "Designation updated successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Deleting designation's data
+// Delete Designation
 
-exports.deleteDesignation = (req, res) => {
+exports.deleteDesignation = async (req, res) => {
   const designationId = req.params.DesignationID;
-  const query = "DELETE FROM tb_designation WHERE DesignationID = ?";
-  db.query(query, [designationId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  const deleteQuery = "DELETE FROM tb_designation WHERE DesignationID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [designationId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Designation not found" });
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Designation not found" });
-        return;
-      } else {
-        res
-          .status(200)
-          .json({ message: "Designation's data deleted successfully" });
-      }
+      res
+        .status(200)
+        .json({ message: "Designation's data deleted successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };

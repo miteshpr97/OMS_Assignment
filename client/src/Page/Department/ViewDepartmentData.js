@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -146,10 +144,3 @@ const ViewDepartmentData = () => {
 };
 
 export default ViewDepartmentData;
-
-
-
-
-
-
-

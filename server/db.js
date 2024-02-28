@@ -1,4 +1,4 @@
-require("dotenv").config(); // Load environment variables from .env file
+require("dotenv").config(); 
 
 const mysql = require("mysql");
 
@@ -24,4 +24,20 @@ db.on('error', (err) => {
   console.error('MySQL connection error:', err);
 });
 
-module.exports = db;
+// Function to handle database queries using async/await
+const queryAsync = (query, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.query(query, params, (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
+
+module.exports = {
+  db,
+  queryAsync,
+};
