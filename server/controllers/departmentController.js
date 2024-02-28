@@ -1,6 +1,5 @@
 const db = require("../db");
 
-
 // Getting all Department
 
 exports.getAllDepartments = (req, res) => {
@@ -15,6 +14,56 @@ exports.getAllDepartments = (req, res) => {
   });
 };
 
+// Getting particular department's data by their id
+
+exports.getDepartmentById = (req, res) => {
+  const departmentId = req.params.DepartmentID;
+  const query = "SELECT * FROM tb_department WHERE DepartmentID = ?";
+  db.query(query, departmentId, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
+
+// inserting department with auto generated id from backend
+
+exports.addDepartmentWithId = (req, res) => {
+  const newDepartment = req.body;
+
+  const query = "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error getting max DepartmentID: ", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    let nextID = 1;
+
+    if (results && results[0].maxID !== null) {
+      nextID = parseInt(results[0].maxID, 10) + 1;
+    }
+
+    const formattedID = `DEPT${nextID.toString().padStart(3, "0")}`;
+
+    newDepartment.DepartmentID = formattedID;
+
+    const query = "INSERT INTO tb_department SET ?";
+    db.query(query, newDepartment, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json({ message: "Department added successfully" });
+      }
+    });
+  });
+};
 
 // Inserting Department
 
@@ -32,31 +81,7 @@ exports.addDepartment = (req, res) => {
   });
 };
 
-
-// getting latest or last department id
-
-exports.getLastDepartmentId = (req, res) => {
-  const query =
-    "SELECT MAX(DepartmentID) AS maxID FROM tb_department ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-    if (results[0].maxID === null) {
-      const DepartmentId = (results[0].maxID = "DEPT000");
-      res.status(200).json({ lastDepartmentId: DepartmentId });
-      return;
-    }
-    const lastDepartmentId = results[0].maxID;
-    res.status(200).json({ lastDepartmentId: lastDepartmentId });
-  });
-};
-
-
-// getting next department id 
+// getting next department id
 
 exports.getNextDepartmentId = (req, res) => {
   const query = "SELECT MAX(DepartmentID) AS maxID FROM tb_department ";
@@ -74,13 +99,12 @@ exports.getNextDepartmentId = (req, res) => {
     } else {
       const lastDepartmentId = results[0].maxID;
       const numericPart = parseInt(lastDepartmentId.substr(4), 10) + 1;
-      nextDepartmentId = "DEPT" + numericPart.toString().padStart(3, '0');
+      nextDepartmentId = "DEPT" + numericPart.toString().padStart(3, "0");
     }
 
     res.status(200).json({ nextDepartmentId: nextDepartmentId });
   });
 };
-
 
 // updating Department's data
 
@@ -106,7 +130,6 @@ exports.updateDepartment = (req, res) => {
     }
   });
 };
-
 
 // Deleting Department's data
 

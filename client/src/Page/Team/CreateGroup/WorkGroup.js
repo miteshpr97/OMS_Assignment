@@ -42,15 +42,18 @@ const WorkGroup = ({
   };
 
   return (
-    <div style={{ padding:"20px"}}>
+    <div style={{ padding: "20px" }}>
       {profileData &&
         profileData.length > 0 &&
         profileData.map((employee) => (
-          <div
-            style={{ padding: "10px"}}
-            key={employee.EmployeeID}
-          >
-            <Typography style={{ fontSize: "1.3rem", fontWeight: "600" , textTransform: "capitalize" }}>
+          <div style={{ padding: "10px" }} key={employee.EmployeeID}>
+            <Typography
+              style={{
+                fontSize: "1.3rem",
+                fontWeight: "600",
+                textTransform: "capitalize",
+              }}
+            >
               {employee.FirstName} {employee.LastName} - Teams
             </Typography>
           </div>
@@ -92,8 +95,6 @@ const WorkGroup = ({
                     color="error"
                     onClick={() => handleDeleteWorkGroup(employee.WorkGroupID)}
                   />
-                  
-                 
                 </TableCell>
               </TableRow>
             ))}

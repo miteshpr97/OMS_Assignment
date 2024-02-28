@@ -1,17 +1,17 @@
 const db = require("../db");
 
-
 // Function to get the highest work group ID from the database
 
 function getHighestWorkGroupID(callback) {
-  const query = 'SELECT MAX(CAST(SUBSTRING(WorkGroupID, 3) AS SIGNED)) AS maxID FROM tb_workGroup';
+  const query =
+    "SELECT MAX(CAST(SUBSTRING(WorkGroupID, 3) AS SIGNED)) AS maxID FROM tb_workGroup";
 
   db.query(query, (error, results) => {
     if (error) {
-      console.error('Error getting highest work group ID:', error);
+      console.error("Error getting highest work group ID:", error);
       callback(error, null);
     } else {
-      const maxID = results[0].maxID || 0; 
+      const maxID = results[0].maxID || 0;
       callback(null, maxID);
     }
   });
@@ -20,88 +20,45 @@ function getHighestWorkGroupID(callback) {
 // Function to generate workGroup IDs like WG001, WG002, ...
 
 function generateWorkGroupID(index) {
-  const paddedIndex = String(index).padStart(3, '0'); // Ensure three-digit padding
+  const paddedIndex = String(index).padStart(3, "0"); // Ensure three-digit padding
   return `WG${paddedIndex}`;
 }
-
 
 // Inserting multiple work group with auto generated workGroupID
 
 exports.insertMultipleWorkGroup = (req, res) => {
-  const newWorkGroups = req.body; 
+  const newWorkGroups = req.body;
 
-  // Get the highest existing workGroup ID
   getHighestWorkGroupID((error, maxID) => {
     if (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
-    // Define the SQL query
-    const query = 'INSERT INTO tb_workGroup (WorkGroupID, EmployeeID_Assigner,EmployeeID_AssignTo,DepartmentID_AssignTo,CreatedDate,CreatedBy) VALUES ?';
+    const query =
+      "INSERT INTO tb_workGroup (WorkGroupID, EmployeeID_Assigner,EmployeeID_AssignTo,DepartmentID_AssignTo,CreatedDate,CreatedBy) VALUES ?";
 
     const values = newWorkGroups.map((workGroup, index) => [
-      generateWorkGroupID(maxID + index + 1), 
+      generateWorkGroupID(maxID + index + 1),
       workGroup.EmployeeID_Assigner,
       workGroup.EmployeeID_AssignTo,
       workGroup.DepartmentID_AssignTo,
       workGroup.CreatedDate,
-      workGroup.CreatedBy
+      workGroup.CreatedBy,
     ]);
 
-    // Execute the query
     db.query(query, [values], (error, results) => {
       if (error) {
-        console.error('Error inserting work groups:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error("Error inserting work groups:", error);
+        res.status(500).json({ error: "Internal Server Error" });
       } else {
-        res.status(200).json({ message: 'Work group inserted successfully' });
-      }
-    });
-  });
-}
-
-
-// inserting work group data
-
-exports.addWorkGroup = (req, res) => {
-  const newWorkGroup = req.body;
-
-  const query =
-    "SELECT MAX(SUBSTRING(WorkGroupID, 3)) AS maxID FROM tb_workGroup";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max WorkGroupID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
-
-    let nextID = 1;
-
-    if (results && results[0].maxID !== null) {
-      nextID = parseInt(results[0].maxID, 10) + 1;
-    }
-
-    const formattedID = `WG${nextID.toString().padStart(3, "0")}`;
-
-    newWorkGroup.WorkGroupID = formattedID;
-
-    const query = "INSERT INTO tb_workGroup SET ?";
-
-    db.query(query, newWorkGroup, (err, results) => {
-      if (err) {
-        console.error("Error executing query: ", err);
-        res.status(500).json({ error: "Internal server error" });
-      } else {
-        res.status(201).json({ message: "Work group added successfully" });
+        res.status(200).json({ message: "Work group inserted successfully" });
       }
     });
   });
 };
 
-
-//get all data form employees table
+//get all data from employees table
 
 exports.getAllworkGroupEmployeesData = (req, res) => {
   const query = `
@@ -128,10 +85,8 @@ exports.getAllworkGroupEmployeesData = (req, res) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
     res.status(200).json(results);
-    // console.log(results);
   });
 };
-
 
 // Getting all work group's data
 
@@ -147,7 +102,6 @@ exports.getAllWorkGroups = (req, res) => {
   });
 };
 
-
 // Getting all data of a particular employee's group
 
 exports.getAllDataOfOneGroup = (req, res) => {
@@ -162,7 +116,6 @@ exports.getAllDataOfOneGroup = (req, res) => {
     res.status(200).json(results);
   });
 };
-
 
 // updating work group's data
 
@@ -187,7 +140,6 @@ exports.updateWorkGroup = (req, res) => {
     }
   });
 };
-
 
 // Deleting work group's data
 

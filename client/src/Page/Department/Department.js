@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
