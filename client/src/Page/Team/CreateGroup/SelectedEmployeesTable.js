@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { removeSelectedEmployee } from "../../../features/workGroup/workGroupSlice";
@@ -14,7 +12,7 @@ import {
   Button,
   TablePagination,
 } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const SelectedEmployeesTable = ({
   selectedEmployees,
@@ -34,9 +32,7 @@ const SelectedEmployeesTable = ({
   };
 
   return (
-    <div
-      style={{ width:"100%", padding:"20px" }}
-    >
+    <div style={{ width: "100%", padding: "20px" }}>
       <TableContainer
         component={Paper}
         style={{ maxWidth: "100%", margin: "auto" }}
@@ -79,10 +75,10 @@ const SelectedEmployeesTable = ({
                 </TableCell>
                 <TableCell>{employee.EmploymentStatus}</TableCell>
                 <TableCell>
-                  <DeleteIcon 
+                  <DeleteIcon
                     variant="contained"
                     color="error"
-                    sx={{cursor:"pointer"}}
+                    sx={{ cursor: "pointer" }}
                     onClick={() =>
                       dispatch(
                         removeSelectedEmployee({
@@ -91,8 +87,6 @@ const SelectedEmployeesTable = ({
                       )
                     }
                   />
-                    
-                
                 </TableCell>
               </TableRow>
             ))}
@@ -104,7 +98,7 @@ const SelectedEmployeesTable = ({
             display: "flex",
             justifyContent: "flex-end",
             marginRight: "10px",
-            marginTop:"10px"
+            marginTop: "10px",
           }}
         >
           <Button

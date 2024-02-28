@@ -27,30 +27,6 @@ const RegisterPage = () => {
     dispatch(fetchNextEmployeeId());
   }, [dispatch]);
 
-  // const addEmployee = async (formData) => {
-  //   setLoading(true);
-  //   try {
-  //     // Dispatch the createEmployee action
-  //     await dispatch(createEmployee(formData));
-
-  //     // Handle success response
-  //     setSuccessMessage("Registration successful!");
-
-  //     // Clear the success message after 2 seconds
-  //     setTimeout(() => {
-  //       setSuccessMessage("");
-  //     }, 2000);
-
-  //     // Refetch employee data
-  //     dispatch(showEmployee());
-  //   } catch (error) {
-  //     console.error('Error adding employee', error);
-  //     setError('Error adding employee');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const addEmployee = async (formData) => {
     setLoading(true);
     try {

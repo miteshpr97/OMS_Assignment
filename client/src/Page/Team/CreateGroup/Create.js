@@ -51,7 +51,7 @@ const Create = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  console.log(departmentData, "fkfjjfjfjfjfj")
+  console.log(departmentData, "fkfjjfjfjfjfj");
 
   useEffect(() => {
     dispatch(fetchEmployeeProfileData(EmployeeID));
@@ -149,45 +149,46 @@ const Create = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-           // border:"1px solid black",
+            boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
+            // border:"1px solid black",
             backgroundColor: "white",
             color: "black",
-            padding:'0px 10px',
-            marginTop:"10px"
+            padding: "0px 10px",
+            marginTop: "10px",
           }}
         >
-          
-            <Typography variant="h5" sx={{ textAlign: "start",fontWeight: "500"   }}>
-              CREATE TEAM
-            </Typography>
-         
-        
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              value={selectedDepartment}
-              options={departmentName}
-              getOptionLabel={(option) => option.DepartmentName}
-              onChange={(event, newValue) => {
-                setSelectedDepartment(newValue);
-                handleDepartmentSelect(newValue);
-              }}
-              sx={{
-                m: 1,
-                width: 400,
-                backgroundColor: "whitesmoke",
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Employee"
-                  variant="outlined"
-                />
-              )}
-            />
-          </div>
-    <br />
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "start", fontWeight: "500" }}
+          >
+            CREATE TEAM
+          </Typography>
+
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            value={selectedDepartment}
+            options={departmentName}
+            getOptionLabel={(option) => option.DepartmentName}
+            onChange={(event, newValue) => {
+              setSelectedDepartment(newValue);
+              handleDepartmentSelect(newValue);
+            }}
+            sx={{
+              m: 1,
+              width: 400,
+              backgroundColor: "whitesmoke",
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Employee"
+                variant="outlined"
+              />
+            )}
+          />
+        </div>
+        <br />
 
         <Box
           className="createTeam-container"
@@ -203,7 +204,7 @@ const Create = () => {
             width: "auto",
           }}
         >
-          <div style={{ width: 180, marginLeft:"10px" }}>
+          <div style={{ width: 180, marginLeft: "10px" }}>
             {profileData &&
               profileData.map((items) => (
                 <Card
@@ -212,11 +213,17 @@ const Create = () => {
                     width: 180,
                     margin: "10px",
                     padding: "10px",
-                     border:"1px solid grey"
+                    border: "1px solid grey",
                   }}
                 >
                   <CardActionArea>
-                    <Box sx={{ display: "flex", justifyContent: "center", padding:"10px"  }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        padding: "10px",
+                      }}
+                    >
                       {/* <CardMedia
                         component="img"
                         image={profile}
@@ -235,7 +242,9 @@ const Create = () => {
                         alt="Employee Profile"
                       />
                     </Box>
-                    <CardContent sx={{ textAlign: "center", textTransform:'capitalize'  }}>
+                    <CardContent
+                      sx={{ textAlign: "center", textTransform: "capitalize" }}
+                    >
                       <Typography gutterBottom variant="h6" component="div">
                         {items.FirstName} {items.LastName}
                       </Typography>
@@ -247,7 +256,7 @@ const Create = () => {
                 </Card>
               ))}
           </div>
-          <Box sx={{ marginLeft: "50px", width: "75%"  }}>
+          <Box sx={{ marginLeft: "50px", width: "75%" }}>
             <div
               style={{
                 display: "flex",
@@ -257,7 +266,7 @@ const Create = () => {
             >
               <div style={{ width: "100%" }}>
                 <TableContainer component={Paper}>
-                  <Table  aria-label="simple table">
+                  <Table aria-label="simple table">
                     <TableHead>
                       <TableRow style={{ backgroundColor: "#44756d" }}>
                         <TableCell
@@ -341,24 +350,35 @@ const Create = () => {
           </Box>
         </Box>
 
-       
+        <div
+          style={{
+            backgroundColor: "whitesmoke",
+            height: "450px",
+            marginTop: "40px",
+            border: "1px solid black",
+          }}
+        >
+          <SelectedEmployeesTable
+            selectedEmployees={selectedEmployees}
+            handleSubmitSelectEmployee={handleSubmitSelectEmployee}
+          />
+        </div>
 
-        <div style={{ backgroundColor: "whitesmoke", height: "450px" , marginTop:"40px", border:"1px solid black"}}>
-        <SelectedEmployeesTable
-          selectedEmployees={selectedEmployees}
-          handleSubmitSelectEmployee={handleSubmitSelectEmployee}
-        />
-</div>
-        
-        <div style={{ backgroundColor: "whitesmoke", height: "450px" , marginTop:"40px", border:"1px solid black"}}>
+        <div
+          style={{
+            backgroundColor: "whitesmoke",
+            height: "450px",
+            marginTop: "40px",
+            border: "1px solid black",
+          }}
+        >
           <WorkGroup
             profileData={profileData}
             workGroupData={workGroupData}
             updateAssignedEmployees={setAssignedEmployees}
             handleDeleteWorkGroupData={handleDeleteWorkGroup}
           />
-          </div>
-       
+        </div>
       </Box>
     </Box>
   );
