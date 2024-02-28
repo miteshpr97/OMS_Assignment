@@ -29,6 +29,42 @@ exports.getDesignationById = (req, res) => {
   });
 };
 
+// inserting designation with auto generated id from backend
+
+exports.addDesignationWithId = (req, res) => {
+  const newDesignation = req.body;
+
+  const query = "SELECT MAX(SUBSTRING(DesignationID, 6)) AS maxID FROM tb_designation";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error getting max DesignationID: ", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    let nextID = 1;
+
+    if (results && results[0].maxID !== null) {
+      nextID = parseInt(results[0].maxID, 10) + 1;
+    }
+
+    const formattedID = `DESIG${nextID.toString().padStart(3, "0")}`;
+
+    newDesignation.DesignationID = formattedID;
+
+    const query = "INSERT INTO tb_designation SET ?";
+    db.query(query, newDesignation, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json({ message: "Designation added successfully" });
+      }
+    });
+  });
+};
+
 // Inserting designation
 
 exports.addDesignation = (req, res) => {

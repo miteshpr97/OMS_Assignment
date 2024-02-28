@@ -39,7 +39,6 @@ exports.getAssigmentEmployeesData = (req, res) => {
   e1.LastName AS Assigner_LastName,
   e2.FirstName AS Assignee_FirstName,
   e2.LastName AS Assignee_LastName
-
 FROM 
   tb_assignment AS w
   INNER JOIN 

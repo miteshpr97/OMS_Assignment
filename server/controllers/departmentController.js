@@ -29,6 +29,42 @@ exports.getDepartmentById = (req, res) => {
   });
 };
 
+// inserting department with auto generated id from backend
+
+exports.addDepartmentWithId = (req, res) => {
+  const newDepartment = req.body;
+
+  const query = "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error getting max DepartmentID: ", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    let nextID = 1;
+
+    if (results && results[0].maxID !== null) {
+      nextID = parseInt(results[0].maxID, 10) + 1;
+    }
+
+    const formattedID = `DEPT${nextID.toString().padStart(3, "0")}`;
+
+    newDepartment.DepartmentID = formattedID;
+
+    const query = "INSERT INTO tb_department SET ?";
+    db.query(query, newDepartment, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json({ message: "Department added successfully" });
+      }
+    });
+  });
+};
+
 // Inserting Department
 
 exports.addDepartment = (req, res) => {

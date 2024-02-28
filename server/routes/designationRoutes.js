@@ -11,6 +11,9 @@ router.get("/:DesignationID", designationController.getDesignationById);
 // Add a new designation
 router.post("/", designationController.addDesignation);
 
+// Add a new designation with auto generated id
+router.post("/withID", designationController.addDesignationWithId);
+
 // Get next designation Id
 router.get("/nextDesignationId", designationController.getNextDesignationId);
 
