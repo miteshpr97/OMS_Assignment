@@ -50,7 +50,7 @@ export default function NewAssignment() {
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
 
-
+console.log(userData)
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -139,6 +139,7 @@ export default function NewAssignment() {
       console.error("Error fetching assignment counts:", error);
     }
   };
+  
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -185,6 +186,8 @@ export default function NewAssignment() {
                     {assignedEmployees.map((item, index) => (
                       <option key={index} value={item.EmployeeID_AssignTo}>
                         {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+                       
+                       
                       </option>
                     ))}
                   </TextField>
