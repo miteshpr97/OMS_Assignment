@@ -64,7 +64,7 @@ const Create = () => {
     setSelectedDepartment(department);
     try {
       const response = await fetch(
-        `http://localhost:3306/api/employee/dNames/${department.DepartmentName}`
+        `http://localhost:3306/api/employee/dNames?department=${department.DepartmentName}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
