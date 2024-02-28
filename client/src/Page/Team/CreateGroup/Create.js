@@ -180,7 +180,7 @@ const Create = () => {
               }}
               sx={{
                 m: 1,
-                width: 400,
+                width: 300,
                 backgroundColor: "whitesmoke",
               }}
               renderInput={(params) => (

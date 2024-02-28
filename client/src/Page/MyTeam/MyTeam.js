@@ -121,7 +121,7 @@ export default function MyTeam() {
               id="combo-box-demo"
               options={[{ DepartmentName: "All" }, ...departments]}
               getOptionLabel={(option) => option.DepartmentName}
-              sx={{ width: 300 }}
+              sx={{ width: 300, backgroundColor: "whitesmoke" }}
               onChange={(event, newValue) => {
                 if (newValue && newValue.DepartmentName === "All") {
                   setSelectedDepartment(null);

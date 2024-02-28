@@ -79,8 +79,8 @@ export default function AllTeamMembers() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            // boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-            border:"1px solid black",
+            boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.4)",
+            // border:"1px solid black",
             backgroundColor: "white",
             color: "black",
             padding:'0px 10px',
@@ -94,9 +94,10 @@ export default function AllTeamMembers() {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
+            
             options={[{ DepartmentName: "All" }, ...departments]}
             getOptionLabel={(option) => option.DepartmentName}
-            sx={{ width: 300 }}
+            sx={{ width: 300, backgroundColor: "whitesmoke"}}
             onChange={(event, newValue) => {
               if (newValue && newValue.DepartmentName === "All") {
                 setSelectedDepartment(null);
