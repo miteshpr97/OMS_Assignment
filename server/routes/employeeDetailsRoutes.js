@@ -25,6 +25,9 @@ router.get("/", employeeController.getAllEmployees);
 router.get("/allData", employeeController.getAllDataOfEmployees);
 
 // Get all data of employees by their employee id
+router.get("/allData/:EmployeeID",employeeController.getAllDataOfEmployeesByEmployeeId);
+
+// Get all data of employees by their employee id
 router.get("/dNames", employeeController.getDataOfEmployeesWithTheirDNames);
 
 // Add a new employee

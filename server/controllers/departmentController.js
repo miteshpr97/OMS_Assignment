@@ -1,47 +1,40 @@
-const db = require("../db");
+const { queryAsync } = require("../db");
 
-// Getting all Department
+// Get All Departments
 
-exports.getAllDepartments = (req, res) => {
-  const query = "SELECT * FROM tb_department";
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+exports.getAllDepartments = async (req, res) => {
+  try {
+    const query = "SELECT * FROM tb_department";
+    const results = await queryAsync(query);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Getting particular department's data by their id
+// Get Department By ID
 
-exports.getDepartmentById = (req, res) => {
+exports.getDepartmentById = async (req, res) => {
   const departmentId = req.params.DepartmentID;
-  const query = "SELECT * FROM tb_department WHERE DepartmentID = ?";
-  db.query(query, departmentId, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+  try {
+    const query = "SELECT * FROM tb_department WHERE DepartmentID = ?";
+    const results = await queryAsync(query, [departmentId]);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// inserting department with auto generated id from backend
+// Add Department With ID
 
-exports.addDepartmentWithId = (req, res) => {
+exports.addDepartmentWithId = async (req, res) => {
   const newDepartment = req.body;
 
-  const query = "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max DepartmentID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
+  try {
+    const maxIDQuery = "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
+    const results = await queryAsync(maxIDQuery);
 
     let nextID = 1;
 
@@ -50,105 +43,57 @@ exports.addDepartmentWithId = (req, res) => {
     }
 
     const formattedID = `DEPT${nextID.toString().padStart(3, "0")}`;
-
     newDepartment.DepartmentID = formattedID;
 
-    const query = "INSERT INTO tb_department SET ?";
-    db.query(query, newDepartment, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        res.status(200).json({ message: "Department added successfully" });
-      }
-    });
-  });
+    const insertQuery = "INSERT INTO tb_department SET ?";
+    await queryAsync(insertQuery, newDepartment);
+
+    res.status(200).json({ message: "Department added successfully" });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Inserting Department
+// Update Department
 
-exports.addDepartment = (req, res) => {
-  const newDepartment = req.body;
-
-  const query = "INSERT INTO tb_department SET ?";
-  db.query(query, newDepartment, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json({ message: "Department added successfully" });
-    }
-  });
-};
-
-// getting next department id
-
-exports.getNextDepartmentId = (req, res) => {
-  const query = "SELECT MAX(DepartmentID) AS maxID FROM tb_department ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    let nextDepartmentId;
-    if (results.length === 0 || results[0].maxID === null) {
-      nextDepartmentId = "DEPT001";
-    } else {
-      const lastDepartmentId = results[0].maxID;
-      const numericPart = parseInt(lastDepartmentId.substr(4), 10) + 1;
-      nextDepartmentId = "DEPT" + numericPart.toString().padStart(3, "0");
-    }
-
-    res.status(200).json({ nextDepartmentId: nextDepartmentId });
-  });
-};
-
-// updating Department's data
-
-exports.updateDepartment = (req, res) => {
+exports.updateDepartment = async (req, res) => {
   const departmentId = req.params.DepartmentID;
   const updatedDepartment = req.body;
-  const query = "UPDATE tb_department SET ? WHERE DepartmentID = ?";
+  const updateQuery = "UPDATE tb_department SET ? WHERE DepartmentID = ?";
 
-  db.query(query, [updatedDepartment, departmentId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  try {
+    const results = await queryAsync(updateQuery, [updatedDepartment, departmentId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Department not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Department's data is up to date already");
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Department not found" });
-        return;
-      } else if (results.affectedRows > 0 && results.changedRows === 0) {
-        res.status(200).json("Department's data is up to date already");
-        return;
-      } else {
-        res.status(200).json({ message: "Department updated successfully" });
-      }
+      res.status(200).json({ message: "Department updated successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Deleting Department's data
+// Delete Department
 
-exports.deleteDepartment = (req, res) => {
+exports.deleteDepartment = async (req, res) => {
   const departmentId = req.params.DepartmentID;
-  const query = "DELETE FROM tb_department WHERE DepartmentID = ?";
-  db.query(query, [departmentId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  const deleteQuery = "DELETE FROM tb_department WHERE DepartmentID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [departmentId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Department not found" });
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Department not found" });
-        return;
-      } else {
-        res
-          .status(200)
-          .json({ message: "Department's data deleted successfully" });
-      }
+      res.status(200).json({ message: "Department's data deleted successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };

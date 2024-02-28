@@ -1,50 +1,42 @@
-const db = require("../db");
+const { queryAsync } = require("../db");
 
-// Getting all tasks
+// Get All Tasks
 
-exports.getAllTasks = (req, res) => {
-  const query = "SELECT * FROM tb_task";
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+exports.getAllTasks = async (req, res) => {
+  try {
+    const query = "SELECT * FROM tb_task";
+    const results = await queryAsync(query);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Getting particular task's data by id
+// Get Task By ID
 
-exports.getTaskById = (req, res) => {
+exports.getTaskById = async (req, res) => {
   const taskId = req.params.TaskID;
-  const query = "SELECT * FROM tb_task WHERE TaskID = ?";
-  db.query(query, taskId, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
+  try {
+    const query = "SELECT * FROM tb_task WHERE TaskID = ?";
+    const results = await queryAsync(query, [taskId]);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// inserting task with auto generated id from backend
+// Add Task With ID
 
-exports.addTaskWithId = (req, res) => {
+exports.addTaskWithId = async (req, res) => {
   const newTask = req.body;
-
   newTask.TaskStatus = newTask.TaskStatus || "Pending";
   newTask.Type = newTask.Type || "T";
 
-  const query = "SELECT MAX(SUBSTRING(TaskID, 2)) AS maxID FROM tb_task";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max TaskID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
+  try {
+    const maxIDQuery = "SELECT MAX(SUBSTRING(TaskID, 2)) AS maxID FROM tb_task";
+    const results = await queryAsync(maxIDQuery);
 
     let nextID = 1;
 
@@ -53,62 +45,57 @@ exports.addTaskWithId = (req, res) => {
     }
 
     const formattedID = `T${nextID.toString().padStart(3, "0")}`;
-
     newTask.TaskID = formattedID;
 
-    const query = "INSERT INTO tb_task SET ?";
-    db.query(query, newTask, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      } else {
-        res.status(200).json({ message: "Task added successfully" });
-      }
-    });
-  });
+    const insertQuery = "INSERT INTO tb_task SET ?";
+    await queryAsync(insertQuery, newTask);
+
+    res.status(200).json({ message: "Task added successfully" });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// updating task's data
+// Update Task
 
-exports.updateTask = (req, res) => {
+exports.updateTask = async (req, res) => {
   const taskId = req.params.TaskID;
   const updatedTask = req.body;
-  const query = "UPDATE tb_task SET ? WHERE TaskID = ?";
+  const updateQuery = "UPDATE tb_task SET ? WHERE TaskID = ?";
 
-  db.query(query, [updatedTask, taskId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  try {
+    const results = await queryAsync(updateQuery, [updatedTask, taskId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Task not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Task's data is up to date already");
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Task not found" });
-        return;
-      } else if (results.affectedRows > 0 && results.changedRows === 0) {
-        res.status(200).json("Task's data is up to date already");
-        return;
-      } else {
-        res.status(200).json({ message: "Task updated successfully" });
-      }
+      res.status(200).json({ message: "Task updated successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Deleting Task's data
+// Delete Task
 
-exports.deleteTask = (req, res) => {
+exports.deleteTask = async (req, res) => {
   const taskId = req.params.TaskID;
-  const query = "DELETE FROM tb_task WHERE TaskID = ?";
-  db.query(query, [taskId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  const deleteQuery = "DELETE FROM tb_task WHERE TaskID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [taskId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Task not found" });
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Task not found" });
-        return;
-      } else {
-        res.status(200).json({ message: "Task deleted successfully" });
-      }
+      res.status(200).json({ message: "Task deleted successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };

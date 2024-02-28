@@ -8,14 +8,8 @@ router.get("/", designationController.getAllDesignations);
 // Get particular designation by their id
 router.get("/:DesignationID", designationController.getDesignationById);
 
-// Add a new designation
-router.post("/", designationController.addDesignation);
-
 // Add a new designation with auto generated id
 router.post("/withID", designationController.addDesignationWithId);
-
-// Get next designation Id
-router.get("/nextDesignationId", designationController.getNextDesignationId);
 
 // Update designation's data
 router.patch("/update/:DesignationID", designationController.updateDesignation);
