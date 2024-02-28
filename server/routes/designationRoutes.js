@@ -5,11 +5,14 @@ const designationController = require("../controllers/designationController");
 // Get all designation
 router.get("/", designationController.getAllDesignations);
 
+// Get particular designation by their id
+router.get("/:DesignationID", designationController.getDesignationById);
+
 // Add a new designation
 router.post("/", designationController.addDesignation);
 
-// Get last designation Id
-router.get("/lastDesignationId", designationController.getLastDesignationId);
+// Add a new designation with auto generated id
+router.post("/withID", designationController.addDesignationWithId);
 
 // Get next designation Id
 router.get("/nextDesignationId", designationController.getNextDesignationId);
@@ -18,9 +21,6 @@ router.get("/nextDesignationId", designationController.getNextDesignationId);
 router.patch("/update/:DesignationID", designationController.updateDesignation);
 
 // Deleting designation's data
-router.delete(
-  "/delete/:DesignationID",
-  designationController.deleteDesignation
-);
+router.delete("/delete/:DesignationID",designationController.deleteDesignation);
 
 module.exports = router;

@@ -11,10 +11,7 @@ router.get("/allData", workGroupController.getAllworkGroupEmployeesData);
 // Get all data about a particular group
 router.get("/:EmployeeID_Assigner", workGroupController.getAllDataOfOneGroup);
 
-// // Add a new work group
-// router.post("/", workGroupController.addWorkGroup);
-
-// Add a new work group
+// Add new multiple work group
 router.post("/multiple", workGroupController.insertMultipleWorkGroup);
 
 // Update work group's data

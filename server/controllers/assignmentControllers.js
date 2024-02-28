@@ -1,6 +1,5 @@
 const db = require("../db");
 
-
 // Getting all assignment
 
 exports.getAllAssignments = (req, res) => {
@@ -15,8 +14,22 @@ exports.getAllAssignments = (req, res) => {
   });
 };
 
+// Getting particular assignment's data by id
 
-// get all data with name
+exports.getAssignmentById = (req, res) => {
+  const assignmentId = req.params.AssignmentID;
+  const query = "SELECT * FROM tb_assignment WHERE AssignmentID = ?";
+  db.query(query, assignmentId, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
+
+// get all data with name (Mitesh)
 
 exports.getAssigmentEmployeesData = (req, res) => {
   const query = `
@@ -26,7 +39,6 @@ exports.getAssigmentEmployeesData = (req, res) => {
   e1.LastName AS Assigner_LastName,
   e2.FirstName AS Assignee_FirstName,
   e2.LastName AS Assignee_LastName
-
 FROM 
   tb_assignment AS w
   INNER JOIN 
@@ -41,59 +53,14 @@ FROM
       return res.status(500).json({ error: "Internal Server Error" });
     }
     res.status(200).json(results);
-    // console.log(results);
   });
 };
-
-
-// Inserting assignment
-
-exports.addAssignment = (req, res) => {
-  const newassignment = req.body;
-
-  // Set default values if not provided
-  newassignment.AssignmentStatus = newassignment.AssignmentStatus || "Pending";
-  newassignment.Type = newassignment.Type || "A";
-
-  const query = "INSERT INTO tb_assignment SET ?";
-  db.query(query, newassignment, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json({ message: "Assignment added successfully" });
-    }
-  });
-};
-
-
-// Inserting assignment
-
-exports.addAssignmentData = (req, res) => {
-  const newassignment = req.body;
-
-  // Set default values if not provided
-  newassignment.AssignmentStatus = newassignment.AssignmentStatus || "Pending";
-
-  const query = "INSERT INTO tb_assignment SET ?";
-  db.query(query, newassignment, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json({ message: "Assignment added successfully" });
-    }
-  });
-};
-
-
 
 // Inserting assignment with auto generated id from backend
 
 exports.addAssignmentWithId = (req, res) => {
   const newAssignment = req.body;
 
-  // Set default values if not provided
   newAssignment.AssignmentStatus = newAssignment.AssignmentStatus || "Pending";
   newAssignment.Type = newAssignment.Type || "A";
 
@@ -117,66 +84,17 @@ exports.addAssignmentWithId = (req, res) => {
 
     newAssignment.AssignmentID = formattedID;
 
-  const query = "INSERT INTO tb_assignment SET ?";
-  db.query(query, newAssignment, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      res.status(200).json({ message: "Assignment added successfully" });
-    }
-  });
-})
-};
-
-
-// // getting latest or last assignment id
-
-exports.getLastAssignmentId = (req, res) => {
-  const query = "SELECT MAX(AssignmentID) AS maxID FROM tb_assignment ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-    if (results[0].maxID === null) {
-      const AssignmentId = (results[0].maxID = "AS000");
-      res.status(200).json({ lastAssignmentId: AssignmentId });
-      return;
-    }
-    const lastAssignmentId = results[0].maxID;
-    res.status(200).json({ lastAssignmentId: lastAssignmentId });
+    const query = "INSERT INTO tb_assignment SET ?";
+    db.query(query, newAssignment, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json({ message: "Assignment added successfully" });
+      }
+    });
   });
 };
-
-
-// getting next assignment id 
-
-exports.getNextAssignmentId = (req, res) => {
-  const query = "SELECT MAX(AssignmentID) AS maxID FROM tb_assignment ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    let nextAssignmentId;
-    if (results.length === 0 || results[0].maxID === null) {
-      nextAssignmentId = "AS001";
-    } else {
-      const lastAssignmentId = results[0].maxID;
-      const numericPart = parseInt(lastAssignmentId.substr(2), 10) + 1;
-      nextAssignmentId = "AS" + numericPart.toString().padStart(3, '0');
-    }
-
-    res.status(200).json({ nextAssignmentId: nextAssignmentId });
-  });
-};
-
 
 // updating assignment's data
 
@@ -202,7 +120,6 @@ exports.updateAssignment = (req, res) => {
     }
   });
 };
-
 
 // updating assignment status from pending to progress
 
@@ -230,7 +147,6 @@ exports.progressAssignmentStatus = (req, res) => {
   });
 };
 
-
 // updating assignment status from progress to completed
 
 exports.completedAssignmentStatus = (req, res) => {
@@ -257,11 +173,8 @@ exports.completedAssignmentStatus = (req, res) => {
   });
 };
 
+// number of pending progress and completed assignments of a particular employee
 
-
-
-
-// count pandding , progress, complete
 exports.numberOfAssignmentsByStatus = (req, res) => {
   const employeeId = req.params.EmployeeID_AssignTo;
   const query = `
@@ -279,17 +192,15 @@ exports.numberOfAssignmentsByStatus = (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     } else {
       const assignmentCounts = {
-        pending_assignments: results[0].num_pending_assignments,
-        progress_assignments: results[0].num_progress_assignments,
-        complete_assignments: results[0].num_completed_assignments,
+        num_pending_assignments: results[0].num_pending_assignments,
+        num_progress_assignments: results[0].num_progress_assignments,
+        num_completed_assignments: results[0].num_completed_assignments,
       };
 
       res.status(200).json(assignmentCounts);
     }
   });
 };
-
-
 
 // Deleting Assignment's data
 
@@ -310,16 +221,3 @@ exports.deleteAssignment = (req, res) => {
     }
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

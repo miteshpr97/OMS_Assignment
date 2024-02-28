@@ -1,9 +1,8 @@
 const db = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {generateToken} = require("../midderware/auth");
-const {sendEmail} = require("../emailServices");
-
+const { generateToken } = require("../midderware/auth");
+const { sendEmail } = require("../emailServices");
 
 // inserting user details
 
@@ -36,7 +35,6 @@ exports.addUserDetails = async (req, res) => {
   }
 };
 
-
 // getting all user details
 
 exports.getAllUserDetails = (req, res) => {
@@ -50,7 +48,6 @@ exports.getAllUserDetails = (req, res) => {
     }
   });
 };
-
 
 // updating user details
 
@@ -90,8 +87,8 @@ exports.updateUserDetails = async (req, res) => {
   });
 };
 
-
 // Deleting user details
+
 exports.deleteUserDetails = (req, res) => {
   const employeeId = req.params.EmployeeID;
   const query = "DELETE FROM tb_userdetails WHERE EmployeeID = ?";
@@ -112,14 +109,14 @@ exports.deleteUserDetails = (req, res) => {
   });
 };
 
-
-
 // login user
+
 exports.loginUser = async (req, res) => {
   const { EmployeeID, Password } = req.body;
 
   // Fetch user from the database based on the email
-  const query = "SELECT tb_userdetails.*, tb_employee.FirstName, tb_employee.LastName, tb_employee.Employee_Profile FROM tb_userdetails INNER JOIN tb_employee ON tb_userdetails.EmployeeID = tb_employee.EmployeeID WHERE tb_userdetails.EmployeeID = ?";
+  const query =
+    "SELECT tb_userdetails.*, tb_employee.FirstName, tb_employee.LastName, tb_employee.Employee_Profile FROM tb_userdetails INNER JOIN tb_employee ON tb_userdetails.EmployeeID = tb_employee.EmployeeID WHERE tb_userdetails.EmployeeID = ?";
 
   db.query(query, [EmployeeID], async (err, results) => {
     if (err) {
@@ -143,7 +140,7 @@ exports.loginUser = async (req, res) => {
             process.env.SECRET_KEY || SECRET_KEY,
             { expiresIn: "1h" }
           );
-          res.cookie("token", token, { httpOnly: true }); 
+          res.cookie("token", token, { httpOnly: true });
 
           // Avoid logging sensitive information
           console.log("User authenticated successfully");
@@ -154,9 +151,9 @@ exports.loginUser = async (req, res) => {
               EmployeeID: user.EmployeeID,
               Username: user.Username,
               Role: user.Role,
-              FirstName:user.FirstName,
-              LastName:user.LastName,
-              Employee_Profile:user.Employee_Profile
+              FirstName: user.FirstName,
+              LastName: user.LastName,
+              Employee_Profile: user.Employee_Profile,
             },
             token,
           });
@@ -174,7 +171,6 @@ exports.loginUser = async (req, res) => {
   });
 };
 
-
 // logout user
 
 exports.logoutUser = (req, res) => {
@@ -187,33 +183,32 @@ exports.logoutUser = (req, res) => {
   }
 };
 
-
 // forget password
 
 exports.forgetPassword = (req, res) => {
   const email = req.body.email;
 
-  const checkEmailQuery = 'SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;'
+  const checkEmailQuery =
+    "SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;";
   db.query(checkEmailQuery, email, (err, results) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ message: 'Internal Server Error' });
+      return res.status(500).json({ message: "Internal Server Error" });
     }
     if (results.length === 0) {
-      return res.status(404).json({ message: 'Email not found' });
+      return res.status(404).json({ message: "Email not found" });
     }
-    const Password_resetUsed = results[0].Password_resetUsed
-    const token = generateToken(email,Password_resetUsed);
+    const Password_resetUsed = results[0].Password_resetUsed;
+    const token = generateToken(email, Password_resetUsed);
 
     sendEmail(email, token)
-      .then(() => res.json({ message: 'Token sent to email' }))
+      .then(() => res.json({ message: "Token sent to email" }))
       .catch((error) => {
         console.error(error);
-        res.status(500).json({ message: 'Error sending email' });
+        res.status(500).json({ message: "Error sending email" });
       });
   });
 };
-
 
 // reset password
 
@@ -228,35 +223,45 @@ exports.resetPassword = async (req, res) => {
     // Verify the user using the token
     const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
 
-    const checkEmailQuery = 'SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;'
+    const checkEmailQuery =
+      "SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;";
     db.query(checkEmailQuery, verifyUser.email, (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: 'Internal Server Error' });
-    }
-    // Check if the token has a valid version
-    if (verifyUser.Password_resetUsed !== results[0].Password_resetUsed ) {
-      return res.status(401).json({ message: 'Token is invalid due to password change' });
-    }
-
-    const updatePasswordQuery =
-      'UPDATE tb_userdetails JOIN tb_employee ON tb_userdetails.EmployeeID = tb_employee.EmployeeID SET tb_userdetails.Password = ?,tb_userdetails.Password_resetUsed = tb_userdetails.Password_resetUsed + 1 WHERE tb_employee.email = ?';
-
-    db.query(updatePasswordQuery, [updatedPassword , verifyUser.email], (err, results) => {
       if (err) {
         console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return res.status(500).json({ message: "Internal Server Error" });
       }
-      res.json({ message: 'Password reset successfully' });
+      // Check if the token has a valid version
+      if (verifyUser.Password_resetUsed !== results[0].Password_resetUsed) {
+        return res
+          .status(401)
+          .json({ message: "Token is invalid due to password change" });
+      }
+
+      const updatePasswordQuery =
+        "UPDATE tb_userdetails JOIN tb_employee ON tb_userdetails.EmployeeID = tb_employee.EmployeeID SET tb_userdetails.Password = ?,tb_userdetails.Password_resetUsed = tb_userdetails.Password_resetUsed + 1 WHERE tb_employee.email = ?";
+
+      db.query(
+        updatePasswordQuery,
+        [updatedPassword, verifyUser.email],
+        (err, results) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Internal Server Error" });
+          }
+          res.json({ message: "Password reset successfully" });
+        }
+      );
     });
-  });
-} catch (error) {
+  } catch (error) {
     console.error(error);
 
-    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Invalid or expired token' });
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
+      return res.status(401).json({ message: "Invalid or expired token" });
     }
 
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
