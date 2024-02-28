@@ -1,13 +1,11 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, TextField, Grid } from "@mui/material";
+import { Button, TextField, Grid, Dialog, IconButton, DialogContent, DialogTitle } from "@mui/material"; // Import IconButton
 import ViewDepartmentData from "./ViewDepartmentData";
 import "./Department.css";
+import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 
 const Department = () => {
   const [validated, setValidated] = useState(false);
@@ -17,6 +15,16 @@ const Department = () => {
     DepartmentName: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +42,7 @@ const Department = () => {
     if (form.checkValidity() === true) {
       try {
         setIsLoading(true);
-        const apiUrl = "http://localhost:3306/api/department";
+        const apiUrl = "http://localhost:3306/api/department/withID";
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -50,92 +58,80 @@ const Department = () => {
     }
   };
 
-  //last number data
-  useEffect(() => {
-    const fetchLastJobNo = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3306/api/department/lastDepartmentId",
-          { method: "GET", headers: { "Content-Type": "application/json" } }
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const numericPart = parseInt(data.lastDepartmentId.slice(4), 10);
-          if (!isNaN(numericPart)) {
-            const nextJobNo = numericPart + 1;
-            setFormData({
-              ...formData,
-              DepartmentID: `DEPT${nextJobNo.toString().padStart(3, "0")}`,
-            });
-          } else {
-            console.error("Invalid numeric part:", data.lastDepartmentId);
-          }
-        } else {
-          console.error("Failed to fetch last JobNo");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    fetchLastJobNo();
-  }, []);
+ 
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <div className="New-departmemt">
-          <Typography variant="h5" style={{ fontWeight: "500" }}>
-            New Department
-          </Typography>
-          <form noValidate validated={validated} onSubmit={handleSubmit}>
-            <Grid container spacing={3} className="mt-2">
-              <Grid item md={6}>
-                <TextField
-                  fullWidth
-                  label="Department ID"
-                  variant="outlined"
-                  value={formData.DepartmentID}
-                  onChange={handleInputChange}
-                  name="DepartmentID"
-                  size="small"
-                  required
-                />
-              </Grid>
-              <Grid item md={6}>
-                <TextField
-                  fullWidth
-                  label="Department Name"
-                  variant="outlined"
-                  value={formData.DepartmentName}
-                  onChange={handleInputChange}
-                  name="DepartmentName"
-                  size="small"
-                  required
-                />
-              </Grid>
-            </Grid>
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          sx={{
+            backgroundColor: "#055f85",
+            color: "#fff",
+            padding: "8px 16px",
+          }}
+        >
+          CREATE NEW DEPARTMENT
+        </Button>
+        <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+          <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
+          New Department
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              right: 15,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <DialogContent>
+            <div className="New-departmemt">
+           
+              <form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Grid container spacing={3} className="mt-2">
+                  
+                  <Grid item md={12}>
+                    <TextField
+                      fullWidth
+                      label="Department Name"
+                      variant="outlined"
+                      value={formData.DepartmentName}
+                      onChange={handleInputChange}
+                      name="DepartmentName"
+                      size="small"
+                      required
+                    />
+                  </Grid>
+                </Grid>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                type="submit"
-                variant="contained"
-                className="btn mt-2 custom-button"
-                disabled={isLoading}
-                style={{ backgroundColor: "#055f85", color: "#fff" }}
-              >
-                {isLoading ? "Submitting..." : "Submit"}
-              </Button>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="btn mt-2 custom-button"
+                    disabled={isLoading}
+                    style={{ backgroundColor: "#055f85", color: "#fff" }}
+                  >
+                    {isLoading ? "Submitting..." : "Submit"}
+                  </Button>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-
+          </DialogContent>
+        </Dialog>
         <ViewDepartmentData />
       </Box>
     </Box>

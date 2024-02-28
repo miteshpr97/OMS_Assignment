@@ -39,6 +39,10 @@ exports.getAllDataOfEmployees = (req, res) => {
   });
 };
 
+
+
+
+
 // Getting all data of employees by their employee id
 
 exports.getAllDataOfEmployeesByEmployeeId = (req, res) => {
