@@ -89,11 +89,7 @@ const ViewDepartmentData = () => {
 
   return (
     <div className="Department-table">
-      <div>
-        <Typography variant="h5" style={{ fontWeight: "500" }}>
-          Department Data
-        </Typography>
-      </div>
+     
       <div style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
         <table className="table table-striped table-bordered">
           <thead style={{ fontSize: "15px" }}>

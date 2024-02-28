@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, TextField, Grid, Dialog, IconButton, DialogContent, DialogTitle } from "@mui/material"; // Import IconButton
+import {
+  Button,
+  TextField,
+  Grid,
+  Dialog,
+  IconButton,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material"; // Import IconButton
 import ViewDepartmentData from "./ViewDepartmentData";
 import "./Department.css";
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
@@ -58,12 +66,17 @@ const Department = () => {
     }
   };
 
- 
-
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
+      <div style={{padding:"10px", border:"1px solid black" }}>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:"10px" }}>
+          
+            <Typography variant="h5" style={{ fontWeight: "500" }}>
+            Department Data
+            </Typography>
+
         <Button
           onClick={handleClickOpen}
           variant="contained"
@@ -75,9 +88,12 @@ const Department = () => {
         >
           CREATE NEW DEPARTMENT
         </Button>
+        </div>
+        <ViewDepartmentData />
+        </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
-          New Department
+          NEW DEPARTMENT
           </DialogTitle>
           <IconButton
             aria-label="close"
@@ -93,10 +109,8 @@ const Department = () => {
           </IconButton>
           <DialogContent>
             <div className="New-departmemt">
-           
               <form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Grid container spacing={3} className="mt-2">
-                  
                   <Grid item md={12}>
                     <TextField
                       fullWidth
@@ -132,7 +146,7 @@ const Department = () => {
             </div>
           </DialogContent>
         </Dialog>
-        <ViewDepartmentData />
+       
       </Box>
     </Box>
   );
