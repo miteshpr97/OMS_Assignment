@@ -12,9 +12,6 @@ http://localhost:3306/api/employee/dNames
 // Add a new employee
 http://localhost:3306/api/employee
 
-// Getting next employee id
-http://localhost:3306/api/employee/nextEmployeeId
-
 // Update employee's data
 http://localhost:3306/api/employee/update/:EmployeeID
 
@@ -60,9 +57,6 @@ http://localhost:3306/api/department/:DepartmentID
 // Insert department's data
 http://localhost:3306/api/department
 
-// Getting next department id
-http://localhost:3306/api/designation/nextDepartmentId
-
 // Updating department's data
 http://localhost:3306/api/department/update/:DepartmentID
 
@@ -80,9 +74,6 @@ http://localhost:3306/api/designation/:DesignationID
 
 // Insert designation's data
 http://localhost:3306/api/designation
-
-// Getting next designation id
-http://localhost:3306/api/designation/nextDesignationId
 
 // Updating designation's data
 http://localhost:3306/api/designation/update/:DesignationID
