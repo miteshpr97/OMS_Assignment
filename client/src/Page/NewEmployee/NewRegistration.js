@@ -19,6 +19,7 @@ import "./RegisterPage.css";
 import { useDispatch, useSelector } from "react-redux";
 function NewRegistration({ addEmployee, nextEmployeeId }) {
   const dispatch = useDispatch();
+  const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
     //  EmployeeID: nextEmployeeId ? nextEmployeeId.nextEmployeeId || "" : "",
@@ -88,6 +89,8 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
     fetchData();
   }, []);
 
+ 
+
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "Employee_Profile" && files.length > 0) {
@@ -99,38 +102,101 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
     } else {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
+
+    // Check if the input field is ContactNumber and if the value matches the desired format
+    if (name === "ContactNumber" && /^\d{0,10}$/.test(value)) {
+      // Update the state only if the value matches the format
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Check if ContactNumber has exactly 10 digits
+    if (formData.ContactNumber.trim().length !== 10) {
+      newErrors.ContactNumber = 'Phone number must be 10 digits';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+
+
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   setIsLoading(true);
+
+  //   try {
+  //     await addEmployee(formData);
+
+  //     console.log(formData);
+  //     setFormData({
+  //       //   EmployeeID: "",
+  //       FirstName: "",
+  //       LastName: "",
+  //       DateOfBirth: "",
+  //       Gender: "",
+  //       ContactNumber: "",
+  //       Email: "",
+  //       Address: "",
+  //       JoinDate: "",
+  //       EmploymentStatus: "",
+  //       DepartmentID: "",
+  //       DesignationID: "",
+  //       Employee_Profile: "",
+  //     });
+  //     handleClose();
+  //   } catch (error) {
+  //     console.error("Error adding employee:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-
-    try {
-      await addEmployee(formData);
-
-      console.log(formData);
-      setFormData({
-        //   EmployeeID: "",
-        FirstName: "",
-        LastName: "",
-        DateOfBirth: "",
-        Gender: "",
-        ContactNumber: "",
-        Email: "",
-        Address: "",
-        JoinDate: "",
-        EmploymentStatus: "",
-        DepartmentID: "",
-        DesignationID: "",
-        Employee_Profile: "",
-      });
-      handleClose();
-    } catch (error) {
-      console.error("Error adding employee:", error);
-    } finally {
+    if (validate()) {
+      try {
+        await addEmployee(formData);
+        console.log(formData);
+        setFormData({
+         
+          FirstName: "",
+          LastName: "",
+          DateOfBirth: "",
+          Gender: "",
+          ContactNumber: "",
+          Email: "",
+          Address: "",
+          JoinDate: "",
+          EmploymentStatus: "",
+          DepartmentID: "",
+          DesignationID: "",
+          Employee_Profile: "",
+        });
+        handleClose();
+      } catch (error) {
+        console.error("Error adding employee:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // Form validation failed
+      console.error('Form validation failed');
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div>
@@ -200,6 +266,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      required
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -211,6 +278,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      required
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -223,6 +291,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      required
                     />
                   </Grid>
                   <Grid item xs={12} md={4}>
@@ -235,6 +304,9 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      error={!!errors.ContactNumber}
+                      helperText={errors.ContactNumber}
+                      required
                     />
                   </Grid>
 
@@ -247,6 +319,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         name="Gender"
                         label="Gender"
                         size="medium"
+                        required
                       >
                         <MenuItem value="M">Male</MenuItem>
                         <MenuItem value="F">Female</MenuItem>
@@ -262,6 +335,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      required
                     />
                   </Grid>
                   <Grid item xs={4} md={4}>
@@ -277,6 +351,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      required
                     />
                   </Grid>
                   <Grid item xs={4}>
@@ -293,6 +368,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                   
                     />
                   </Grid>
                   <Grid item xs={4} md={4}>
@@ -303,6 +379,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         onChange={handleInputChange}
                         label="Employment Status"
                         name="EmploymentStatus"
+                        required
                       >
                         <MenuItem value="Active">Active</MenuItem>
                         <MenuItem value="Inactive">Inactive</MenuItem>
@@ -317,6 +394,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         onChange={handleInputChange}
                         label="Department ID"
                         name="DepartmentID"
+                        required
                       >
                         {departmentData.map((department) => (
                           <MenuItem
@@ -338,6 +416,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                         onChange={handleInputChange}
                         label="Designation ID"
                         name="DesignationID"
+                        required
                       >
                         {deginationData.map((designation) => (
                           <MenuItem
@@ -361,6 +440,7 @@ function NewRegistration({ addEmployee, nextEmployeeId }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      required
                     />
                   </Grid>
 
