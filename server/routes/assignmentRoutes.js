@@ -6,7 +6,7 @@ const assignmentController = require("../controllers/assignmentControllers");
 router.get("/", assignmentController.getAllAssignments); 
 
 // all assignment show with their names (Mitesh)
-router.get('/allData', assignmentController.getAssigmentEmployeesData);
+router.get('/allData', assignmentController.getAssignmentEmployeesData);
 
 // get particular Assignment by their id
 router.get("/:AssignmentID", assignmentController.getAssignmentById); 

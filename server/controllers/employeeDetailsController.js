@@ -1,98 +1,90 @@
-const db = require("../db");
+const { queryAsync } = require("../db");
 
-// Getting all employees data
+// Get All Employees
 
-exports.getAllEmployees = (req, res) => {
-  const query = "SELECT * FROM tb_employee";
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
+exports.getAllEmployees = async (req, res) => {
+  try {
+    const query = "SELECT * FROM tb_employee";
+    const results = await queryAsync(query);
     res.status(200).json(results);
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Getting all data of employees
+// Get All Data of Employees
 
-exports.getAllDataOfEmployees = (req, res) => {
-  const query = `
-  SELECT
-    e.*, u.Role, u.Username , d.DepartmentName, d2.DesignationName
-  FROM
-    tb_employee as e INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
-  INNER JOIN 
-    tb_department as d ON e.DepartmentID = d.DepartmentID 
-  INNER JOIN 
-    tb_designation as d2 ON e.DesignationID = d2.DesignationID; `;
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
+exports.getAllDataOfEmployees = async (req, res) => {
+  try {
+    const query = `
+      SELECT
+        e.*, u.Role, u.Username , d.DepartmentName, d2.DesignationName
+      FROM
+        tb_employee as e INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
+      INNER JOIN 
+        tb_department as d ON e.DepartmentID = d.DepartmentID 
+      INNER JOIN 
+        tb_designation as d2 ON e.DesignationID = d2.DesignationID; `;
+    const results = await queryAsync(query);
     const userEmployees = results.filter(
       (employee) => employee.Role === "User"
     );
     res.status(200).json(userEmployees);
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
+// Get All Data of Employees by Employee ID
 
-
-
-
-// Getting all data of employees by their employee id
-
-exports.getAllDataOfEmployeesByEmployeeId = (req, res) => {
+exports.getAllDataOfEmployeesByEmployeeId = async (req, res) => {
   const employeeId = req.params.EmployeeID;
-  const query =
-    "SELECT tb_employee.*, tb_userdetails.Role, tb_userdetails.Username FROM tb_employee INNER JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.EmployeeID = ?";
-  db.query(query, employeeId, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
+  try {
+    const query =
+      "SELECT tb_employee.*, tb_userdetails.Role, tb_userdetails.Username FROM tb_employee INNER JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.EmployeeID = ?";
+    const results = await queryAsync(query, [employeeId]);
     res.status(200).json(results);
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Getting data of employees with their department and designation name
+// Get Data of Employees with Their Department and Designation Name
 
-exports.getDataOfEmployeesWithTheirDNames = (req, res) => {
-  const query = `
-  SELECT
-    e.EmployeeID,
-    e.FirstName,
-    e.LastName,
-    e.EmploymentStatus,
-    e.Employee_Profile,
-    e.DepartmentID,
-    d.DepartmentName,
-    e.DesignationID,
-    des.DesignationName
-  FROM
-    tb_employee e
-  JOIN
-    tb_department d ON e.DepartmentID = d.DepartmentID
-  JOIN
-    tb_designation des ON e.DesignationID = des.DesignationID
-`;
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
+exports.getDataOfEmployeesWithTheirDNames = async (req, res) => {
+  try {
+    const query = `
+      SELECT
+        e.EmployeeID,
+        e.FirstName,
+        e.LastName,
+        e.EmploymentStatus,
+        e.Employee_Profile,
+        e.DepartmentID,
+        d.DepartmentName,
+        e.DesignationID,
+        des.DesignationName
+      FROM
+        tb_employee e
+      JOIN
+        tb_department d ON e.DepartmentID = d.DepartmentID
+      JOIN
+        tb_designation des ON e.DesignationID = des.DesignationID
+    `;
+    const results = await queryAsync(query);
     res.status(200).json(results);
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Inserting employees data
+// Add Employee
 
-exports.addEmployee = (req, res) => {
+exports.addEmployee = async (req, res) => {
   const {
     FirstName,
     LastName,
@@ -108,15 +100,10 @@ exports.addEmployee = (req, res) => {
   } = req.body;
   const employeeProfile = req.file ? req.file.filename : null;
 
-  const query =
-    "SELECT MAX(SUBSTRING(EmployeeID, 4)) AS maxID FROM tb_employee";
-
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error getting max EmployeeID: ", err);
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
+  try {
+    const maxIDQuery =
+      "SELECT MAX(SUBSTRING(EmployeeID, 4)) AS maxID FROM tb_employee";
+    const results = await queryAsync(maxIDQuery);
 
     let nextID = 1;
 
@@ -125,114 +112,83 @@ exports.addEmployee = (req, res) => {
     }
 
     const formattedID = `EMP${nextID.toString().padStart(3, "0")}`;
+    const EmployeeID = formattedID;
 
-    EmployeeID = req.body.EmployeeID;
-    EmployeeID = formattedID;
+    const insertQuery = `INSERT INTO tb_employee 
+      (EmployeeID, FirstName, LastName, DateOfBirth, Gender, ContactNumber, Email, Address, JoinDate, Employee_Profile, EmploymentStatus, DepartmentID, DesignationID)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const query = `INSERT INTO tb_employee 
-  (EmployeeID, FirstName, LastName, DateOfBirth, Gender, ContactNumber, Email, Address, JoinDate, Employee_Profile, EmploymentStatus, DepartmentID, DesignationID)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(
-      query,
-      [
-        EmployeeID,
-        FirstName,
-        LastName,
-        DateOfBirth,
-        Gender,
-        ContactNumber,
-        Email,
-        Address,
-        JoinDate,
-        employeeProfile,
-        EmploymentStatus,
-        DepartmentID,
-        DesignationID,
-      ],
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          res.status(500).json({ error: "Internal Server Error" });
-        } else {
-          res.status(201).json({ message: "Employee added successfully" });
-        }
-      }
-    );
-  });
+    await queryAsync(insertQuery, [
+      EmployeeID,
+      FirstName,
+      LastName,
+      DateOfBirth,
+      Gender,
+      ContactNumber,
+      Email,
+      Address,
+      JoinDate,
+      employeeProfile,
+      EmploymentStatus,
+      DepartmentID,
+      DesignationID,
+    ]);
+
+    res.status(201).json({ message: "Employee added successfully" });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// getting next employee id
+// Update Employee
 
-exports.getNextEmployeeId = (req, res) => {
-  const query = "SELECT MAX(EmployeeID) AS maxID FROM tb_employee ";
-
-  db.query(query, (error, results) => {
-    if (error) {
-      console.error("Error executing query:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    let nextEmployeeId;
-    if (results.length === 0 || results[0].maxID === null) {
-      nextEmployeeId = "EMP001";
-    } else {
-      const lastEmployeeId = results[0].maxID;
-      const numericPart = parseInt(lastEmployeeId.substr(3), 10) + 1;
-      nextEmployeeId = "EMP" + numericPart.toString().padStart(3, "0");
-    }
-
-    res.status(200).json({ nextEmployeeId: nextEmployeeId });
-  });
-};
-
-// updating employee's data
-
-exports.updateEmployee = (req, res) => {
+exports.updateEmployee = async (req, res) => {
   const EmployeeID = req.params.EmployeeID;
   const updatedEmployee = req.body;
+
   // Check if a file is included in the request
   if (req.file) {
     updatedEmployee.Employee_Profile = req.file.filename;
   }
-  const query = "UPDATE tb_employee SET ? WHERE EmployeeID = ?";
 
-  db.query(query, [updatedEmployee, EmployeeID], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  const updateQuery = "UPDATE tb_employee SET ? WHERE EmployeeID = ?";
+
+  try {
+    const results = await queryAsync(updateQuery, [
+      updatedEmployee,
+      EmployeeID,
+    ]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Employee not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Data is up to date already");
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Employee not found" });
-        return;
-      } else if (results.affectedRows > 0 && results.changedRows === 0) {
-        res.status(200).json("Data is up to date already");
-        return;
-      } else {
-        res.status(200).json({ message: "Employee updated successfully" });
-      }
+      res.status(200).json({ message: "Employee updated successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-// Deleting employee's data
+// Delete Employee
 
-exports.deleteEmployee = (req, res) => {
+exports.deleteEmployee = async (req, res) => {
   const employeeId = req.params.EmployeeID;
-  const query = "DELETE FROM tb_employee WHERE EmployeeID = ?";
-  db.query(query, [employeeId], (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).json({ error: "Internal Server Error" });
+  const deleteQuery = "DELETE FROM tb_employee WHERE EmployeeID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [employeeId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Employee not found" });
     } else {
-      if (results.affectedRows === 0) {
-        res.status(404).json({ error: "Employee not found" });
-        return;
-      } else {
-        res
-          .status(200)
-          .json({ message: "Employee's data deleted successfully" });
-      }
+      res.status(200).json({ message: "Employee's data deleted successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
