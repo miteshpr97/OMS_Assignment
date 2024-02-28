@@ -192,9 +192,9 @@ exports.numberOfAssignmentsByStatus = (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     } else {
       const assignmentCounts = {
-        num_pending_assignments: results[0].num_pending_assignments,
-        num_progress_assignments: results[0].num_progress_assignments,
-        num_completed_assignments: results[0].num_completed_assignments,
+        pending_assignments: results[0].num_pending_assignments,
+        progress_assignments: results[0].num_progress_assignments,
+        complete_assignments: results[0].num_completed_assignments,
       };
 
       res.status(200).json(assignmentCounts);
