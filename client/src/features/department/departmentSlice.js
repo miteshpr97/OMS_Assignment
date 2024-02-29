@@ -1,7 +1,7 @@
 
 
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartmentData, fetchDepartmentData } from "./departmentActions";
+import { createDepartmentData, fetchDepartmentData, deleteDepartmentData } from "./departmentActions";
 
 export const departmentSlice = createSlice({
   name: 'department',
@@ -38,7 +38,21 @@ export const departmentSlice = createSlice({
       .addCase(createDepartmentData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // Deleting designation data
+      .addCase(deleteDepartmentData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteDepartmentData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.departmentName = state.departmentName.filter(department => department.DepartmentID !== action.payload.DepartmentID);
+      })
+      .addCase(deleteDepartmentData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
+
   },
 });
 

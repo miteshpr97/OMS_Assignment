@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ViewDepartmentData = ({ departments = [] }) => {
+const ViewDepartmentData = ({ departments, handleDeleteDesignation }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
   // Ensure designationData is initialized as an array
@@ -41,32 +41,6 @@ const ViewDepartmentData = ({ departments = [] }) => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-  };
-
-  const handleDelete = async (DepartmentID) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
-
-    if (!confirmDelete) {
-      return;
-    }
-
-    try {
-      const apiUrl = `http://localhost:3306/api/designation/delete/${DepartmentID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        // Remove the deleted item from both data and filteredData arrays
-        departments((prevData) =>
-          prevData.filter((item) => item.DepartmentID !== DepartmentID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
   };
 
   const classes = useStyles();
@@ -94,7 +68,7 @@ const ViewDepartmentData = ({ departments = [] }) => {
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.deleteButton} onClick={() => handleDelete(item.DepartmentID)}>
+                  <IconButton className={classes.deleteButton} onClick={() => handleDeleteDesignation(item.DepartmentID)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

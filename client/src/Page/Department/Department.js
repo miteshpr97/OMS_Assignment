@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createDepartmentData,
   fetchDepartmentData,
+  deleteDepartmentData
 } from "../../features/department/departmentActions";
 import { selectDepartments } from "../../features/department/departmentSlice";
 
@@ -62,6 +63,15 @@ const Deapartment = () => {
     }
   };
 
+  const handleDeleteDesignation = async (DepartmentID) => {
+    try {
+      await dispatch(deleteDepartmentData(DepartmentID));
+      console.log(DepartmentID)
+      dispatch(fetchDepartmentData());
+    } catch (error) {
+      console.error("Error deleting designation:", error);
+    }
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -95,6 +105,7 @@ const Deapartment = () => {
             departments={departments}
             //  isLoading={isLoading}
             //  error={error}
+            handleDeleteDesignation={handleDeleteDesignation}
           />
         </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
