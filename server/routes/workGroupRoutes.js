@@ -6,7 +6,7 @@ const workGroupController = require("../controllers/workGroupController");
 router.get("/", workGroupController.getAllWorkGroups);
 
 //get all data from employee table using join and merged it with work group table
-router.get("/allData", workGroupController.getAllworkGroupEmployeesData);
+router.get("/allData", workGroupController.getAllWorkGroupEmployeesData);
 
 // Get all data about a particular group
 router.get("/:EmployeeID_Assigner", workGroupController.getAllDataOfOneGroup);

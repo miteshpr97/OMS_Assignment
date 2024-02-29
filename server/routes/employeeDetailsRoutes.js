@@ -25,12 +25,6 @@ router.get("/", employeeController.getAllEmployees);
 router.get("/allData", employeeController.getAllDataOfEmployees);
 
 // Get all data of employees by their employee id
-router.get(
-  "/allData/:EmployeeID",
-  employeeController.getAllDataOfEmployeesByEmployeeId
-);
-
-// Get all data of employees by their employee id
 router.get("/dNames", employeeController.getDataOfEmployeesWithTheirDNames);
 
 // Get all data of employees by their employee id
@@ -45,9 +39,6 @@ router.post(
   upload.single("Employee_Profile"),
   employeeController.addEmployee
 );
-
-// Getting next employee id
-router.get("/nextEmployeeId", employeeController.getNextEmployeeId);
 
 // Update employee's data
 router.patch(
