@@ -1,5 +1,5 @@
 import React from "react";
-import "./Assignment.css";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import "./Assignment.css";
 
 const AssignmentCard = ({ countAssignmentData }) => {
   const statuses = [

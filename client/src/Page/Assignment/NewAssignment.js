@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import "./Assignment.css";
 import Button from "@mui/material/Button";
 import { Grid, MenuItem } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -20,6 +19,7 @@ import {
   selectAssignmentLoading,
   selectAssignmentError,
 } from "../../features/assignment/assignmentSlice";
+import "./Assignment.css";
 
 export default function NewAssignment() {
   const [validated, setValidated] = useState(false);

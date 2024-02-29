@@ -71,7 +71,7 @@ const NewDesignation = () => {
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <div style={{ padding: "10px", border: "1px solid black" }}>
+        <div style={{ padding: "10px", border:"2px solid #dddddd" }}>
           <div
             style={{
               display: "flex",
