@@ -1,4 +1,5 @@
-const db = require("../db");
+const { db } = require("../db");
+
 
 // Function to get the highest work group ID from the database
 
