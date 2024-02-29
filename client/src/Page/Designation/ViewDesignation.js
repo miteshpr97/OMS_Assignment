@@ -148,13 +148,19 @@ const useStyles = makeStyles({
   },
   tableCell: {
     border: '1px solid #dddddd',
-    padding: 6,
+    padding: 8,
   },
   tableHeadCell: {
     backgroundColor: '#5c7c77', // Set the background color of TableHead cells to blue
     color: 'white', // Set the text color to white for better contrast
     border: '1px solid #dddddd',
     padding: 8,
+  },
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
   },
 });
 
@@ -218,12 +224,12 @@ const ViewDesignation = ({ designationData }) => {
                 <TableCell className={classes.tableCell}>{item.DesignationID}</TableCell>
                 <TableCell className={classes.tableCell}>{item.DesignationName}</TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton style={{ color: "#055f85" }}>
+                  <IconButton className={classes.editButton}>
                     <EditNoteIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton style={{ color: "red" }} onClick={() => handleDelete(item.DesignationID)}>
+                  <IconButton className={classes.deleteButton} onClick={() => handleDelete(item.DesignationID)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

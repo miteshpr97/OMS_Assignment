@@ -1,7 +1,32 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Pagination } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  tableRow: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: '#f2f2f2',
+    },
+  },
+  tableCell: {
+    border: '1px solid #dddddd',
+    padding: 8,
+  },
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
+  },
+  tableHeadCell: {
+    backgroundColor: '#5c7c77', // Set the background color of TableHead cells to blue
+    color: 'white', // Set the text color to white for better contrast
+    border: '1px solid #dddddd',
+    padding: 8,
+  },
+});
 
 const ViewDepartmentData = ({ departments = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +42,7 @@ const ViewDepartmentData = ({ departments = [] }) => {
     setCurrentPage(value);
   };
 
-  const handleDelete = async (DesignationID) => {
+  const handleDelete = async (DepartmentID) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this item?");
 
     if (!confirmDelete) {
@@ -25,7 +50,7 @@ const ViewDepartmentData = ({ departments = [] }) => {
     }
 
     try {
-      const apiUrl = `http://localhost:3306/api/designation/delete/${DesignationID}`;
+      const apiUrl = `http://localhost:3306/api/designation/delete/${DepartmentID}`;
       const response = await fetch(apiUrl, {
         method: "DELETE",
       });
@@ -33,7 +58,7 @@ const ViewDepartmentData = ({ departments = [] }) => {
       if (response.ok) {
         // Remove the deleted item from both data and filteredData arrays
         departments((prevData) =>
-          prevData.filter((item) => item.DesignationID !== DesignationID)
+          prevData.filter((item) => item.DepartmentID !== DepartmentID)
         );
       } else {
         console.error("Error deleting item:", response.status);
@@ -43,37 +68,36 @@ const ViewDepartmentData = ({ departments = [] }) => {
     }
   };
 
+  const classes = useStyles();
+
   return (
     <div className="Department-table">
       <TableContainer component={Paper} style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
-        <Table className="table" aria-label="designation table">
+        <Table aria-label="designation table">
           <TableHead>
             <TableRow>
-            <TableCell>Department ID</TableCell>
-              <TableCell>Department Name</TableCell>
-              <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
+              <TableCell className={classes.tableHeadCell}>Department ID</TableCell>
+              <TableCell className={classes.tableHeadCell}>Department Name</TableCell>
+              <TableCell className={classes.tableHeadCell}>Edit</TableCell>
+              <TableCell className={classes.tableHeadCell}>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {currentItems.map((item) => (
-              <TableRow key={item.DepartmentID}>
-              <TableCell>{item.DepartmentID}</TableCell>
-              <TableCell>{item.DepartmentName}</TableCell>
-              <TableCell>
-                <IconButton style={{ color: "#055f85" }}>
-                  <EditNoteIcon />
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                <IconButton
-                  style={{ color: "red" }}
-                  onClick={() => handleDelete(item.DesignationID)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+              <TableRow key={item.DepartmentID} className={classes.tableRow}>
+                <TableCell className={classes.tableCell}>{item.DepartmentID}</TableCell>
+                <TableCell className={classes.tableCell}>{item.DepartmentName}</TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton className={classes.editButton}>
+                    <EditNoteIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton className={classes.deleteButton} onClick={() => handleDelete(item.DepartmentID)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>
@@ -87,7 +111,7 @@ const ViewDepartmentData = ({ departments = [] }) => {
         variant="outlined"
         shape="rounded"
         size="large"
-        style={{ marginTop: '20px', display: 'flex',  }}
+        style={{ marginTop: '20px', display: 'flex' }}
       />
     </div>
   );
