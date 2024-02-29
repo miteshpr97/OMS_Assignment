@@ -33,7 +33,8 @@ exports.addDepartmentWithId = async (req, res) => {
   const newDepartment = req.body;
 
   try {
-    const maxIDQuery = "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
+    const maxIDQuery =
+      "SELECT MAX(SUBSTRING(DepartmentID, 5)) AS maxID FROM tb_department";
     const results = await queryAsync(maxIDQuery);
 
     let nextID = 1;
@@ -63,7 +64,10 @@ exports.updateDepartment = async (req, res) => {
   const updateQuery = "UPDATE tb_department SET ? WHERE DepartmentID = ?";
 
   try {
-    const results = await queryAsync(updateQuery, [updatedDepartment, departmentId]);
+    const results = await queryAsync(updateQuery, [
+      updatedDepartment,
+      departmentId,
+    ]);
 
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Department not found" });
@@ -90,7 +94,9 @@ exports.deleteDepartment = async (req, res) => {
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Department not found" });
     } else {
-      res.status(200).json({ message: "Department's data deleted successfully" });
+      res
+        .status(200)
+        .json({ message: "Department's data deleted successfully" });
     }
   } catch (error) {
     console.error("Error executing query:", error);

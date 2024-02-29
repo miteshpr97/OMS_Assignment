@@ -21,4 +21,4 @@ function sendEmail(email, token) {
   return transporter.sendMail(mailOptions);
 }
 
-module.exports = { sendEmail };
+module.exports = sendEmail;
