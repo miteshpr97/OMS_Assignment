@@ -11,36 +11,24 @@ const useStyles = makeStyles({
   tableRow: {
     '&:nth-of-type(odd)': {
       backgroundColor: '#f2f2f2',
+    
     },
+    fontSize:"0.5rem"
   },
   tableCell: {
     border: '1px solid #dddddd',
     padding: 8,
+    
+  
   },
   tableHeadCell: {
     backgroundColor: '#5c7c77', // Set the background color of TableHead cells to blue
     color: 'white', // Set the text color to white for better contrast
     border: '1px solid #dddddd',
     padding: 8,
+  
   },
-  editButton: {
-    color: "#055f85",
-  },
-  deleteButton: {
-    color: "red",
-  },
-  name: {
-    fontSize: "0.9rem",
-  },
-  status: {
-    fontWeight: "bold",
-    fontSize: "0.75rem",
-    color: "white",
-    borderRadius: 8,
-    padding: "5px 10px",
-    marginTop: "17px",
-    display: "inline-block",
-  },
+ 
 });
 
 const ViewDesignation = ({ designationData, handleDeleteDesignation  }) => {
@@ -78,12 +66,12 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation  }) => {
                 <TableCell className={classes.tableCell}>{item.DesignationID}</TableCell>
                 <TableCell className={classes.tableCell}>{item.DesignationName}</TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.editButton}>
+                  <IconButton sx={{color: "#055f85"}}>
                     <EditNoteIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.deleteButton} onClick={() => handleDeleteDesignation (item.DesignationID)}>
+                  <IconButton sx={{color:"red"}} onClick={() => handleDeleteDesignation (item.DesignationID)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
