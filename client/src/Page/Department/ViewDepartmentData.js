@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { makeStyles } from '@material-ui/core/styles';
+import "./Department.css"
 
 const useStyles = makeStyles({
   tableRow: {
@@ -13,12 +14,7 @@ const useStyles = makeStyles({
   tableCell: {
     border: '1px solid #dddddd',
     padding: 8,
-  },
-  editButton: {
-    color: "#055f85",
-  },
-  deleteButton: {
-    color: "red",
+
   },
   tableHeadCell: {
     backgroundColor: '#5c7c77', // Set the background color of TableHead cells to blue
@@ -26,6 +22,7 @@ const useStyles = makeStyles({
     border: '1px solid #dddddd',
     padding: 8,
   },
+ 
 });
 
 const ViewDepartmentData = ({ departments = [] }) => {
@@ -88,12 +85,12 @@ const ViewDepartmentData = ({ departments = [] }) => {
                 <TableCell className={classes.tableCell}>{item.DepartmentID}</TableCell>
                 <TableCell className={classes.tableCell}>{item.DepartmentName}</TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.editButton}>
+                  <IconButton sx={{color:"#055f85"}}>
                     <EditNoteIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.deleteButton} onClick={() => handleDelete(item.DepartmentID)}>
+                  <IconButton sx={{color:"red"}} onClick={() => handleDelete(item.DepartmentID)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

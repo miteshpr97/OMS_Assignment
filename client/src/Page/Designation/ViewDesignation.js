@@ -141,6 +141,9 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
   tableRow: {
     '&:nth-of-type(odd)': {
       backgroundColor: '#f2f2f2',
@@ -161,6 +164,18 @@ const useStyles = makeStyles({
   },
   deleteButton: {
     color: "red",
+  },
+  name: {
+    fontSize: "0.9rem",
+  },
+  status: {
+    fontWeight: "bold",
+    fontSize: "0.75rem",
+    color: "white",
+    borderRadius: 8,
+    padding: "5px 10px",
+    marginTop: "17px",
+    display: "inline-block",
   },
 });
 
@@ -254,3 +269,5 @@ const ViewDesignation = ({ designationData }) => {
 };
 
 export default ViewDesignation;
+
+
