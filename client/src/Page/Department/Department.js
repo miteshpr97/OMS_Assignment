@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -10,21 +11,27 @@ import {
   IconButton,
   DialogContent,
   DialogTitle,
-} from "@mui/material"; // Import IconButton
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { createDepartmentData } from "../../features/department/departmentActions";
+import {
+  selectDepartmentLoading,
+  selectDepartmentError,
+} from "../../features/department/departmentSlice";
+
 import ViewDepartmentData from "./ViewDepartmentData";
-import "./Department.css";
-import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 
 const Department = () => {
-  const [validated, setValidated] = useState(false);
-
-  const [formData, setFormData] = useState({
-    DepartmentID: "",
-    DepartmentName: "",
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectDepartmentLoading);
+  const error = useSelector(selectDepartmentError);
 
   const [open, setOpen] = useState(false);
+
+  const [formData, setFormData] = useState({
+    DepartmentName: "",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,35 +41,17 @@ const Department = () => {
     setOpen(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const handleChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-
-    if (form.checkValidity() === true) {
-      try {
-        setIsLoading(true);
-        const apiUrl = "http://localhost:3306/api/department/withID";
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) console.log("Registration successful!");
-        else console.error("Registration failed:", response.statusText);
-      } catch (error) {
-        console.error("Error submitting data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    event.preventDefault();
+    try {
+      await dispatch(createDepartmentData(formData));
+      setFormData({ DepartmentName: "" }); // Reset form fields after submission if needed
+    } catch (error) {
+      console.error("Error creating department:", error);
     }
   };
 
@@ -70,30 +59,42 @@ const Department = () => {
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-      <div style={{padding:"10px", border:"1px solid black" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:"10px" }}>
-          
+
+        
+        <div style={{ padding: "10px", border: "1px solid black" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingTop: "10px",
+            }}
+          >
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-            Department Data
+              Department Data
             </Typography>
 
-        <Button
-          onClick={handleClickOpen}
-          variant="contained"
-          sx={{
-            backgroundColor: "#055f85",
-            color: "#fff",
-            padding: "8px 16px",
-          }}
-        >
-          CREATE NEW DEPARTMENT
-        </Button>
+            <Button
+              onClick={handleClickOpen}
+              variant="contained"
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                padding: "8px 16px",
+              }}
+            >
+              CREATE NEW DEPARTMENT
+            </Button>
+          </div>
+          <ViewDepartmentData />
         </div>
-        <ViewDepartmentData />
-        </div>
+
+
+
+
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
-          NEW DEPARTMENT
+            NEW DEPARTMENT
           </DialogTitle>
           <IconButton
             aria-label="close"
@@ -109,22 +110,20 @@ const Department = () => {
           </IconButton>
           <DialogContent>
             <div className="New-departmemt">
-              <form noValidate validated={validated} onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}>
                 <Grid container spacing={3} className="mt-2">
                   <Grid item md={12}>
                     <TextField
-                      fullWidth
-                      label="Department Name"
+                      label="DepartmentName"
                       variant="outlined"
-                      value={formData.DepartmentName}
-                      onChange={handleInputChange}
                       name="DepartmentName"
-                      size="small"
-                      required
+                      value={formData.DepartmentName}
+                      onChange={handleChange}
+                      fullWidth
+                      margin="normal"
                     />
                   </Grid>
                 </Grid>
-
                 <div
                   style={{
                     display: "flex",
@@ -143,13 +142,31 @@ const Department = () => {
                   </Button>
                 </div>
               </form>
+              {error && <div>Error: {error.message}</div>}
             </div>
           </DialogContent>
         </Dialog>
-       
       </Box>
     </Box>
   );
 };
 
 export default Department;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import {
   Button,
   Dialog,
@@ -13,14 +12,16 @@ import {
   TextField,
 } from "@mui/material"; // Import IconButton
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import { useDispatch } from "react-redux";
+import { createDesignationData } from "../../features/designation/designationAction";
 
 import ViewDesignation from "./ViewDesignation";
 
 const NewDesignation = () => {
   const [validated, setValidated] = useState(false);
 
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
-    DesignationID: "",
     DesignationName: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -41,61 +42,45 @@ const NewDesignation = () => {
   };
 
   const handleSubmit = async (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-
-    if (form.checkValidity() === true) {
-      try {
-        setIsLoading(true);
-        const apiUrl = "http://localhost:3306/api/designation/withID";
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) console.log("Registration successful!");
-        else console.error("Registration failed:", response.statusText);
-      } catch (error) {
-        console.error("Error submitting data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    event.preventDefault();
+    try {
+      await dispatch(createDesignationData(formData));
+      setFormData({ DesignationName: "" }); // Reset form fields after submission if needed
+    } catch (error) {
+      console.error("Error creating department:", error);
     }
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, marginTop: "55px"}}
-      >
-        <div style={{padding:"10px", border:"1px solid black" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:"10px" }}>
-          
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
+        <div style={{ padding: "10px", border: "1px solid black" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingTop: "10px",
+            }}
+          >
             <Typography variant="h5" style={{ fontWeight: "500" }}>
               Designation Data
             </Typography>
-          
 
-          <Button
-            onClick={handleClickOpen}
-            variant="contained"
-            sx={{
-              backgroundColor: "#055f85",
-              color: "#fff",
-              padding: "8px 16px",
-            }}
-          >
-            CREATE NEW DESIGNATION
-          </Button>
-          
-        </div>
-        <ViewDesignation />
+            <Button
+              onClick={handleClickOpen}
+              variant="contained"
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                padding: "8px 16px",
+              }}
+            >
+              CREATE NEW DESIGNATION
+            </Button>
+          </div>
+          <ViewDesignation />
         </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>

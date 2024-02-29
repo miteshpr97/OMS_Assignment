@@ -1,15 +1,15 @@
-// departmentActions.js
+// desiganationAction.js
 
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//  creating department data
+//  creating designation data
 
-export const createDepartmentData = createAsyncThunk(
-  "department/createDepartmentData",
+export const createDesignationData = createAsyncThunk(
+  "designation/createDesignation",
   async (formData) => { // Ensure formData is being received
     try {
-      const response = await axios.post('http://localhost:3306/api/department/withID', formData);
+      const response = await axios.post('http://localhost:3306/api/designation/withID', formData);
       const data = response.data;
       return data;
     } catch (error) {
@@ -19,12 +19,12 @@ export const createDepartmentData = createAsyncThunk(
 );
 
 
-//  fetching department data
-export const fetchDepartmentData = createAsyncThunk(
-  "department/fetchDepartmentData",
+//  fetching designation data
+export const fetchDesignationData = createAsyncThunk(
+  "designation/fetchDesignation",
   async () => {
     try {
-      const response = await axios.get('http://localhost:3306/api/department');
+      const response = await axios.get('http://localhost:3306/api/designation');
       const data = response.data;
       //const reverse = data.reverse();
       return data;
@@ -34,12 +34,12 @@ export const fetchDepartmentData = createAsyncThunk(
   }
 );
 
-//  deleting department data
-export const deleteDepartmentData = createAsyncThunk(
-  "department/deleteDepartmentData",
-  async (DepartmentID) => {
+//  deleting designation data
+export const deleteDesignationData = createAsyncThunk(
+  "designation/deleteDesignationData",
+  async (DesignationID) => {
     try {
-      const url = `http://localhost:3306/api/department/delete/${DepartmentID}`;
+      const url = `http://localhost:3306/api/designationdelete/${DesignationID}`;
       const response = await axios.delete(url);
       return response.data;
     } catch (error) {
