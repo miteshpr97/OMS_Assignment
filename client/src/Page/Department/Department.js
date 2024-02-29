@@ -127,7 +127,7 @@ const Deapartment = () => {
           <DialogContent>
             <div className="New-departmemt">
               <form onSubmit={handleSubmit}>
-                <Grid container spacing={3} className="mt-2">
+                <Grid container spacing={3}>
                   <Grid item md={12}>
                     <TextField
                       label="DepartmentName"
