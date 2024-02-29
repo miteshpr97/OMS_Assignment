@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-
 import {
   Button,
   Dialog,
@@ -13,19 +12,35 @@ import {
   TextField,
 } from "@mui/material"; // Import IconButton
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createDesignationData,
+  fetchDesignationData,
+} from "../../features/designation/designationAction";
+import {
+  selectdesignationData,
+  // selectLoading,
+  // selectError,
+} from "../../features/designation/designationSlice";
 
 import ViewDesignation from "./ViewDesignation";
 
 const NewDesignation = () => {
-  const [validated, setValidated] = useState(false);
+  const dispatch = useDispatch();
+  const designationData = useSelector(selectdesignationData);
+  // const Loading = useSelector(selectLoading);
+  // const error = useSelector(selectError);
 
   const [formData, setFormData] = useState({
-    DesignationID: "",
     DesignationName: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchDesignationData());
+  }, [dispatch]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,61 +56,47 @@ const NewDesignation = () => {
   };
 
   const handleSubmit = async (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-    setValidated(true);
-
-    if (form.checkValidity() === true) {
-      try {
-        setIsLoading(true);
-        const apiUrl = "http://localhost:3306/api/designation/withID";
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) console.log("Registration successful!");
-        else console.error("Registration failed:", response.statusText);
-      } catch (error) {
-        console.error("Error submitting data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+    event.preventDefault();
+    try {
+      await dispatch(createDesignationData(formData));
+      setFormData({ DesignationName: "" }); // Reset form fields after submission if needed
+      dispatch(fetchDesignationData());
+      handleClose();
+    } catch (error) {
+      console.error("Error creating department:", error);
     }
   };
 
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, marginTop: "55px"}}
-      >
-        <div style={{padding:"10px", border:"1px solid black" }}>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", paddingTop:"10px" }}>
-          
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
+        <div style={{ padding: "10px", border: "1px solid black" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingTop: "10px",
+            }}
+          >
             <Typography variant="h5" style={{ fontWeight: "500" }}>
               Designation Data
             </Typography>
-          
 
-          <Button
-            onClick={handleClickOpen}
-            variant="contained"
-            sx={{
-              backgroundColor: "#055f85",
-              color: "#fff",
-              padding: "8px 16px",
-            }}
-          >
-            CREATE NEW DESIGNATION
-          </Button>
-          
-        </div>
-        <ViewDesignation />
+            <Button
+              onClick={handleClickOpen}
+              variant="contained"
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                padding: "8px 16px",
+              }}
+            >
+              CREATE NEW DESIGNATION
+            </Button>
+          </div>
+          <ViewDesignation designationData={designationData} />
         </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
