@@ -1,37 +1,45 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {
   Button,
-  TextField,
-  Grid,
   Dialog,
   IconButton,
   DialogContent,
   DialogTitle,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-
-import { createDepartmentData } from "../../features/department/departmentActions";
+  Grid,
+  TextField,
+} from "@mui/material"; // Import IconButton
+import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
+import { useDispatch, useSelector } from "react-redux";
 import {
-  selectDepartmentLoading,
-  selectDepartmentError,
+  createDepartmentData,
+  fetchDepartmentData,
+} from "../../features/department/departmentActions";
+import {
+  selectDepartments,
+  
 } from "../../features/department/departmentSlice";
 
 import ViewDepartmentData from "./ViewDepartmentData";
 
-const Department = () => {
+const Deapartment = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectDepartmentLoading);
-  const error = useSelector(selectDepartmentError);
-
-  const [open, setOpen] = useState(false);
+  const departments = useSelector(selectDepartments);
+  // const Loading = useSelector(selectLoading);
+  // const error = useSelector(selectError);
 
   const [formData, setFormData] = useState({
     DepartmentName: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchDepartmentData());
+  }, [dispatch]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,11 +53,14 @@ const Department = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await dispatch(createDepartmentData(formData));
-      setFormData({ DepartmentName: "" }); // Reset form fields after submission if needed
+      setFormData({ DesignationName: "" }); // Reset form fields after submission if needed
+      dispatch(fetchDepartmentData())
+      handleClose();
     } catch (error) {
       console.error("Error creating department:", error);
     }
@@ -58,7 +69,7 @@ const Department = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>  
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
         <div style={{ padding: "10px", border: "1px solid black" }}>
           <div
             style={{
@@ -69,7 +80,7 @@ const Department = () => {
             }}
           >
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Department Data
+              Designation Data
             </Typography>
 
             <Button
@@ -81,18 +92,19 @@ const Department = () => {
                 padding: "8px 16px",
               }}
             >
-              CREATE NEW DEPARTMENT
+              CREATE NEW DESIGNATION
             </Button>
           </div>
-          <ViewDepartmentData />
+          <ViewDepartmentData
+           departments={departments}
+          //  isLoading={isLoading} 
+          //  error={error}
+           
+           />
         </div>
-
-
-
-
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
-            NEW DEPARTMENT
+            NEW DESIGNATION
           </DialogTitle>
           <IconButton
             aria-label="close"
@@ -111,7 +123,7 @@ const Department = () => {
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3} className="mt-2">
                   <Grid item md={12}>
-                    <TextField
+                  <TextField
                       label="DepartmentName"
                       variant="outlined"
                       name="DepartmentName"
@@ -122,6 +134,7 @@ const Department = () => {
                     />
                   </Grid>
                 </Grid>
+
                 <div
                   style={{
                     display: "flex",
@@ -140,7 +153,6 @@ const Department = () => {
                   </Button>
                 </div>
               </form>
-              {error && <div>Error: {error.message}</div>}
             </div>
           </DialogContent>
         </Dialog>
@@ -149,22 +161,4 @@ const Department = () => {
   );
 };
 
-export default Department;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default Deapartment;
