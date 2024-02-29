@@ -28,7 +28,8 @@ const useStyles = makeStyles({
 const ViewDepartmentData = ({ departments = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
-
+  // Ensure designationData is initialized as an array
+  departments = Array.isArray(departments) ? departments : [];
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = departments.slice(indexOfFirstItem, indexOfLastItem);

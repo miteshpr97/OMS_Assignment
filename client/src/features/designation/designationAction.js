@@ -39,7 +39,7 @@ export const deleteDesignationData = createAsyncThunk(
   "designation/deleteDesignationData",
   async (DesignationID) => {
     try {
-      const url = `http://localhost:3306/api/designationdelete/${DesignationID}`;
+      const url = `http://localhost:3306/api/designation/delete/${DesignationID}`;
       const response = await axios.delete(url);
       return response.data;
     } catch (error) {

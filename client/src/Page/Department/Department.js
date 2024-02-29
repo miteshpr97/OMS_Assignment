@@ -17,10 +17,7 @@ import {
   createDepartmentData,
   fetchDepartmentData,
 } from "../../features/department/departmentActions";
-import {
-  selectDepartments,
-  
-} from "../../features/department/departmentSlice";
+import { selectDepartments } from "../../features/department/departmentSlice";
 
 import ViewDepartmentData from "./ViewDepartmentData";
 
@@ -53,13 +50,12 @@ const Deapartment = () => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await dispatch(createDepartmentData(formData));
       setFormData({ DesignationName: "" }); // Reset form fields after submission if needed
-      dispatch(fetchDepartmentData())
+      dispatch(fetchDepartmentData());
       handleClose();
     } catch (error) {
       console.error("Error creating department:", error);
@@ -96,11 +92,10 @@ const Deapartment = () => {
             </Button>
           </div>
           <ViewDepartmentData
-           departments={departments}
-          //  isLoading={isLoading} 
-          //  error={error}
-           
-           />
+            departments={departments}
+            //  isLoading={isLoading}
+            //  error={error}
+          />
         </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
@@ -123,7 +118,7 @@ const Deapartment = () => {
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3} className="mt-2">
                   <Grid item md={12}>
-                  <TextField
+                    <TextField
                       label="DepartmentName"
                       variant="outlined"
                       name="DepartmentName"
