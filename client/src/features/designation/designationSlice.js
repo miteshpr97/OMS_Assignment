@@ -45,7 +45,7 @@ const designationSlice = createSlice({
       })
       .addCase(deleteDesignationData.fulfilled, (state, action) => {
         state.loading = false;
-        state.designationData = state.designationData.filter(designation => designation.id !== action.payload.id);
+        state.designationData = state.designationData.filter(designation => designation.DesignationID !== action.payload.DesignationID);
       })
       .addCase(deleteDesignationData.rejected, (state, action) => {
         state.loading = false;
