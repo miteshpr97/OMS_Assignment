@@ -214,21 +214,23 @@ exports.insertMultipleWorkGroup = async (req, res) => {
 
 exports.getAllWorkGroupEmployeesData = async (req, res) => {
   const query = `
-    SELECT 
-        w.*, 
-        e1.FirstName AS Assigner_FirstName, 
-        e1.LastName AS Assigner_LastName,
-        e2.FirstName AS Assignee_FirstName,
-        e2.LastName AS Assignee_LastName,
-        d.DepartmentName AS Department_Name
-    FROM 
-        tb_workGroup AS w
-    INNER JOIN 
-        tb_employee AS e1 ON w.EmployeeID_Assigner = e1.EmployeeID
-    INNER JOIN
-        tb_employee AS e2 ON w.EmployeeID_AssignTo = e2.EmployeeID
-    INNER JOIN
-        tb_department AS d ON w.DepartmentID_AssignTo = d.DepartmentID;
+  SELECT 
+  w.*, 
+  e1.FirstName AS Assigner_FirstName, 
+  e1.LastName AS Assigner_LastName,
+  e2.FirstName AS Assignee_FirstName,
+  e2.LastName AS Assignee_LastName,
+  e1.Employee_Profile AS Assigner_Profile,
+  e2.Employee_Profile AS Assignee_Profile,
+  d.DepartmentName AS Department_Name
+FROM 
+  tb_workGroup AS w
+INNER JOIN 
+  tb_employee AS e1 ON w.EmployeeID_Assigner = e1.EmployeeID
+INNER JOIN
+  tb_employee AS e2 ON w.EmployeeID_AssignTo = e2.EmployeeID
+INNER JOIN
+  tb_department AS d ON w.DepartmentID_AssignTo = d.DepartmentID;
   `;
 
   try {

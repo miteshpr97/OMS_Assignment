@@ -6,9 +6,9 @@ exports.getAllEmployees = async (req, res) => {
   try {
     const query = `
       SELECT
-        e.*, u.Role, u.Username , d.DepartmentName, d2.DesignationName
+        e.*,d.DepartmentName, d2.DesignationName
       FROM
-        tb_employee as e INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
+        tb_employee as e 
       INNER JOIN 
         tb_department as d ON e.DepartmentID = d.DepartmentID 
       INNER JOIN 
