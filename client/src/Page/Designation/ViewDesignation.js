@@ -1,141 +1,138 @@
-
-import React, { useEffect, useState } from "react";
-
+import React, { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Pagination,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { makeStyles } from "@material-ui/core/styles";
+import EditDesignationModel from "./EditDesignationModel";
 
-const ViewDesignation = () => {
-  const [tableData, setTableData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+const useStyles = makeStyles({
+  tableRow: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: "#f2f2f2",
+    },
+  },
+  tableCell: {
+    border: "1px solid #dddddd",
+    padding: 8,
+  },
+  tableHeadCell: {
+    backgroundColor: "#5c7c77", // Set the background color of TableHead cells to blue
+    color: "white", // Set the text color to white for better contrast
+    border: "1px solid #dddddd",
+    padding: 8,
+  },
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
+  },
+});
+
+const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedDesignationData, setSelectedDesignationData] = useState(null);
 
-  // fetching data to below table
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = "http://localhost:3306/api/designation";
-        const response = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
 
-        const result = await response.json();
-        const reversedData = result.reverse();
-        setTableData(reversedData);
-        setFilteredData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  designationData = Array.isArray(designationData) ? designationData : [];
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = designationData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const totalPages = Math.ceil(designationData.length / itemsPerPage);
 
-  // delete btn
-  const handleDelete = async (DesignationID) => {
-    // Display a confirmation dialog
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
-    if (!confirmDelete) {
-      // If the user clicks "Cancel" in the confirmation dialog, do nothing
-      return;
-    }
+  const classes = useStyles();
 
-    try {
-      const apiUrl = `http://localhost:3306/api/designation/delete/${DesignationID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
 
-      if (response.ok) {
-        // Remove the deleted item from both data and filteredData arrays
-        setFilteredData((prevData) =>
-          prevData.filter((item) => item.DesignationID !== DesignationID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+  const handleEditClick = (designation) => {
+    setIsEditModalOpen(true);
+    setSelectedDesignationData(designation);
+    
   };
 
   return (
-
-   
-      <div className="Department-table">
-        <div
-          style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
-        >
-          <table className="table table-striped table-bordered">
-            <thead style={{ fontSize: "15px" }}>
-              <tr>
-                <th>Designation ID</th>
-                <th>Designation Name</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody style={{ fontSize: "13px" }}>
-              {currentItems.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.DesignationID}</td>
-                  <td>{item.DesignationName}</td>
-                  <td
-                    style={{
-                      color: "#055f85",
-
-                      cursor: "pointer",
-                    }}
-                  >
-                    <EditNoteIcon />
-                  </td>
-                  <td
-                    style={{
-                      color: "red",
-
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleDelete(item.DesignationID)}
+    <div className="Department-table">
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
+      >
+        <Table aria-label="striped bordered table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableHeadCell}>
+                Designation ID
+              </TableCell>
+              <TableCell className={classes.tableHeadCell}>
+                Designation Name
+              </TableCell>
+              <TableCell className={classes.tableHeadCell}>Edit</TableCell>
+              <TableCell className={classes.tableHeadCell}>Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentItems.map((item) => (
+              <TableRow key={item.DesignationID} className={classes.tableRow}>
+                <TableCell className={classes.tableCell}>
+                  {item.DesignationID}
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  {item.DesignationName}
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton className={classes.editButton}>
+                    <EditNoteIcon
+                     onClick={() => handleEditClick(item)}
+                    />
+                  </IconButton>
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton
+                    className={classes.deleteButton}
+                    onClick={() => handleDeleteDesignation(item.DesignationID)}
                   >
                     <DeleteIcon />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-        {/* Pagination */}
-        <ul className="pagination">
-          {Array.from(
-            { length: Math.ceil(filteredData.length / itemsPerPage) },
-            (_, index) => (
-              <li key={index} className="page-item">
-                <button
-                  onClick={() => paginate(index + 1)}
-                  className="page-link"
-                >
-                  {index + 1}
-                </button>
-              </li>
-            )
-          )}
-        </ul>
-      </div>
+      {/* Pagination */}
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        variant="outlined"
+        shape="rounded"
+        size="large"
+        style={{ marginTop: "20px", display: "flex" }}
+      />
 
+      <EditDesignationModel
+        isOpen={isEditModalOpen}
+        handleClose={() => setIsEditModalOpen(false)}
+        designation={selectedDesignationData}
+      />
+    </div>
   );
 };
 

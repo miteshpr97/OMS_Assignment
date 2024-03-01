@@ -87,7 +87,7 @@ const RegisterPage = () => {
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <div style={{ border: "1px solid #5c7c77" }}>
+        <div style={{ border:"2px solid #dddddd"}}>
           <div
             style={{
               backgroundColor: successMessage

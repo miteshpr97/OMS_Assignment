@@ -1,143 +1,133 @@
-import React, { useState, useEffect } from "react";
+// ViewDepartmentData.js
+import React, { useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Pagination,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { Typography } from "@mui/material";
-import Pagination from "@mui/material/Pagination";
-import EditDepartmentDialog from "./EditDepartmentDialog";
+import { makeStyles } from "@material-ui/core/styles";
+import EditDepartmentModel from "./EditDepartmentModel";
 
-const ViewDepartmentData = () => {
-  const [tableData, setTableData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+const useStyles = makeStyles({
+  tableRow: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: "#f2f2f2",
+    },
+  },
+  tableCell: {
+    border: "1px solid #dddddd",
+    padding: 8,
+  },
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
+  },
+  tableHeadCell: {
+    backgroundColor: "#5c7c77", 
+    color: "white", 
+    border: "1px solid #dddddd",
+    padding: 8,
+  },
+});
+
+const ViewDepartmentData = ({ departments, handleDeleteDepartment, }) => {
+  const classes = useStyles();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedDepartmentData, setSelectedDepartmentData] = useState(null);
 
-  // fetching data to below table
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = "http://localhost:3306/api/department";
-        const response = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const result = await response.json();
-        const reversedData = result.reverse();
-        setTableData(reversedData);
-        setFilteredData(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  departments = Array.isArray(departments) ? departments : [];
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = departments.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const totalPages = Math.ceil(departments.length / itemsPerPage);
 
-  // delete btn
-  const handleDelete = async (DepartmentID) => {
-    // Display a confirmation dialog
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-
-    if (!confirmDelete) {
-      // If the user clicks "Cancel" in the confirmation dialog, do nothing
-      return;
-    }
-
-    try {
-      const apiUrl = `http://localhost:3306/api/department/delete/${DepartmentID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        // Remove the deleted item from both data and filteredData arrays
-        setFilteredData((prevData) =>
-          prevData.filter((item) => item.DepartmentID !== DepartmentID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
-  const handleEdit = (department) => {
-    setSelectedDepartment(department);
-    setOpenEditDialog(true);
-  };
-
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
-    setSelectedDepartment(null);
+  const handleEditClick = (department) => {
+    setIsEditModalOpen(true);
+    setSelectedDepartmentData(department);
   };
 
   return (
-    <div className="Department-table">
-     
-      <div style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
-        <table className="table table-striped table-bordered">
-          <thead style={{ fontSize: "15px" }}>
-            <tr>
-              <th>Department ID</th>
-              <th>Department Name</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody style={{ fontSize: "13px" }}>
+    <div>
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
+      >
+        <Table aria-label="department table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableHeadCell}>
+                Department ID
+              </TableCell>
+              <TableCell className={classes.tableHeadCell}>
+                Department Name
+              </TableCell>
+              <TableCell className={classes.tableHeadCell}>Edit</TableCell>
+              <TableCell className={classes.tableHeadCell}>Delete</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {currentItems.map((item) => (
-              <tr key={item._id}>
-                <td>{item.DepartmentID}</td>
-                <td>{item.DepartmentName}</td>
-                <td
-                  style={{
-                    color: "#055f85",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => handleEdit(item)}
-                >
-                  <EditNoteIcon />
-                </td>
-                <td
-                  style={{
-                    color: "red",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => handleDelete(item.DepartmentID)}
-                >
-                  <DeleteIcon />
-                </td>
-              </tr>
+              <TableRow key={item.DepartmentID} className={classes.tableRow}>
+                <TableCell className={classes.tableCell}>
+                  {item.DepartmentID}
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  {item.DepartmentName}
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton className={classes.editButton}>
+                    <EditNoteIcon
+                      onClick={() => handleEditClick(item)}
+                    />
+                  </IconButton>
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  <IconButton
+                    className={classes.deleteButton}
+                    onClick={() => handleDeleteDepartment(item.DepartmentID)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </TableContainer>
 
+      {/* Pagination */}
       <Pagination
-        count={Math.ceil(filteredData.length / itemsPerPage)}
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
         variant="outlined"
         shape="rounded"
-        onChange={(event, page) => paginate(page)}
+        size="large"
+        style={{ marginTop: "20px", display: "flex" }}
       />
 
-      <EditDepartmentDialog
-        open={openEditDialog}
-        handleClose={handleCloseEditDialog}
-        department={selectedDepartment}
+      <EditDepartmentModel
+        isOpen={isEditModalOpen}
+        handleClose={() => setIsEditModalOpen(false)}
+        department={selectedDepartmentData}
+       
       />
     </div>
   );

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Modal, Button, Table, Tab, Tabs, Pagination } from 'react-bootstrap';
 import { format } from 'date-fns';
 import { Typography } from "@mui/material";
-import './Assignment.css';
+import "./Assignment.css";
 
 const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
   const [tableData, setTableData] = useState([]);

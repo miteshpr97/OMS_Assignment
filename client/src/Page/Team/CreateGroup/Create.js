@@ -199,7 +199,7 @@ const Create = () => {
             marginTop: "10px",
             padding: "20px",
             backgroundColor: "whitesmoke",
-            border: "1px solid black",
+            border: "2px solid #dddddd",
             height: "450px",
             width: "auto",
           }}
@@ -355,7 +355,7 @@ const Create = () => {
             backgroundColor: "whitesmoke",
             height: "450px",
             marginTop: "40px",
-            border: "1px solid black",
+            border: "2px solid #dddddd",
           }}
         >
           <SelectedEmployeesTable
@@ -369,7 +369,7 @@ const Create = () => {
             backgroundColor: "whitesmoke",
             height: "450px",
             marginTop: "40px",
-            border: "1px solid black",
+            border: "2px solid #dddddd",
           }}
         >
           <WorkGroup
