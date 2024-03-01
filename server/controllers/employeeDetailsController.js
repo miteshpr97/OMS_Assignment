@@ -5,14 +5,18 @@ const { queryAsync } = require("../db");
 exports.getAllEmployees = async (req, res) => {
   try {
     const query = `
-      SELECT
-        e.*,d.DepartmentName, d2.DesignationName
-      FROM
+      SELECT 
+        e.*, 
+        d.DepartmentName, 
+        d2.DesignationName
+      FROM 
         tb_employee as e 
       INNER JOIN 
         tb_department as d ON e.DepartmentID = d.DepartmentID 
       INNER JOIN 
-        tb_designation as d2 ON e.DesignationID = d2.DesignationID; `;
+        tb_designation as d2 ON e.DesignationID = d2.DesignationID
+      ORDER BY
+        e.EmployeeID; `;
     const results = await queryAsync(query);
     res.status(200).json(results);
   } catch (error) {
