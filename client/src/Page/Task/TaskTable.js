@@ -422,11 +422,7 @@ const TaskTable = () => {
   });
 
   return (
-    <div className="assignment-table">
-      <Typography variant="h5" style={{ fontWeight: "500" }}>
-        Task Data
-      </Typography>
-
+    <div className="viewTask-table">
       <Tabs
         value={filter}
         onChange={(event, newValue) => setFilter(newValue)}

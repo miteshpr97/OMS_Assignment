@@ -380,7 +380,7 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
   return (
     <div className="assignment-table">
       <Typography variant="h5" style={{ fontWeight: '500' }}>
-        Assignment Data
+       Given Assignment Data
       </Typography>
 
       <div className="p-2">

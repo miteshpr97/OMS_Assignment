@@ -471,10 +471,16 @@ import {
 } from "@mui/material";
 import "./ViewAssignment.css";
 import TaskDialog from "./Task";
+import { styled } from '@mui/material/styles';
+
+const StyledTableHead = styled(TableHead)({
+  background: '#055f85',
+  color: 'white',
+});
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
-  const [activeTab, setActiveTab] = useState("Pending");
+  const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState(null);
   const itemsPerPage = 20;
@@ -522,6 +528,12 @@ const ViewAssignment = () => {
     setCurrentPage(1);
   };
 
+  // const filterDataByTab = () => {
+  //   return activeTabData === "Assignment"
+  //     ? assignmentData.filter((item) => item.AssignmentStatus === activeTab)
+  //     : [];
+  // };
+
   const filterDataByTab = () => {
     if (activeTab === 'All') {
       return assignmentData;
@@ -551,18 +563,19 @@ const ViewAssignment = () => {
     handleTaskDialogClose(); // Close the dialog after task creation
   };
 
+
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <Typography style={{ textTransform: "capitalize", fontSize: "1.2rem" }}>
+        {/* <Typography style={{ textTransform: "capitalize", fontSize: "1.2rem" }}>
           {userDatas.FirstName} {userDatas.LastName}
-        </Typography>
+        </Typography> */}
 
-        <div className="assignment-table">
+        <div className="viewAssignment-table">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Assignment Data
+              My Assignment Data
             </Typography>
             <Button
               onClick={handleTaskDialogOpen}
@@ -573,7 +586,7 @@ const ViewAssignment = () => {
                 padding: "8px 16px",
               }}
             >
-              CREATE Task
+              CREATE TASK
             </Button>
           </div>
           <Tabs
@@ -657,10 +670,13 @@ const TableComponent = ({ data }) => {
     }
   };
 
+  
+
+
   return (
     <div>
       <Table size="small">
-        <TableHead>
+      <TableHead className="customTableHead">
           <TableRow>
             <TableCell>Assignment ID</TableCell>
             <TableCell>Assigner</TableCell>
@@ -671,7 +687,7 @@ const TableComponent = ({ data }) => {
             <TableCell>Priority</TableCell>
             <TableCell>Add</TableCell>
           </TableRow>
-        </TableHead>
+          </TableHead>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index}>

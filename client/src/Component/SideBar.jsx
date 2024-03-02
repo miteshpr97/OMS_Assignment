@@ -60,10 +60,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   height: 90, // Set the minimum height to 140px
 
   backgroundImage: `url(${logo})`, // Set the logo as the background image
-  backgroundSize: "90px auto",
+  backgroundSize: "65px auto",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
- 
 }));
 
 

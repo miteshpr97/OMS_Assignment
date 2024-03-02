@@ -4,10 +4,10 @@ import logo from '../../assets/images/OWM_White.png';
 
 function HeaderSignIn() {
   return (
-    <div className="signup-header p-2" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor:'#055f85', height:"74px" }}>
+    <div className="signup-header p-2" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor:'#055f85', height:"66px" }}>
       <div className="logo">
         <Link to={"/"}>
-          <img src={logo} alt="logo" height='70px' style={{ backgroundSize:"140px auto"}}/>
+          <img src={logo} alt="logo" height='60px' style={{ backgroundSize:"140px auto"}}/>
         </Link>
       </div>
       <Link to={"/signuppage"} style={{ textDecoration: "none" }}>

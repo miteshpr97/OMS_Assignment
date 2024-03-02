@@ -75,7 +75,7 @@ const NewDesignation = () => {
     <Box >
     
    
-        <div style={{ padding: "10px", border: "1px solid black" }}>
+        <div style={{ padding: "10px", border: "2px solid #dddddd" }}>
           <div
             style={{
               display: "flex",
