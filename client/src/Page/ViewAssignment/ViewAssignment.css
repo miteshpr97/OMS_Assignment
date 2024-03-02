@@ -12,6 +12,13 @@
     background-color: rgb(240, 240, 240);
   }
 
+  .viewAssignment-table{
+   
+    padding: 10px;
+    background-color: rgb(240, 240, 240);
+  }
+
+
 
 /* Add this style to your Assignment.css file or wherever you manage your CSS */
 .small-table {
