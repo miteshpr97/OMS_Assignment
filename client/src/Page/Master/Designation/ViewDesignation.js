@@ -16,29 +16,27 @@ import { makeStyles } from "@material-ui/core/styles";
 import EditDesignationModel from "./EditDesignationModel";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
   tableRow: {
     "&:nth-of-type(odd)": {
       backgroundColor: "#f2f2f2",
     },
-    fontSize:"0.5rem"
   },
   tableCell: {
     border: "1px solid #dddddd",
     padding: 8,
-    
-  
   },
   tableHeadCell: {
     backgroundColor: "#055f85", // Set the background color of TableHead cells to blue
     color: "white", // Set the text color to white for better contrast
     border: "1px solid #dddddd",
     padding: 8,
-  
   },
- 
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
+  },
 });
 
 const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
@@ -139,5 +137,3 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
 };
 
 export default ViewDesignation;
-
-

@@ -306,7 +306,7 @@ export default function Header({ open, handleDrawerOpen }) {
   };
 
   return (
-    <AppBar position="fixed" open={open} style={{ background: "#5c7c77" }}>
+    <AppBar position="fixed" open={open} style={{ background: "#055f85" }}>
       <Toolbar
         style={{ justifyContent: "space-between", alignItems: "center" }}
       >

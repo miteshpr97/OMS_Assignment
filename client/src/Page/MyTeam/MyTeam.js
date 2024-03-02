@@ -23,12 +23,6 @@ export default function MyTeam() {
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
 
-
-
-  console.log(assignedEmployees, "djldnkjdhhdkh")
-
-  console.log(assignedEmployees, "asif");
-
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
@@ -85,7 +79,6 @@ export default function MyTeam() {
       )
     : assignedEmployees;
 
-  
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -101,16 +94,20 @@ export default function MyTeam() {
             justifyContent: "space-between",
             alignItems: "center",
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          //  border:"1px solid black",
+            //  border:"1px solid black",
             backgroundColor: "white",
             color: "black",
-            padding:'0px 10px',
-            marginTop:"10px"
+            padding: "0px 10px",
+            marginTop: "10px",
           }}
         >
           <Typography
             variant="h5"
-            sx={{ textTransform: "capitalize", textAlign: "start" ,fontWeight: "500" }}
+            sx={{
+              textTransform: "capitalize",
+              textAlign: "start",
+              fontWeight: "500",
+            }}
           >
             {userData && `${userData.FirstName} ${userData.LastName}`} Team's
           </Typography>
@@ -132,13 +129,17 @@ export default function MyTeam() {
               renderInput={(params) => (
                 <TextField {...params} label="Department" />
               )}
-              style={{ marginRight:"30px"}}
+              style={{ marginRight: "30px" }}
             />
             <Button
               component={Link}
               to="/assignment"
               variant="contained"
-              sx={{ backgroundColor: "#055f85", color: "#fff", margin:"10px 0px"}}
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                margin: "10px 0px",
+              }}
             >
               Create Assignment
             </Button>
@@ -166,8 +167,12 @@ export default function MyTeam() {
                 >
                   <CardMedia
                     component="img"
-                    image={profile}
-                    alt="profile"
+                    src={
+                      item.Assignee_Profile
+                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+                        : "" // Ensure that this URL construction is correct
+                    }
+                    alt="Employee Profile"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
                   />
                 </div>

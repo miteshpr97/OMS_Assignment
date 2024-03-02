@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tableHeaderCell: {
     fontWeight: "bold",
-    backgroundColor: "#44756d",
+    backgroundColor: "#055f85",
     color: theme.palette.getContrastText(theme.palette.primary.dark),
   },
   name: {
@@ -91,7 +91,7 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
               Designation
             </TableCell>
             <TableCell className={classes.tableHeaderCell}>
-              Department
+              Department / Project
             </TableCell>
             <TableCell className={classes.tableHeaderCell}>Status</TableCell>
             <TableCell className={classes.tableHeaderCell}>Action</TableCell>
@@ -117,10 +117,10 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
                 sx={{ textTransform: "capitalize" }}
               >{`${item.FirstName} ${item.LastName}`}</TableCell>
               <TableCell className={classes.name}>
-                {item.DesignationID}
+                {item.DesignationName}
               </TableCell>
               <TableCell className={classes.name}>
-                {item.DepartmentID}
+                {item.DepartmentName}
               </TableCell>
 
               <TableCell

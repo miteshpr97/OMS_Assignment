@@ -1,3 +1,4 @@
+// ViewDepartmentData.js
 import React, { useState } from "react";
 import {
   Table,
@@ -13,76 +14,69 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { makeStyles } from "@material-ui/core/styles";
-import EditDesignationModel from "./EditDesignationModel";
+import EditDepartmentModel from "./EditDepartmentModel";
 
 const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
   tableRow: {
     "&:nth-of-type(odd)": {
       backgroundColor: "#f2f2f2",
     },
-    fontSize:"0.5rem"
   },
   tableCell: {
     border: "1px solid #dddddd",
     padding: 8,
-    
-  
+  },
+  editButton: {
+    color: "#055f85",
+  },
+  deleteButton: {
+    color: "red",
   },
   tableHeadCell: {
-    backgroundColor: "#055f85", // Set the background color of TableHead cells to blue
-    color: "white", // Set the text color to white for better contrast
+    backgroundColor: "#055f85", 
+    color: "white", 
     border: "1px solid #dddddd",
     padding: 8,
-  
   },
- 
 });
 
-const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
+const ViewDepartmentData = ({ departments, handleDeleteDepartment, }) => {
+  const classes = useStyles();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedDesignationData, setSelectedDesignationData] = useState(null);
+  const [selectedDepartmentData, setSelectedDepartmentData] = useState(null);
 
-
-  designationData = Array.isArray(designationData) ? designationData : [];
-
+  departments = Array.isArray(departments) ? departments : [];
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = designationData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = departments.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(designationData.length / itemsPerPage);
+  const totalPages = Math.ceil(departments.length / itemsPerPage);
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
-  const classes = useStyles();
-
-
-  const handleEditClick = (designation) => {
+  const handleEditClick = (department) => {
     setIsEditModalOpen(true);
-    setSelectedDesignationData(designation);
-    
+    setSelectedDepartmentData(department);
   };
 
   return (
-    <div className="Department-table">
+    <div>
       <TableContainer
         component={Paper}
-        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
+        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px",  }}
       >
-        <Table aria-label="striped bordered table">
+        <Table aria-label="department table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableHeadCell}>
-                Designation ID
+                Department ID
               </TableCell>
               <TableCell className={classes.tableHeadCell}>
-                Designation Name
+                Department Name
               </TableCell>
               <TableCell className={classes.tableHeadCell}>Edit</TableCell>
               <TableCell className={classes.tableHeadCell}>Delete</TableCell>
@@ -90,24 +84,24 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
           </TableHead>
           <TableBody>
             {currentItems.map((item) => (
-              <TableRow key={item.DesignationID} className={classes.tableRow}>
+              <TableRow key={item.DepartmentID} className={classes.tableRow}>
                 <TableCell className={classes.tableCell}>
-                  {item.DesignationID}
+                  {item.DepartmentID}
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  {item.DesignationName}
+                  {item.DepartmentName}
                 </TableCell>
                 <TableCell className={classes.tableCell}>
                   <IconButton className={classes.editButton}>
                     <EditNoteIcon
-                     onClick={() => handleEditClick(item)}
+                      onClick={() => handleEditClick(item)}
                     />
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
                   <IconButton
                     className={classes.deleteButton}
-                    onClick={() => handleDeleteDesignation(item.DesignationID)}
+                    onClick={() => handleDeleteDepartment(item.DepartmentID)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -129,15 +123,14 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
         style={{ marginTop: "20px", display: "flex" }}
       />
 
-      <EditDesignationModel
+      <EditDepartmentModel
         isOpen={isEditModalOpen}
         handleClose={() => setIsEditModalOpen(false)}
-        designation={selectedDesignationData}
+        department={selectedDepartmentData}
+       
       />
     </div>
   );
 };
 
-export default ViewDesignation;
-
-
+export default ViewDepartmentData;
