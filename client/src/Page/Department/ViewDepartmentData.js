@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Pagination } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -14,63 +14,43 @@ const useStyles = makeStyles({
   tableCell: {
     border: '1px solid #dddddd',
     padding: 8,
-
   },
   tableHeadCell: {
-    backgroundColor: '#5c7c77', // Set the background color of TableHead cells to blue
-    color: 'white', // Set the text color to white for better contrast
+    backgroundColor: '#5c7c77',
+    color: 'white',
     border: '1px solid #dddddd',
     padding: 8,
   },
- 
 });
 
-const ViewDepartmentData = ({ departments = [] }) => {
+const ViewDepartmentData = ({ departments, handleDeleteDesignation }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
-  // Ensure designationData is initialized as an array
   departments = Array.isArray(departments) ? departments : [];
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = departments.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(departments.length / itemsPerPage);
 
+  const classes = useStyles();
+
+  useEffect(() => {
+    // Reset TableContainer's height when data changes
+    const tableContainer = document.getElementById("department-table-container");
+    if (tableContainer) {
+      tableContainer.style.height = "auto";
+    }
+  }, [departments]);
+
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
-  const handleDelete = async (DepartmentID) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this item?");
-
-    if (!confirmDelete) {
-      return;
-    }
-
-    try {
-      const apiUrl = `http://localhost:3306/api/designation/delete/${DepartmentID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        // Remove the deleted item from both data and filteredData arrays
-        departments((prevData) =>
-          prevData.filter((item) => item.DepartmentID !== DepartmentID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
-  };
-
-  const classes = useStyles();
-
   return (
     <div className="Department-table">
-      <TableContainer component={Paper} style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
+      <TableContainer id="department-table-container" component={Paper} style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}>
         <Table aria-label="designation table">
           <TableHead>
             <TableRow>
@@ -86,12 +66,12 @@ const ViewDepartmentData = ({ departments = [] }) => {
                 <TableCell className={classes.tableCell}>{item.DepartmentID}</TableCell>
                 <TableCell className={classes.tableCell}>{item.DepartmentName}</TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton sx={{color:"#055f85"}}>
+                  <IconButton sx={{ color: "#055f85" }}>
                     <EditNoteIcon />
                   </IconButton>
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  <IconButton sx={{color:"red"}} onClick={() => handleDelete(item.DepartmentID)}>
+                  <IconButton sx={{ color: "red" }} onClick={() => handleDeleteDesignation(item.DepartmentID)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
