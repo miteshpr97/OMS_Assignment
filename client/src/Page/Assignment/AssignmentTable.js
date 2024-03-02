@@ -327,9 +327,8 @@
 
 
 
-
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Table, Tab, Tabs, Typography, Pagination } from '@mui/material';
+import { Modal, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tab, Tabs, Typography, Pagination } from '@mui/material';
 import { format } from 'date-fns';
 import "./Assignment.css";
 
@@ -426,43 +425,43 @@ const TableComponent = ({ data }) => {
 
   return (
     <div>
-      <Table size="small">
-        <thead>
-          <tr>
-            <th>Assignment ID</th>
-            <th>AssignTo</th>
-            <th>Assignment Description</th>
-            <th>Assign Date</th>
-            <th>Deadline Date</th>
-            <th>Status</th>
-            <th>Priority</th>
-            {/* <th>Type</th> */}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.AssignmentID}</td>
-              <td>{item.EmployeeID_AssignTo} - {item.Assignee_FirstName}</td>
-              <td
-                onClick={() => handleDescriptionClick(item.Assignment_Description)}
-                style={{ cursor: 'pointer' }}
-              >
-                {item.Assignment_Description.slice(0, 50)}
-              </td>
-              <td>{format(new Date(item.AssignDate), 'dd/MM/yyyy')}</td>
-              <td>{format(new Date(item.DeadlineDate), 'dd/MM/yyyy')}</td>
-              <td>
-                <span style={{ color: getStatusColor(item.AssignmentStatus) }}>
-                  {item.AssignmentStatus}
-                </span>
-              </td>
-              <td>{item.AssignmentPriority}</td>
-              {/* <td>{item.Type}</td> */}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Assignment ID</TableCell>
+              <TableCell>AssignTo</TableCell>
+              <TableCell>Assignment Description</TableCell>
+              <TableCell>Assign Date</TableCell>
+              <TableCell>Deadline Date</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Priority</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>{item.AssignmentID}</TableCell>
+                <TableCell>{item.EmployeeID_AssignTo} - {item.Assignee_FirstName}</TableCell>
+                <TableCell
+                  onClick={() => handleDescriptionClick(item.Assignment_Description)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {item.Assignment_Description.slice(0, 50)}
+                </TableCell>
+                <TableCell>{format(new Date(item.AssignDate), 'dd/MM/yyyy')}</TableCell>
+                <TableCell>{format(new Date(item.DeadlineDate), 'dd/MM/yyyy')}</TableCell>
+                <TableCell>
+                  <span style={{ color: getStatusColor(item.AssignmentStatus) }}>
+                    {item.AssignmentStatus}
+                  </span>
+                </TableCell>
+                <TableCell>{item.AssignmentPriority}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* Modal to display full description */}
       <Modal open={selectedDescription !== null} onClose={handleClose} style={{ marginTop: "60px" }}>
