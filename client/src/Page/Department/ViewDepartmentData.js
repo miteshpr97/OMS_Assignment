@@ -125,7 +125,7 @@ const ViewDepartmentData = ({ departments, handleDeleteDepartment, }) => {
         variant="outlined"
         shape="rounded"
         size="large"
-        style={{ marginTop: "20px", display: "flex" }}
+        style={{ marginTop: "20px", display: "flex", justifyContent:"flex-end" }}
       />
 
       <EditDepartmentModel
