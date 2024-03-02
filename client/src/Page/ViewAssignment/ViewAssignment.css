@@ -24,3 +24,9 @@
 .small-table {
   font-size: 0.9rem; /* Adjust the font size as needed */
 }
+
+
+.customTableHead {
+  background: #055f85;
+  color: white;
+}

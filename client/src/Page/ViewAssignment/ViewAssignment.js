@@ -764,10 +764,16 @@ import {
 } from "@mui/material";
 import "./ViewAssignment.css";
 import TaskDialog from "./Task";
+import { styled } from '@mui/material/styles';
+
+const StyledTableHead = styled(TableHead)({
+  background: '#055f85',
+  color: 'white',
+});
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
-  const [activeTab, setActiveTab] = useState("Pending");
+  const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState(null);
   const itemsPerPage = 20;
@@ -849,6 +855,7 @@ const ViewAssignment = () => {
     console.log("Creating task:", taskName);
     handleTaskDialogClose(); // Close the dialog after task creation
   };
+
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -958,10 +965,11 @@ const TableComponent = ({ data }) => {
 
   
 
+
   return (
     <div>
       <Table size="small">
-        <TableHead>
+      <TableHead className="customTableHead">
           <TableRow>
             <TableCell>Assignment ID</TableCell>
             <TableCell>Assigner</TableCell>
@@ -972,7 +980,7 @@ const TableComponent = ({ data }) => {
             <TableCell>Priority</TableCell>
             <TableCell>Add</TableCell>
           </TableRow>
-        </TableHead>
+          </TableHead>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index}>
