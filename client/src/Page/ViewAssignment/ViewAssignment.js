@@ -20,7 +20,7 @@ import TaskDialog from "./Task";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
-  const [activeTab, setActiveTab] = useState("Pending");
+  const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState(null);
   const itemsPerPage = 20;
@@ -68,11 +68,20 @@ const ViewAssignment = () => {
     setCurrentPage(1);
   };
 
+  // const filterDataByTab = () => {
+  //   return activeTabData === "Assignment"
+  //     ? assignmentData.filter((item) => item.AssignmentStatus === activeTab)
+  //     : [];
+  // };
+
   const filterDataByTab = () => {
-    return activeTabData === "Assignment"
-      ? assignmentData.filter((item) => item.AssignmentStatus === activeTab)
-      : [];
+    if (activeTab === "All") {
+      return assignmentData;
+    } else {
+      return assignmentData.filter((item) => item.AssignmentStatus === activeTab);
+    }
   };
+  
 
   const filteredItems = filterDataByTab();
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -99,14 +108,14 @@ const ViewAssignment = () => {
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <Typography style={{ textTransform: "capitalize", fontSize: "1.2rem" }}>
+        {/* <Typography style={{ textTransform: "capitalize", fontSize: "1.2rem" }}>
           {userDatas.FirstName} {userDatas.LastName}
-        </Typography>
+        </Typography> */}
 
-        <div className="assignment-table">
+        <div className="viewAssignment-table">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Assignment Data
+              My Assignment Data
             </Typography>
             <Button
               onClick={handleTaskDialogOpen}
@@ -117,7 +126,7 @@ const ViewAssignment = () => {
                 padding: "8px 16px",
               }}
             >
-              CREATE Task
+              CREATE TASK
             </Button>
           </div>
           <Tabs
@@ -138,6 +147,7 @@ const ViewAssignment = () => {
             indicatorColor="primary"
             textColor="primary"
           >
+            <Tab label="All" value="All" />
             <Tab label="Pending" value="Pending" />
             <Tab label="Progress" value="Progress" />
             <Tab label="Completed" value="Completed" />
@@ -195,6 +205,8 @@ const TableComponent = ({ data }) => {
       console.error("Error updating task:", error);
     }
   };
+
+  
 
   return (
     <div>

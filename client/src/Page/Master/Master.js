@@ -13,7 +13,7 @@ export default function Master() {
         <div>
         <Department/>
         </div>
-        <div>
+        <div style={{marginTop:"40px"}}>
        <NewDesignation/>
         </div>
         
