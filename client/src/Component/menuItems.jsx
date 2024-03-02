@@ -18,11 +18,12 @@ export const menuItems = [
   // { text: "View Employee", icon: <TableRowsIcon/>, path: "/viewEmployee"},
   { text: "Department", icon: <ViewListIcon/>, path: "/Department"},
   { text: "Designation", icon: <ViewListIcon/>, path: "/newdesignation"},
+  { text: "Master", icon: <ViewListIcon/>, path: "/master"},
   { text: "Team", icon: <GroupsIcon/>, path: "/team" },
   { text: "My Team", icon: <GroupsIcon/>, path: "/myteam" },
   { text: "Assignment", icon: <AssignmentIcon />, path: "/assignment" },
   { text: "MY Task", icon: <AssignmentIcon />, path: "/view-assignment" },
-  { text: "Task", icon: <AddCircleIcon />, path: "/Newtask" },
+  { text: "Report", icon: <AddCircleIcon />, path: "/Newtask" },
   { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
 
 ];

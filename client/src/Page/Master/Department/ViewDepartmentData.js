@@ -67,7 +67,7 @@ const ViewDepartmentData = ({ departments, handleDeleteDepartment, }) => {
     <div>
       <TableContainer
         component={Paper}
-        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
+        style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px",  }}
       >
         <Table aria-label="department table">
           <TableHead>

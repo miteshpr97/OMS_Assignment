@@ -39,7 +39,7 @@ const SelectedEmployeesTable = ({
       >
         <Table aria-label="employee table">
           <TableHead>
-            <TableRow style={{ backgroundColor: "#44756d" }}>
+            <TableRow style={{ backgroundColor: "#055f85" }}>
               <TableCell style={{ fontWeight: "bold", color: "white" }}>
                 Employee ID
               </TableCell>

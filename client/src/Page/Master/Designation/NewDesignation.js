@@ -1,4 +1,18 @@
+
+
+
+
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createDesignationData,
+  fetchDesignationData,
+  deleteDesignationData
+} from "../../features/designation/designationAction";
+import {
+  selectdesignationData
+} from "../../features/designation/designationSlice";
+
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -10,33 +24,22 @@ import {
   DialogTitle,
   Grid,
   TextField,
-} from "@mui/material"; // Import IconButton
-import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
-import { useDispatch, useSelector } from "react-redux";
-import {
-  createDepartmentData,
-  fetchDepartmentData,
-  deleteDepartmentData
-} from "../../features/department/departmentActions";
-import { selectDepartments } from "../../features/department/departmentSlice";
+} from "@mui/material"; 
+import CloseIcon from "@mui/icons-material/Close"; 
+import ViewDesignation from "./ViewDesignation";
 
-import ViewDepartmentData from "./ViewDepartmentData";
-
-const Deapartment = () => {
+const NewDesignation = () => {
   const dispatch = useDispatch();
-  const departments = useSelector(selectDepartments);
-  // const Loading = useSelector(selectLoading);
-  // const error = useSelector(selectError);
+  const designationData = useSelector(selectdesignationData);
 
   const [formData, setFormData] = useState({
-    DepartmentName: "",
+    DesignationName: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchDepartmentData());
+    dispatch(fetchDesignationData());
   }, [dispatch]);
 
   const handleClickOpen = () => {
@@ -47,36 +50,38 @@ const Deapartment = () => {
     setOpen(false);
   };
 
-  const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await dispatch(createDepartmentData(formData));
-      setFormData({ DesignationName: "" }); // Reset form fields after submission if needed
-      dispatch(fetchDepartmentData());
+      await dispatch(createDesignationData(formData));
+      setFormData({ DesignationName: "" });
+      dispatch(fetchDesignationData());
       handleClose();
     } catch (error) {
       console.error("Error creating department:", error);
     }
   };
 
-  const handleDeleteDesignation = async (DepartmentID) => {
+  const handleDeleteDesignation = async (DesignationID) => {
     try {
-      await dispatch(deleteDepartmentData(DepartmentID));
-      console.log(DepartmentID)
-      dispatch(fetchDepartmentData());
+      await dispatch(deleteDesignationData(DesignationID));
+      console.log(DesignationID)
+      dispatch(fetchDesignationData());
     } catch (error) {
       console.error("Error deleting designation:", error);
     }
   };
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <SideBar />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        <div style={{ padding: "10px", border: "2px solid #dddddd" }}>
+    <Box sx={{ display: "" }}>
+    
+   
+        <div style={{ padding: "10px", border: "1px solid black" }}>
           <div
             style={{
               display: "flex",
@@ -86,7 +91,7 @@ const Deapartment = () => {
             }}
           >
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Department Data
+              Designation Data
             </Typography>
 
             <Button
@@ -101,10 +106,8 @@ const Deapartment = () => {
               CREATE NEW DESIGNATION
             </Button>
           </div>
-          <ViewDepartmentData
-            departments={departments}
-            //  isLoading={isLoading}
-            //  error={error}
+          <ViewDesignation
+            designationData={designationData}
             handleDeleteDesignation={handleDeleteDesignation}
           />
         </div>
@@ -127,16 +130,18 @@ const Deapartment = () => {
           <DialogContent>
             <div className="New-departmemt">
               <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
+                <Grid container spacing={3} >
                   <Grid item md={12}>
                     <TextField
-                      label="DepartmentName"
+                      type="text"
+                      label="Designation Name"
                       variant="outlined"
-                      name="DepartmentName"
-                      value={formData.DepartmentName}
-                      onChange={handleChange}
+                      name="DesignationName"
+                      value={formData.DesignationName}
+                      onChange={handleInputChange}
                       fullWidth
-                      margin="normal"
+                      size="medium"
+                      required
                     />
                   </Grid>
                 </Grid>
@@ -162,9 +167,9 @@ const Deapartment = () => {
             </div>
           </DialogContent>
         </Dialog>
-      </Box>
+
     </Box>
   );
 };
 
-export default Deapartment;
+export default NewDesignation;

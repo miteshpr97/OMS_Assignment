@@ -17,6 +17,7 @@ import Create from "./Page/Team/CreateGroup/Create";
 import ViewEmployee from "./Page/viewEmployee/ViewEmployee";
 import Department from "./Page/Department/Department";
 import NewDesignation from "./Page/Designation/NewDesignation";
+import Master from "./Page/Master/Master";
 import NewAssignment from "./Page/Assignment/NewAssignment";
 import ViewAssignment from "./Page/ViewAssignment/ViewAssignment";
 
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/viewEmployee" element={<ViewEmployee />}></Route>
           <Route path="/Department" element={<Department />}></Route>
           <Route path="/newdesignation" element={<NewDesignation />} />
+          <Route path="/master" element={<Master/>} />
           <Route path="/newdesignation" element={<NewDesignation />}></Route>
           <Route path="/team" element={<TeamMember />}></Route>
           <Route path="/myteam" element={<MyTeam/>}></Route>

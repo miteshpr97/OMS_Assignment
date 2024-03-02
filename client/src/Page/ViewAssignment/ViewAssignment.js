@@ -16,6 +16,7 @@ import {
   Pagination,
 } from "@mui/material";
 import "./ViewAssignment.css";
+import TaskDialog from "./Task";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -25,6 +26,7 @@ const ViewAssignment = () => {
   const itemsPerPage = 20;
   const userDatas = JSON.parse(sessionStorage.getItem("userData"));
   const [activeTabData, setActiveTabData] = useState("Assignment");
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -79,6 +81,20 @@ const ViewAssignment = () => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const handleTaskDialogOpen = () => {
+    setIsTaskDialogOpen(true);
+  };
+
+  const handleTaskDialogClose = () => {
+    setIsTaskDialogOpen(false);
+  };
+
+  const handleCreateTask = (taskName) => {
+    // Implement your logic for creating a task
+    console.log("Creating task:", taskName);
+    handleTaskDialogClose(); // Close the dialog after task creation
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -88,10 +104,22 @@ const ViewAssignment = () => {
         </Typography>
 
         <div className="assignment-table">
-          <Typography variant="h5" style={{ fontWeight: "500" }}>
-            Assignment Data
-          </Typography>
-
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Typography variant="h5" style={{ fontWeight: "500" }}>
+              Assignment Data
+            </Typography>
+            <Button
+              onClick={handleTaskDialogOpen}
+              variant="contained"
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                padding: "8px 16px",
+              }}
+            >
+              CREATE Task
+            </Button>
+          </div>
           <Tabs
             value={activeTabData}
             onChange={handleTabChangeA}
@@ -122,11 +150,14 @@ const ViewAssignment = () => {
             onChange={(event, page) => paginate(page)}
           />
 
-          <div>
-            {activeTabData === "Task" && <TaskTable />}
-          </div>
-          
+          <div>{activeTabData === "Task" && <TaskTable />}</div>
         </div>
+
+        <TaskDialog
+          open={isTaskDialogOpen}
+          onClose={handleTaskDialogClose}
+          onCreateTask={handleCreateTask}
+        />
       </Box>
     </Box>
   );
@@ -177,7 +208,7 @@ const TableComponent = ({ data }) => {
             <TableCell>Deadline Date</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Priority</TableCell>
-            <TableCell>Type</TableCell>
+            {/* <TableCell>Type</TableCell> */}
             <TableCell>Add</TableCell>
           </TableRow>
         </TableHead>
@@ -213,7 +244,7 @@ const TableComponent = ({ data }) => {
                 {item.AssignmentStatus}
               </TableCell>
               <TableCell>{item.AssignmentPriority}</TableCell>
-              <TableCell>{item.Type}</TableCell>
+              {/* <TableCell>{item.Type}</TableCell> */}
               <TableCell>
                 {item.AssignmentStatus === "Completed" ? (
                   <CheckCircleIcon sx={{ color: "green" }} />
@@ -254,9 +285,6 @@ const TableComponent = ({ data }) => {
 };
 
 export default ViewAssignment;
-
-
-
 
 // import { useState, useEffect } from "react";
 // import { Box, Typography, Modal, Button, Tabs, Tab, Pagination } from "@mui/material";
@@ -411,7 +439,7 @@ export default ViewAssignment;
 //           <div>
 //             {activeTabData === "Task" && <TaskTable />}
 //           </div>
-          
+
 //         </div>
 //       </Box>
 //     </Box>

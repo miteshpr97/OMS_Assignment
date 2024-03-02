@@ -114,7 +114,7 @@ const TaskTable = () => {
                   <th>End Date</th>
                   <th>Created At</th>
                   <th>Task Status</th>
-                  <th>Type</th>
+                  {/* <th>Type</th> */}
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
@@ -134,7 +134,7 @@ const TaskTable = () => {
                         <td style={{ color: "red" }}>
                           {item.TaskStatus}
                         </td>
-                        <td>{item.Type}</td>
+                        {/* <td>{item.Type}</td> */}
                         <td
                           style={{
                             color: "#055f85",

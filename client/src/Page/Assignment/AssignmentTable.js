@@ -110,7 +110,7 @@ const TableComponent = ({ data }) => {
             <th>Deadline Date</th>
             <th> Status</th>
             <th>Priority</th>
-            <th>Type</th>
+            {/* <th>Type</th> */}
           </tr>
         </thead>
         <tbody>
@@ -136,7 +136,7 @@ const TableComponent = ({ data }) => {
                 )}
               </td>
               <td>{item.AssignmentPriority}</td>
-              <td>{item.Type}</td>
+              {/* <td>{item.Type}</td> */}
             </tr>
           ))}
         </tbody>

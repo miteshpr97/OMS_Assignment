@@ -18,8 +18,8 @@ import Header from "./header/Header";
 import { useNavigate, useLocation } from "react-router-dom";
 import { menuItems } from "./menuItems"; // Import the menuItems
 
- import logo from "../assets/images/Gl-Logo.png";
-// import logo from "../assets/images/OWM_Finalpng";
+//  import logo from "../assets/images/Gl-Logo.png";
+import logo from "../assets/images/OWM_Final.png";
 
 
 
@@ -57,12 +57,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
+  height: 90, // Set the minimum height to 140px
 
   backgroundImage: `url(${logo})`, // Set the logo as the background image
-  backgroundSize: "140px auto",
+  backgroundSize: "90px auto",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
+ 
 }));
+
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -101,12 +104,16 @@ export default function SideBar() {
       <Header open={open} handleDrawerOpen={handleDrawerOpen} />
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} style={{ color: "#055f85" }}>
+          <IconButton onClick={handleDrawerClose} style={{ color: "#035d84" }}>   
             {theme.direction === "rtl" ? <MenuIcon /> : <MenuIcon />}
           </IconButton>
+         
         </DrawerHeader>
-        <Divider />
-        <List>
+        
+        
+  
+        <Divider style={{backgroundColor:"#055f85"}} />
+        <List style={{ marginTop:'10px'}}>
           {menuItems.map((item, index) => (
             <ListItem
               key={index}
@@ -124,11 +131,11 @@ export default function SideBar() {
                   borderBottom: "1px solid #ccc",
                   // Add styles for the active menu item based on the route
                   ...(location.pathname === item.path && {
-                    background: " #5c7c77",
+                    background: "#055f85",
                     color: "white",
                   }),
                   ":hover": {
-                    background: "rgba(68, 117, 109, 0.5)", // Add the desired hover background color
+                    background: "rgba(8, 104, 142, 0.5)", // Add the desired hover background color
                     color: "white", // Add the desired hover text color
                   },
                 }}
@@ -141,11 +148,11 @@ export default function SideBar() {
 
                     color: "#055f85",
                     ...(location.pathname === item.path && {
-                      background: " #5c7c77",
+                      background: "055f85",
                       color: "white",
                     }),
                     ":hover": {
-                      background: "rgba(68, 117, 109, 0.5)", // Add the desired hover background color
+                      background: "rgba(8, 104, 142, 0.5)", // Add the desired hover background color
                       color: "white", // Add the desired hover text color
                     },
                   }}
@@ -154,7 +161,7 @@ export default function SideBar() {
                 </ListItemIcon>
                 <ListItemText
                   primary={
-                    <div style={{ fontSize: "1rem", fontFamily: "Roboto" }}>
+                    <div style={{ fontSize: "0.9rem", fontFamily: "Roboto" }}>
                       {item.text}
                     </div>
                   }
@@ -166,6 +173,7 @@ export default function SideBar() {
             </ListItem>
           ))}
         </List>
+        
       </Drawer>
     </Box>
   );
