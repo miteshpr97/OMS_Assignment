@@ -211,11 +211,14 @@ console.log(userData)
                     type="date"
                     fullWidth
                     id="DeadlineDate"
-                    //  label="Deadline Date"
+                    label="Deadline Date"
                     required
                     name="DeadlineDate"
                     value={assignmentData.DeadlineDate}
                     onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </Grid>
                 <Grid item md={4}>
