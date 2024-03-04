@@ -19,10 +19,10 @@ import Department from "./Page/Department/Department";
 import NewDesignation from "./Page/Designation/NewDesignation";
 import Master from "./Page/Master/Master";
 import NewAssignment from "./Page/Assignment/NewAssignment";
-import ViewAssignment from "./Page/ViewAssignment/ViewAssignment";
 
 import MyTeam from "./Page/MyTeam/MyTeam";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import MyTask from "./Page/MyTask/ViewAssignment"
 
 export default function App() {
   return (
@@ -42,7 +42,7 @@ export default function App() {
           <Route path="/team" element={<TeamMember />}></Route>
           <Route path="/myteam" element={<MyTeam/>}></Route>
           <Route path="/assignment" element={<NewAssignment />}></Route>
-          <Route path="/view-assignment" element={<ViewAssignment />}></Route>
+          <Route path="/view-assignment" element={<MyTask/>}></Route>
           <Route path="/task" element={<NewTask />}></Route>
           <Route path="/settings" element={<Settings />}></Route>
           {/* <Route path="/newEmployee" element={<RegisterPage />}></Route> */}

@@ -5,9 +5,13 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
-
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import TaskIcon from '@mui/icons-material/Task';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ViewListIcon from '@mui/icons-material/ViewList';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import ReportIcon from '@mui/icons-material/Report';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 
 
@@ -19,11 +23,11 @@ export const menuItems = [
   // { text: "Department", icon: <ViewListIcon/>, path: "/Department"},
   // { text: "Designation", icon: <ViewListIcon/>, path: "/newdesignation"},
   { text: "Master", icon: <ViewListIcon/>, path: "/master"},
-  { text: "Team", icon: <GroupsIcon/>, path: "/team" },
+  { text: "Team", icon: <GroupAddIcon/>, path: "/team" },
   { text: "My Team", icon: <GroupsIcon/>, path: "/myteam" },
   { text: "Assignment", icon: <AssignmentIcon />, path: "/assignment" },
-  { text: "MY Task", icon: <AssignmentIcon />, path: "/view-assignment" },
-  { text: "Report", icon: <AddCircleIcon />, path: "/Newtask" },
+  { text: "MY Task", icon: <AssignmentTurnedInIcon/> , path: "/view-assignment" },
+  { text: "Report", icon: <ReportIcon  />, path: "/Newtask" },
   { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
 
 ];

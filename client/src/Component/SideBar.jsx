@@ -57,10 +57,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
-  height: 90, // Set the minimum height to 140px
+  height: "64px", // Set the minimum height to 140px
 
   backgroundImage: `url(${logo})`, // Set the logo as the background image
-  backgroundSize: "65px auto",
+  backgroundSize: "60px auto",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
 }));
