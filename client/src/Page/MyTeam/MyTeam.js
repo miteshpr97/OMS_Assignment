@@ -55,6 +55,8 @@ export default function MyTeam() {
     }
   }, [userData]);
 
+  console.log(assignedEmployees, "employee_profile")
+
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
     try {
@@ -162,7 +164,7 @@ export default function MyTeam() {
                     paddingTop: "20px",
                   }}
                 >
-                  <CardMedia
+                  {/* <CardMedia
                     component="img"
                     src={
                       item.Assignee_Profile
@@ -171,9 +173,25 @@ export default function MyTeam() {
                     }
                     alt="Employee Profile"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
-                  />
+                  /> */}
+
+
+
+<CardMedia
+  component="img"
+  src={
+    item.Assignee_Profile
+      ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+      : "/placeholder_image.jpg" // Provide a placeholder image path
+  }
+  alt="Employee Profile"
+  sx={{ height: 140, width: 140, borderRadius: "50%" }}
+/>
+
                 </div>
                 <CardContent>
+    
+                
                   <Typography
                     gutterBottom
                     variant="h6"
