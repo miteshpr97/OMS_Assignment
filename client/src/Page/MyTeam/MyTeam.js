@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -12,12 +11,10 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import profile from "./profilenn.png";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
 
 export default function MyTeam() {
-  const [data, setData] = useState([]);
+  
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);

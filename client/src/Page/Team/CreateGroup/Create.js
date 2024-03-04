@@ -224,12 +224,7 @@ const Create = () => {
                         padding: "10px",
                       }}
                     >
-                      {/* <CardMedia
-                        component="img"
-                        image={profile}
-                        alt="profile"
-                        sx={{ height: "100px", width: "100px" }}
-                      /> */}
+                   
 
                       <CardMedia
                         component="img"
