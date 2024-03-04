@@ -43,6 +43,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
+        console.log(assigned, "assss");
         setAssignedEmployees(assigned);
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
@@ -165,11 +166,12 @@ export default function MyTeam() {
                 >
                   {/* <CardMedia
                     component="img"
+                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
                     src={
                       item.Assignee_Profile
                         ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
-                        : "" // Ensure that this URL construction is correct
-                    }
+                        : ""
+                    }     
                     alt="Employee Profile"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
                   /> */}

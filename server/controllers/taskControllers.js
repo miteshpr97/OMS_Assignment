@@ -29,10 +29,12 @@ exports.getTaskById = async (req, res) => {
 
 // Add Task With ID
 
+
 exports.addTaskWithId = async (req, res) => {
   const newTask = req.body;
   newTask.TaskStatus = newTask.TaskStatus || "Pending";
   newTask.Type = newTask.Type || "T";
+  const createdAt = new Date().toISOString(); 
 
   try {
     const maxIDQuery = "SELECT MAX(SUBSTRING(TaskID, 2)) AS maxID FROM tb_task";
@@ -47,6 +49,9 @@ exports.addTaskWithId = async (req, res) => {
     const formattedID = `T${nextID.toString().padStart(3, "0")}`;
     newTask.TaskID = formattedID;
 
+    // Set the CreatedAt field
+    newTask.CreatedAt = createdAt;
+
     const insertQuery = "INSERT INTO tb_task SET ?";
     await queryAsync(insertQuery, newTask);
 
@@ -56,6 +61,7 @@ exports.addTaskWithId = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 // Update Task
 
