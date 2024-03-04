@@ -18,6 +18,6 @@ function HeaderSignIn() {
       </Link>
     </div>
   );
-}
+} 
 
 export default HeaderSignIn;
