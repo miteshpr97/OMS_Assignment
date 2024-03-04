@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
 
 export default function MyTeam() {
-  
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
@@ -55,7 +54,7 @@ export default function MyTeam() {
     }
   }, [userData]);
 
-  console.log(assignedEmployees, "employee_profile")
+  console.log(assignedEmployees, "employee_profile");
 
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
@@ -175,23 +174,18 @@ export default function MyTeam() {
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
                   /> */}
 
-
-
-<CardMedia
-  component="img"
-  src={
-    item.Assignee_Profile
-      ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
-      : "/placeholder_image.jpg" // Provide a placeholder image path
-  }
-  alt="Employee Profile"
-  sx={{ height: 140, width: 140, borderRadius: "50%" }}
-/>
-
+                  <CardMedia
+                    component="img"
+                    src={
+                      item.Assignee_Profile
+                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+                        : "/placeholder_image.jpg" // Provide a placeholder image path
+                    }
+                    alt="Employee Profile"
+                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                  />
                 </div>
                 <CardContent>
-    
-                
                   <Typography
                     gutterBottom
                     variant="h6"
