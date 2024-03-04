@@ -3,7 +3,6 @@ import SideBar from '../Component/SideBar'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-
 export default function Settings() {
   return (
     <Box sx={{display:'flex'}}>
@@ -12,8 +11,9 @@ export default function Settings() {
             <Typography variant="h5">
              Settings
             </Typography>
-          
+
           </Box>
     </Box>
   )
 }
+
