@@ -109,7 +109,7 @@
 //           </IconButton>
 //         </div>
 //         <div style={{ display: "flex", alignItems: "center" }}>
-          
+
 //             {userData && (
 //               <CardMedia
 //                 component="img"
@@ -123,10 +123,9 @@
 //                 aria-describedby={id}
 //                 type="button"
 //                 onClick={handleClick}
-              
+
 //               />
 //             )}
-         
 
 //           <Popper id={id} open={isOpen} anchorEl={anchorEl}>
 //             <Box
@@ -212,6 +211,7 @@
 //     </AppBar>
 //   );
 // }
+
 
 
 
@@ -324,46 +324,48 @@ export default function Header({ open, handleDrawerOpen }) {
             <MenuIcon />
           </IconButton>
         </div>
-        <div style={{ display: "flex", alignItems: "center", marginRight:"5px" }}>
-        {userData ? (
-              <CardMedia
-                component="img"
-                sx={{
-                  borderRadius: "50%",
-                  height: "40px",
-                  width: "40px",
-                  border: "none",
-                }}
-                src={
-                  userData.Employee_Profile
-                    ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
-                    : ""
-                }
-                alt="Employee Profile"
-                aria-describedby={id}
-                type="button"
-                onClick={handleClick}
-              />
-            ) : (
-              <AccountCircleIcon
-                sx={{
-                  width: 40,
-                  height: 40,
-                }}
-                aria-describedby={id}
-                type="button"
-                onClick={handleClick}
-              />
-            )}
+        <div
+          style={{ display: "flex", alignItems: "center", marginRight: "5px" }}
+        >
+          {userData ? (
+            <CardMedia
+              component="img"
+              sx={{
+                borderRadius: "50%",
+                height: "40px",
+                width: "40px",
+                border: "none",
+              }}
+              src={
+                userData.Employee_Profile
+                  ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
+                  : ""
+              }
+              alt="Employee Profile"
+              aria-describedby={id}
+              type="button"
+              onClick={handleClick}
+            />
+          ) : (
+            <AccountCircleIcon
+              sx={{
+                width: 40,
+                height: 40,
+              }}
+              aria-describedby={id}
+              type="button"
+              onClick={handleClick}
+            />
+          )}
 
           <Popper id={id} open={isOpen} anchorEl={anchorEl}>
             <Box
               sx={{
                 border: "none",
                 p: 1,
-                bgcolor: "#5c7c77",
+                bgcolor: "gray", // Transparent blue color with alpha value 0.5
                 marginTop: "15px",
-                
+                marginRight: "9px",
               }}
             >
               <List>
