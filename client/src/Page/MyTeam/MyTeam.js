@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -12,22 +11,13 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
-import profile from "./profilenn.png";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
 
 export default function MyTeam() {
-  const [data, setData] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
-
-
-
-  console.log(assignedEmployees, "djldnkjdhhdkh")
-
-  console.log(assignedEmployees, "asif");
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -53,6 +43,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
+        console.log(assigned, "assss");
         setAssignedEmployees(assigned);
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
@@ -63,6 +54,8 @@ export default function MyTeam() {
       fetchAssignedEmployees();
     }
   }, [userData]);
+
+  console.log(assignedEmployees, "employee_profile");
 
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
@@ -85,7 +78,6 @@ export default function MyTeam() {
       )
     : assignedEmployees;
 
-  
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -101,16 +93,20 @@ export default function MyTeam() {
             justifyContent: "space-between",
             alignItems: "center",
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-          //  border:"1px solid black",
+            //  border:"1px solid black",
             backgroundColor: "white",
             color: "black",
-            padding:'0px 10px',
-            marginTop:"10px"
+            padding: "0px 10px",
+            marginTop: "10px",
           }}
         >
           <Typography
             variant="h5"
-            sx={{ textTransform: "capitalize", textAlign: "start" ,fontWeight: "500" }}
+            sx={{
+              textTransform: "capitalize",
+              textAlign: "start",
+              fontWeight: "500",
+            }}
           >
             {userData && `${userData.FirstName} ${userData.LastName}`} Team's
           </Typography>
@@ -132,13 +128,17 @@ export default function MyTeam() {
               renderInput={(params) => (
                 <TextField {...params} label="Department" />
               )}
-              style={{ marginRight:"30px"}}
+              style={{ marginRight: "30px" }}
             />
             <Button
               component={Link}
               to="/assignment"
               variant="contained"
-              sx={{ backgroundColor: "#055f85", color: "#fff", margin:"10px 0px"}}
+              sx={{
+                backgroundColor: "#055f85",
+                color: "#fff",
+                margin: "10px 0px",
+              }}
             >
               Create Assignment
             </Button>
@@ -164,10 +164,26 @@ export default function MyTeam() {
                     paddingTop: "20px",
                   }}
                 >
+                  {/* <CardMedia
+                    component="img"
+                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                    src={
+                      item.Assignee_Profile
+                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+                        : ""
+                    }     
+                    alt="Employee Profile"
+                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                  /> */}
+
                   <CardMedia
                     component="img"
-                    image={profile}
-                    alt="profile"
+                    src={
+                      item.Assignee_Profile
+                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+                        : "/placeholder_image.jpg" // Provide a placeholder image path
+                    }
+                    alt="Employee Profile"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
                   />
                 </div>

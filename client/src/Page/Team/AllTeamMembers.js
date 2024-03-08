@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./Team.css";
-import profile from "./images.png";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
 
 export default function AllTeamMembers() {
@@ -131,13 +130,7 @@ export default function AllTeamMembers() {
                     paddingTop: "10px",
                   }}
                 >
-                  {/* <CardMedia
-                    component="img"
-                    image={profile}
-                    alt="profile"
-                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
-                  /> */}
-
+                
                   <CardMedia
                     component="img"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}

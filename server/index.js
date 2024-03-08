@@ -15,6 +15,7 @@ const port = process.env.PORT || 3306;
 
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -23,7 +24,6 @@ app.use("/api/workGroup", workGroup);
 app.use("/api/designation", designationDetails);
 app.use("/api/department", departmentDetails);
 app.use("/api/userDetails", userDetails);
-
 app.use("/api/assignmentDetails", assignmentDetails);
 app.use("/api/taskDetails", taskDetails);
 

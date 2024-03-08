@@ -17,9 +17,9 @@ export default function Home() {
           <span>To</span>
         </div> 
         <div className="title3">
-          <span>Globus <p>Labs</p></span>
+          <span>OWM <p> Logistics</p></span>
         </div>
-      </div>
+      </div> 
     </div>
         
       </Box>

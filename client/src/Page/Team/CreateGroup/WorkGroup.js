@@ -6,7 +6,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Button,
   Paper,
   Typography,
 } from "@mui/material";
@@ -61,7 +60,7 @@ const WorkGroup = ({
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow style={{ backgroundColor: "#44756d" }}>
+            <TableRow style={{ backgroundColor: "#055f85" }}>
               <TableCell style={{ fontWeight: "bold", color: "white" }}>
                 WorkGroupID
               </TableCell>

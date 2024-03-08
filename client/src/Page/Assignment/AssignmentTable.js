@@ -1,14 +1,230 @@
-import { useState, useEffect } from 'react';
-import { Modal, Button, Table, Tab, Tabs, Pagination } from 'react-bootstrap';
-import { format } from 'date-fns';
-import { Typography } from "@mui/material";
+
+
+// import React, { useState, useEffect } from "react";
+// import {
+//   Modal,
+//   Button,
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableContainer,
+//   TableHead,
+//   TableRow,
+//   Paper,
+//   Tab,
+//   Tabs,
+//   Typography,
+//   Pagination,
+// } from "@mui/material";
+// import { format } from "date-fns";
+// import "./Assignment.css";
+
+// const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
+//   const [tableData, setTableData] = useState([]);
+//   const [activeTab, setActiveTab] = useState("All");
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const [itemsPerPage] = useState(20);
+
+//   useEffect(() => {
+//     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
+//       const assigned = assignmentDatas.filter(
+//         (employee) => userData.EmployeeID === employee.EmployeeID
+//       );
+//       const reversedData = assigned.reverse();
+//       setTableData(reversedData);
+//     }
+//   }, [assignmentDatas, userData, loading, error]);
+
+//   const handleTabChange = (event, newValue) => {
+//     setActiveTab(newValue);
+//     setCurrentPage(1); // Reset current page when switching tabs
+//   };
+
+//   const filterDataByTab = () => {
+//     if (activeTab === "All") {
+//       return tableData;
+//     } else {
+//       return tableData.filter((item) => item.AssignmentStatus === activeTab);
+//     }
+//   };
+
+//   const filteredItems = filterDataByTab();
+
+//   // Pagination
+//   const indexOfLastItem = currentPage * itemsPerPage;
+//   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+//   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+
+//   // Change page
+//   const handleChangePage = (event, newPage) => {
+//     setCurrentPage(newPage);
+//   };
+
+//   if (loading) return <div>Loading...</div>;
+//   if (error) return <div>Error: {error.message}</div>;
+
+//   return (
+//     <div className="assignment-table">
+//       <Typography variant="h5" style={{ fontWeight: "500" }}>
+//         Given Assignment Data
+//       </Typography>
+
+//       <div className="p-2">
+//         <Tabs
+//           value={activeTab}
+//           onChange={handleTabChange}
+//           aria-label="assignment tabs"
+//           className="mb-3 mt-2"
+//         >
+//           <Tab label="All" value="All" />
+//           <Tab label="Pending" value="Pending" />
+//           <Tab label="Progress" value="Progress" />
+//           <Tab label="Completed" value="Completed" />
+//         </Tabs>
+
+//         <TableComponent data={currentItems} />
+
+//         <Pagination
+//           count={Math.ceil(filteredItems.length / itemsPerPage)}
+//           page={currentPage}
+//           onChange={handleChangePage}
+//           color="primary"
+//           className="pagination"
+//         />
+//       </div>
+//     </div>
+//   );
+// };
+
+// const TableComponent = ({ data }) => {
+//   const [selectedDescription, setSelectedDescription] = useState(null);
+
+//   // Function to handle click on description cell
+//   const handleDescriptionClick = (description) => {
+//     setSelectedDescription(description);
+//   };
+
+//   // Function to close the modal
+//   const handleClose = () => {
+//     setSelectedDescription(null);
+//   };
+
+//   return (
+//     <div>
+//       <TableContainer component={Paper}>
+//         <Table size="small">
+//           <TableHead>
+//             <TableRow>
+//               <TableCell>Assignment ID</TableCell>
+//               <TableCell>AssignTo</TableCell>
+//               <TableCell>Assignment Description</TableCell>
+//               <TableCell>Assign Date</TableCell>
+//               <TableCell>Deadline Date</TableCell>
+//               <TableCell>Status</TableCell>
+//               <TableCell>Priority</TableCell>
+//             </TableRow>
+//           </TableHead>
+//           <TableBody>
+//             {data.map((item, index) => (
+//               <TableRow key={index}>
+//                 <TableCell>{item.AssignmentID}</TableCell>
+//                 <TableCell>
+//                   {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+//                 </TableCell>
+//                 <TableCell
+//                   onClick={() =>
+//                     handleDescriptionClick(item.Assignment_Description)
+//                   }
+//                   style={{ cursor: "pointer" }}
+//                 >
+//                   {item.Assignment_Description.slice(0, 50)}
+//                 </TableCell>
+//                 <TableCell>
+//                   {format(new Date(item.AssignDate), "dd/MM/yyyy")}
+//                 </TableCell>
+//                 <TableCell>
+//                   {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
+//                 </TableCell>
+//                 <TableCell>
+//                   <span
+//                     style={{ color: getStatusColor(item.AssignmentStatus) }}
+//                   >
+//                     {item.AssignmentStatus}
+//                   </span>
+//                 </TableCell>
+//                 <TableCell>{item.AssignmentPriority}</TableCell>
+//               </TableRow>
+//             ))}
+//           </TableBody>
+//         </Table>
+//       </TableContainer>
+
+//       {/* Modal to display full description */}
+//       <Modal
+//         open={selectedDescription !== null}
+//         onClose={handleClose}
+//         style={{ marginTop: "60px" }}
+//       >
+//         <Modal.Header closeButton>
+//           <Modal.Title>Assignment Description</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>{selectedDescription}</Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={handleClose}>
+//             Close
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+   
+//     </div>
+//   );
+// };
+
+// const getStatusColor = (status) => {
+//   switch (status) {
+//     case "Pending":
+//       return "red";
+//     case "Progress":
+//       return "orange";
+//     case "Completed":
+//       return "green";
+//     default:
+//       return "inherit";
+//   }
+// };
+
+// export default AssignmentTable;
+
+
+
+import React, { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  Pagination,
+} from "@mui/material";
+import { format } from "date-fns";
 import "./Assignment.css";
 
 const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
   const [tableData, setTableData] = useState([]);
-  const [activeTab, setActiveTab] = useState('Pending');
+  const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20);
+  const itemsPerPage = 20;
+  const [selectedDescription, setSelectedDescription] = useState(null);
 
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
@@ -20,20 +236,17 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
     }
   }, [assignmentDatas, userData, loading, error]);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
     setCurrentPage(1); // Reset current page when switching tabs
   };
 
   const filterDataByTab = () => {
-    if (activeTab === 'Pending') {
-      return tableData.filter((item) => item.AssignmentStatus === 'Pending');
-    } else if (activeTab === 'Progress') {
-      return tableData.filter((item) => item.AssignmentStatus === 'Progress');
-    } else if (activeTab === 'Completed') {
-      return tableData.filter((item) => item.AssignmentStatus === 'Completed');
+    if (activeTab === "All") {
+      return tableData;
+    } else {
+      return tableData.filter((item) => item.AssignmentStatus === activeTab);
     }
-    return [];
   };
 
   const filteredItems = filterDataByTab();
@@ -44,126 +257,131 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleDescriptionClick = (description) => {
+    setSelectedDescription(description);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedDescription(null);
+  };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="assignment-table">
-      <Typography variant="h5" style={{ fontWeight: '500' }}>
-        Assignment Data
+      <Typography variant="h5" style={{ fontWeight: "500" }}>
+        Given Assignment Data
       </Typography>
 
       <div className="p-2">
         <Tabs
-          defaultActiveKey="Pending"
-          id="uncontrolled-tab-example"
+          value={activeTab}
+          onChange={handleTabChange}
+          aria-label="assignment tabs"
           className="mb-3 mt-2"
-          onSelect={(tab) => handleTabChange(tab)}
         >
-          <Tab eventKey="Pending" title="Pending">
-            <TableComponent data={currentItems} />
-          </Tab>
-          <Tab eventKey="Progress" title="Progress">
-            <TableComponent data={currentItems} />
-          </Tab>
-          <Tab eventKey="Completed" title="Completed">
-            <TableComponent data={currentItems} />
-          </Tab>
+          <Tab label="All" value="All" />
+          <Tab label="Pending" value="Pending" />
+          <Tab label="Progress" value="Progress" />
+          <Tab label="Completed" value="Completed" />
         </Tabs>
-        <Pagination>
-          {Array.from({ length: Math.ceil(filteredItems.length / itemsPerPage) }).map((_, index) => (
-            <Pagination.Item key={index} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
-              {index + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
+
+        <TableComponent data={currentItems} handleDescriptionClick={handleDescriptionClick} />
+
+        <Pagination
+          count={Math.ceil(filteredItems.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handleChangePage}
+          color="primary"
+          className="pagination"
+        />
       </div>
+
+      <Dialog
+        open={selectedDescription !== null}
+        onClose={handleCloseDialog}
+        aria-labelledby="dialog-title"
+      >
+        <DialogTitle id="dialog-title">Assignment Description</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">{selectedDescription}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
-
-const TableComponent = ({ data }) => {
-  const [selectedDescription, setSelectedDescription] = useState(null);
-
-  // Function to handle click on description cell
-  const handleDescriptionClick = (description) => {
-    setSelectedDescription(description);
-  };
-
-  // Function to close the modal
-  const handleClose = () => {
-    setSelectedDescription(null);
-  };
-
+const TableComponent = ({ data, handleDescriptionClick }) => {
   return (
     <div>
-      <Table striped bordered hover size="sm" className="small-table">
-        <thead>
-          <tr>
-            <th>Assignment ID</th>
-            <th>AssignTo</th>
-            <th>Assignment Description</th>
-            <th>Assign Date</th>
-            <th>Deadline Date</th>
-            <th> Status</th>
-            <th>Priority</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.AssignmentID}</td>
-              <td>{item.EmployeeID_AssignTo} - {item.Assignee_FirstName}</td>
-              <td
-                onClick={() => handleDescriptionClick(item.Assignment_Description)}
-                style={{ cursor: 'pointer' }}
-              >
-                {item.Assignment_Description.slice(0, 50)}
-              </td>
-              <td>{format(new Date(item.AssignDate), 'dd/MM/yyyy')}</td>
-              <td>{format(new Date(item.DeadlineDate), 'dd/MM/yyyy')}</td>
-              <td>
-                {item.AssignmentStatus === "Pending" ? (
-                  <span style={{ color: "red" }}>{item.AssignmentStatus}</span>
-                ) : item.AssignmentStatus === "Progress" ? (
-                  <span style={{ color: "orange" }}>{item.AssignmentStatus}</span>
-                ) : (
-                  <span style={{ color: "green" }}>{item.AssignmentStatus}</span>
-                )}
-              </td>
-              <td>{item.AssignmentPriority}</td>
-              <td>{item.Type}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-
-      {/* Modal to display full description */}
-      <Modal show={selectedDescription !== null} onHide={handleClose} style={{ marginTop: "60px" }}>
-        <Modal.Header closeButton>
-          <Modal.Title>Assignment Description</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{selectedDescription}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Assignment ID</TableCell>
+              <TableCell>AssignTo</TableCell>
+              <TableCell>Assignment Description</TableCell>
+              <TableCell>Assign Date</TableCell>
+              <TableCell>Deadline Date</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Priority</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell>{item.AssignmentID}</TableCell>
+                <TableCell>
+                  {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+                </TableCell>
+                <TableCell
+                  onClick={() => handleDescriptionClick(item.Assignment_Description)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {item.Assignment_Description.slice(0, 50)}
+                </TableCell>
+                <TableCell>
+                  {format(new Date(item.AssignDate), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell>
+                  {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell>
+                  <span style={{ color: getStatusColor(item.AssignmentStatus) }}>
+                    {item.AssignmentStatus}
+                  </span>
+                </TableCell>
+                <TableCell>{item.AssignmentPriority}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
+};
+
+const getStatusColor = (status) => {
+  switch (status) {
+    case "Pending":
+      return "red";
+    case "Progress":
+      return "orange";
+    case "Completed":
+      return "green";
+    default:
+      return "inherit";
+  }
 };
 
 export default AssignmentTable;
-
-
-
-
-
-
-
-

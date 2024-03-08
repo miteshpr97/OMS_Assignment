@@ -224,12 +224,7 @@ const Create = () => {
                         padding: "10px",
                       }}
                     >
-                      {/* <CardMedia
-                        component="img"
-                        image={profile}
-                        alt="profile"
-                        sx={{ height: "100px", width: "100px" }}
-                      /> */}
+                   
 
                       <CardMedia
                         component="img"
@@ -268,7 +263,7 @@ const Create = () => {
                 <TableContainer component={Paper}>
                   <Table aria-label="simple table">
                     <TableHead>
-                      <TableRow style={{ backgroundColor: "#44756d" }}>
+                      <TableRow style={{ backgroundColor: "#055f85" }}>
                         <TableCell
                           style={{ fontWeight: "bold", color: "white" }}
                         >

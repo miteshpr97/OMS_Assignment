@@ -149,7 +149,7 @@ console.log(userData)
           <AssignmentCard  countAssignmentData = {countAssignmentData}/>
           <div className="create-assignment">
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Create Assignment
+              Create Assignment 
             </Typography>
             <form noValidate validated={validated} onSubmit={handleSubmit}>
               <Grid container spacing={3} className="mb-3" >
@@ -211,11 +211,14 @@ console.log(userData)
                     type="date"
                     fullWidth
                     id="DeadlineDate"
-                    //  label="Deadline Date"
+                    label="Deadline Date"
                     required
                     name="DeadlineDate"
                     value={assignmentData.DeadlineDate}
                     onChange={handleInputChange}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
                 </Grid>
                 <Grid item md={4}>
