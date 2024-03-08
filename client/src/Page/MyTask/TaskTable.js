@@ -98,34 +98,35 @@ const TaskTable = () => {
         <Tab label="Completed" value="completed" />
       </Tabs>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
+      <TableContainer component={Paper} sx={{background:"rgb(240, 240, 240)", boxShadow:"none" }}>
+        <Table size="small" sx={{ marginTop:"16px"}}>
+          <TableHead className="customTableHead">
             <TableRow>
-              <TableCell>Task ID</TableCell>
-              <TableCell>EmployeeID</TableCell>
-              <TableCell>Task Description</TableCell>
-              <TableCell>Start Date</TableCell>
-              <TableCell>End Date</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Task Status</TableCell>
-              <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task ID</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>EmployeeID</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task Description</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Start Date</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>End Date</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Created At</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task Status</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Edit</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredTasks
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((item) => (
-                <TableRow key={item.TaskID}>
-                  <TableCell>{item.TaskID}</TableCell>
-                  <TableCell>{item.EmployeeID}</TableCell>
-                  <TableCell>{item.TaskDescription}</TableCell>
-                  <TableCell>{moment(item.StartDate).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell>{moment(item.EndDate).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell>{moment(item.CreatedAt).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell style={{ color: "red" }}>{item.TaskStatus}</TableCell>
+                <TableRow key={item.TaskID} className="custom-row">
+                  <TableCell className="vertical-border">{item.TaskID}</TableCell>
+                  <TableCell className="vertical-border">{item.EmployeeID}</TableCell>
+                  <TableCell className="vertical-border">{item.TaskDescription}</TableCell>
+                  <TableCell className="vertical-border">{moment(item.StartDate).format("DD/MM/YYYY")}</TableCell>
+                  <TableCell className="vertical-border">{moment(item.EndDate).format("DD/MM/YYYY")}</TableCell>
+                  <TableCell className="vertical-border">{moment(item.CreatedAt).format("DD/MM/YYYY")}</TableCell>
+                  <TableCell className="vertical-border" style={{ color: "red" }}>{item.TaskStatus}</TableCell>
                   <TableCell
+                  className="vertical-border"
                     style={{
                       color: "#055f85",
                       textAlign: "center",
@@ -135,6 +136,7 @@ const TaskTable = () => {
                     <EditNoteIcon />
                   </TableCell>
                   <TableCell
+                  className="vertical-border"
                     style={{
                       color: "red",
                       textAlign: "center",

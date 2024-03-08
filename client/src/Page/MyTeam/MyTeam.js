@@ -18,6 +18,7 @@ export default function MyTeam() {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -43,10 +44,11 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
-        console.log(assigned, "assss");
         setAssignedEmployees(assigned);
+        setError(null); // Clear any previous errors
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
+        setError("Error fetching assigned employees"); // Set error state
       }
     };
 
@@ -54,8 +56,6 @@ export default function MyTeam() {
       fetchAssignedEmployees();
     }
   }, [userData]);
-
-  console.log(assignedEmployees, "employee_profile");
 
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
@@ -65,8 +65,10 @@ export default function MyTeam() {
       const data = await response.json();
       // Update the state with the fetched department data
       setDepartments(data);
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error("Error fetching department data:", error);
+      setError("Error fetching department data"); // Set error state
     }
   };
 
@@ -85,7 +87,7 @@ export default function MyTeam() {
         component="main"
         sx={{ flexGrow: 1, marginTop: "55px", padding: "20px" }}
       >
-        {/* page uper header work */}
+        {/* page upper header work */}
         <div
           style={{
             height: "70px",
@@ -93,7 +95,6 @@ export default function MyTeam() {
             justifyContent: "space-between",
             alignItems: "center",
             boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.2)",
-            //  border:"1px solid black",
             backgroundColor: "white",
             color: "black",
             padding: "0px 10px",
@@ -144,74 +145,68 @@ export default function MyTeam() {
             </Button>
           </div>
         </div>
-        {/* employee profile */}
+        {/* Employee profiles */}
         <div className="card-container">
-          {filteredAssignedEmployees.map((item) => (
-            <Card
-              key={item.EmployeeID_AssignTo}
-              sx={{
-                width: 180,
-                margin: "10px",
-                transition: "transform 0.3s ease-in-out",
-                boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-              }}
-            >
-              <CardActionArea>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    paddingTop: "20px",
-                  }}
-                >
-                  {/* <CardMedia
-                    component="img"
-                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
-                    src={
-                      item.Assignee_Profile
-                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
-                        : ""
-                    }     
-                    alt="Employee Profile"
-                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
-                  /> */}
-
-                  <CardMedia
-                    component="img"
-                    src={
-                      item.Assignee_Profile
-                        ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
-                        : "/placeholder_image.jpg" // Provide a placeholder image path
-                    }
-                    alt="Employee Profile"
-                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
-                  />
-                </div>
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="div"
-                    align="center"
+          {error ? (
+            <Typography variant="body1" color="error">
+              {error}
+            </Typography>
+          ) : (
+            filteredAssignedEmployees.map((item) => (
+              <Card
+                key={item.EmployeeID_AssignTo}
+                sx={{
+                  width: 180,
+                  margin: "10px",
+                  transition: "transform 0.3s ease-in-out",
+                  boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                <CardActionArea>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      paddingTop: "20px",
+                    }}
                   >
-                    {item.Assignee_FirstName} {item.Assignee_LastName}
-                  </Typography>
-                  <Typography
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
-                    {item.Department_Name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    align="center"
-                  >
-                    ID: {item.EmployeeID_AssignTo}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
+                    <CardMedia
+                      component="img"
+                      src={
+                        item.Assignee_Profile
+                          ? `http://localhost:3306/api/workGroup/allData/${item.Assignee_Profile}`
+                          : "/placeholder_image.jpg"
+                      }
+                      alt="Employee Profile"
+                      sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                    />
+                  </div>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="div"
+                      align="center"
+                    >
+                      {item.Assignee_FirstName} {item.Assignee_LastName}
+                    </Typography>
+                    <Typography
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      {item.Department_Name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      align="center"
+                    >
+                      ID: {item.EmployeeID_AssignTo}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))
+          )}
         </div>
       </Box>
     </Box>
