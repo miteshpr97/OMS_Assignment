@@ -12,32 +12,9 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
-import { makeStyles } from "@material-ui/core/styles";
+
 import EditDesignationModel from "./EditDesignationModel";
 
-const useStyles = makeStyles({
-  tableRow: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: "#f2f2f2",
-    },
-  },
-  tableCell: {
-    border: "1px solid #dddddd",
-    padding: 8,
-  },
-  tableHeadCell: {
-    backgroundColor: "#055f85", // Set the background color of TableHead cells to blue
-    color: "white", // Set the text color to white for better contrast
-    border: "1px solid #dddddd",
-    padding: 8,
-  },
-  editButton: {
-    color: "#055f85",
-  },
-  deleteButton: {
-    color: "red",
-  },
-});
 
 const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,7 +35,7 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
     setCurrentPage(value);
   };
 
-  const classes = useStyles();
+
 
 
   const handleEditClick = (designation) => {
@@ -73,38 +50,39 @@ const ViewDesignation = ({ designationData, handleDeleteDesignation }) => {
         component={Paper}
         style={{ maxHeight: "400px", overflowY: "auto", marginTop: "20px" }}
       >
-        <Table aria-label="striped bordered table">
-          <TableHead>
+        <Table size="small">
+          <TableHead className="customTableHead">
             <TableRow>
-              <TableCell className={classes.tableHeadCell}>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
                 Designation ID
               </TableCell>
-              <TableCell className={classes.tableHeadCell}>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
                 Designation Name
               </TableCell>
-              <TableCell className={classes.tableHeadCell}>Edit</TableCell>
-              <TableCell className={classes.tableHeadCell}>Delete</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Edit</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {currentItems.map((item) => (
-              <TableRow key={item.DesignationID} className={classes.tableRow}>
-                <TableCell className={classes.tableCell}>
+              <TableRow key={item.DesignationID} >
+                <TableCell className="vertical-border" >
                   {item.DesignationID}
-                </TableCell>
-                <TableCell className={classes.tableCell}>
+                </TableCell >
+                <TableCell className="vertical-border">
                   {item.DesignationName}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
-                  <IconButton className={classes.editButton}>
+                <TableCell className="vertical-border">
+                  <IconButton >
                     <EditNoteIcon
+                    sx={{color:"#055f85"}}
                      onClick={() => handleEditClick(item)}
                     />
                   </IconButton>
                 </TableCell>
-                <TableCell className={classes.tableCell}>
+                <TableCell className="vertical-border">
                   <IconButton
-                    className={classes.deleteButton}
+                    sx={{color:"red"}}
                     onClick={() => handleDeleteDesignation(item.DesignationID)}
                   >
                     <DeleteIcon />
