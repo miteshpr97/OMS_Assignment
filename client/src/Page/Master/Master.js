@@ -3,6 +3,7 @@ import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Department from './Department/Department'
 import NewDesignation from "./Designation/NewDesignation";
+import "./Master.css";
 
 
 export default function Master() {

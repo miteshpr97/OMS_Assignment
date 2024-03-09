@@ -326,42 +326,43 @@ const TableComponent = ({ data, handleDescriptionClick }) => {
     <div>
       <TableContainer component={Paper}>
         <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Assignment ID</TableCell>
-              <TableCell>AssignTo</TableCell>
-              <TableCell>Assignment Description</TableCell>
-              <TableCell>Assign Date</TableCell>
-              <TableCell>Deadline Date</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Priority</TableCell>
+          <TableHead className="customTableHead">
+            <TableRow >
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assignment ID</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>AssignTo</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assignment Description</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assign Date</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Deadline Date</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Status</TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Priority</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.AssignmentID}</TableCell>
-                <TableCell>
+              <TableRow key={index} className="custom-row">
+                <TableCell className="vertical-border" >{item.AssignmentID}</TableCell>
+                <TableCell className="vertical-border" >
                   {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
                 </TableCell>
                 <TableCell
+                className="vertical-border" 
                   onClick={() => handleDescriptionClick(item.Assignment_Description)}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", maxWidth:"60px" }}
                 >
-                  {item.Assignment_Description.slice(0, 50)}
+                  {item.Assignment_Description}
                 </TableCell>
-                <TableCell>
+                <TableCell className="vertical-border" >
                   {format(new Date(item.AssignDate), "dd/MM/yyyy")}
                 </TableCell>
-                <TableCell>
+                <TableCell className="vertical-border" >
                   {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
                 </TableCell>
-                <TableCell>
+                <TableCell className="vertical-border" >
                   <span style={{ color: getStatusColor(item.AssignmentStatus) }}>
                     {item.AssignmentStatus}
                   </span>
                 </TableCell>
-                <TableCell>{item.AssignmentPriority}</TableCell>
+                <TableCell className="vertical-border" >{item.AssignmentPriority}</TableCell>
               </TableRow>
             ))}
           </TableBody>
