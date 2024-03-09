@@ -17,7 +17,7 @@ import EditDepartmentModel from "./EditDepartmentModel";
 import "../Master.css";
 
 
-const ViewDepartmentData = ({ departments, handleDeleteDepartment, }) => {
+const ViewDepartmentData = ({ departments, handleDeleteDepartment}) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
