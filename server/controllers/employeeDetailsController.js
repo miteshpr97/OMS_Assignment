@@ -37,7 +37,9 @@ exports.getAllDataOfEmployees = async (req, res) => {
       INNER JOIN 
         tb_department as d ON e.DepartmentID = d.DepartmentID 
       INNER JOIN 
-        tb_designation as d2 ON e.DesignationID = d2.DesignationID; `;
+        tb_designation as d2 ON e.DesignationID = d2.DesignationID
+        ORDER BY
+        e.EmployeeID; `;
     const results = await queryAsync(query);
     const userEmployees = results.filter(
       (employee) => employee.Role === "User"
@@ -164,11 +166,37 @@ exports.updateEmployee = async (req, res) => {
     updatedEmployee.Employee_Profile = req.file.filename;
   }
 
-  const updateQuery = "UPDATE tb_employee SET ? WHERE EmployeeID = ?";
+  const updateQuery = `
+    UPDATE tb_employee 
+    SET 
+      FirstName = ?,
+      LastName = ?,
+      DateOfBirth = ?,
+      Gender = ?,
+      ContactNumber = ?,
+      Email = ?,
+      Address = ?,
+      JoinDate = ?,
+      Employee_Profile = ?,
+      EmploymentStatus = ?,
+      DepartmentID = ?,
+      DesignationID = ?
+    WHERE EmployeeID = ?`;
 
   try {
     const results = await queryAsync(updateQuery, [
-      updatedEmployee,
+      updatedEmployee.FirstName,
+      updatedEmployee.LastName,
+      updatedEmployee.DateOfBirth,
+      updatedEmployee.Gender,
+      updatedEmployee.ContactNumber,
+      updatedEmployee.Email,
+      updatedEmployee.Address,
+      updatedEmployee.JoinDate,
+      updatedEmployee.Employee_Profile,
+      updatedEmployee.EmploymentStatus,
+      updatedEmployee.DepartmentID,
+      updatedEmployee.DesignationID,
       EmployeeID,
     ]);
 
@@ -184,6 +212,7 @@ exports.updateEmployee = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 // Delete Employee
 
