@@ -63,7 +63,7 @@ const Department = () => {
     }
   };
 
-  const handleDeleteDesignation = async (DepartmentID) => {
+  const handleDeleteDepartment = async (DepartmentID) => {
     try {
       await dispatch(deleteDepartmentData(DepartmentID));
       console.log(DepartmentID);
@@ -104,7 +104,7 @@ const Department = () => {
           departments={departments}
           //  isLoading={isLoading}
           //  error={error}
-          handleDeleteDesignation={handleDeleteDesignation}
+          handleDeleteDepartment={handleDeleteDepartment }
         />
       </div>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
