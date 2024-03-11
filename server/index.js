@@ -22,11 +22,11 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.post("/api/userDetails/login", userDetailsController.loginUser);
 // Global authentication middleware
 app.use(authenticateUser);
 
 // Routes that do not require authentication
-app.post("/api/userDetails/login", userDetailsController.loginUser);
 
 app.use("/api/employee", employeeDetails);
 app.use("/api/workGroup", workGroup);
