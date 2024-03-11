@@ -95,11 +95,17 @@ const RegisterPage = () => {
                 : error
                 ? "red"
                 : "transparent",
+                color: successMessage
+                ? "white"
+                : error
+                ? "white"
+                : "transparent",
+                padding:"2px 10px",
             }}
           >
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {successMessage && <p>{successMessage}</p>}
+            {loading && <p style={{margin:"5px"}}>Loading...</p>}
+            {error && <p style={{margin:"5px"}}>{error}</p>}
+            {successMessage && <p style={{margin:"0px"}}>{successMessage}</p>}
           </div>
 
           {/* Pass nextEmployeeId to NewRegistration component */}

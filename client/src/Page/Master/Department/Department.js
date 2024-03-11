@@ -27,6 +27,9 @@ const Department = () => {
   const departments = useSelector(selectDepartments);
   // const Loading = useSelector(selectLoading);
   // const error = useSelector(selectError);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     DepartmentName: "",
@@ -55,27 +58,81 @@ const Department = () => {
     event.preventDefault();
     try {
       await dispatch(createDepartmentData(formData));
+
+      // Handle success response
+      setSuccessMessage("Department Created successfully!");
+
+       // Clear the success message after 2 seconds
+       setTimeout(() => {
+        setSuccessMessage("");
+      }, 100000);
+
       setFormData({ DepartmentName: "" }); // Reset form fields after submission if needed
       dispatch(fetchDepartmentData());
       handleClose();
     } catch (error) {
       console.error("Error creating department:", error);
+      setError("Error adding department");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteDepartment = async (DepartmentID) => {
+    setLoading(true);
     try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this Department?"
+      );
+      if (!confirmed) {
+        setLoading(false);
+        return; // Exit function if user cancels deletion
+      }
+
       await dispatch(deleteDepartmentData(DepartmentID));
-      console.log(DepartmentID);
+      // console.log(DepartmentID);
+
+      setSuccessMessage("Department deleted successfully!");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+
       dispatch(fetchDepartmentData());
     } catch (error) {
-      console.error("Error deleting designation:", error);
+      console.error("Error deleting department:", error);
+      setError("Error deleting department");
+    }
+    finally {
+      setLoading(false);
     }
   };
+
+  
 
   return (
     <Box >
       <div style={{ padding: "10px", border: "2px solid #dddddd" }}>
+      <div
+            style={{
+              backgroundColor: successMessage
+                ? "green"
+                : error
+                ? "red"
+                : "transparent",
+                color: successMessage
+                ? "white"
+                : error
+                ? "white"
+                : "transparent",
+                padding:"2px 10px",
+            }}
+          >
+            {loading && <p style={{margin:"5px"}}>Loading...</p>}
+            {error && <p style={{margin:"5px"}}>{error}</p>}
+            {successMessage && <p style={{margin:"0px"}}>{successMessage}</p>}
+          </div>
+
         <div
           style={{
             display: "flex",
