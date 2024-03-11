@@ -15,7 +15,7 @@ router.patch("/update/:EmployeeID", userDetailsController.updateUserDetails);
 router.delete("/delete/:EmployeeID", userDetailsController.deleteUserDetails);
 
 // login user through their details
-router.post("/login", userDetailsController.loginUser);
+// router.post("/login", userDetailsController.loginUser);
 
 // forget password
 router.post("/forgetPassword", userDetailsController.forgetPassword);

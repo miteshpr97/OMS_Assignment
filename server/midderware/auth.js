@@ -29,14 +29,12 @@ const authenticateUser = async (req, res, next) => {
         console.log(req.authenticatedUser);
       });
     } catch (verificationError) {
-      // Token verification failed, return Unauthorized
       res.status(401).json({ error: "Unauthorized" });
       return;
     }
 
     next();
   } catch (error) {
-    // Internal Server Error
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
