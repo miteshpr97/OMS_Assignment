@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const db = require("../db");
+const { db, queryAsync } = require("../db");
 
 const authenticateUser = async (req, res, next) => {
   try {
@@ -10,32 +10,37 @@ const authenticateUser = async (req, res, next) => {
       const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
 
       // Query to check if the user exists in the database
-      const query = "SELECT * FROM tb_employee WHERE EmployeeID = ?";
+      const query = `
+        SELECT e.*, u.role
+        FROM tb_employee e
+        JOIN tb_userdetails u ON e.EmployeeID = u.EmployeeID
+        WHERE e.EmployeeID = ?
+      `;
 
-      // Assuming db.query returns a Promise
-      db.query(query, [verifyUser.EmployeeID], (err, results) => {
-        if (err) {
-          console.error("Error executing query:", err);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
-        }
+      try {
+        // Use queryAsync function to handle the database query asynchronously
+        const results = await queryAsync(query, [verifyUser.EmployeeID]);
+
         // If the user is not found, return Unauthorized
         if (results.length === 0) {
-          res.status(401).json({ error: "Unauthorized" });
-          return;
+          console.log("User not found");
+          return res.status(401).json({ error: "Unauthorized" });
         }
+
         // You might want to store the user information in the request object
         req.authenticatedUser = results[0];
-        console.log(req.authenticatedUser);
-      });
+        console.log("Authenticated User:", req.authenticatedUser);
+        next();
+      } catch (queryError) {
+        console.error("Error executing query:", queryError);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
     } catch (verificationError) {
-      res.status(401).json({ error: "Unauthorized" });
-      return;
+      console.error("Token Verification Error:", verificationError);
+      return res.status(401).json({ error: "Unauthorized" });
     }
-
-    next();
   } catch (error) {
-    console.error("Error executing query:", error);
+    console.error("Internal Server Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
