@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 
 app.post("/api/userDetails/login", userDetailsController.loginUser);
 // Global authentication middleware
-app.use(authenticateUser);
+// app.use(authenticateUser);
 
 // Routes that do not require authentication
 
