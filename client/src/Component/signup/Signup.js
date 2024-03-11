@@ -36,10 +36,12 @@ export default function SignUp() {
     EmployeeID: "",
     Username: "",
     Password: "",
-    ConfirmPassword: "",
-    role: "user", // Default role
+    confirm_password: "",
+    Role: "User", // Default role
     acceptTerms: false,
   });
+
+console.log(formData, "ijabvsbibcbaiub");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,17 +73,47 @@ export default function SignUp() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Check if the Password and ConfirmPassword fields match
-    if (formData.Password !== formData.ConfirmPassword) {
+  
+    // Check if the Password and Confirm_Password fields match
+    if (formData.Password !== formData.confirm_password) {
       alert("Passwords do not match. Please re-enter.");
       return; // Do not proceed with form submission
     }
-    console.log(formData);
-    // You can proceed with form submission logic here
+  
+    try {
+      const apiUrl = "http://localhost:3306/api/userDetails";
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        console.log("Form data submitted successfully");
+        // Reset form inputs
+        setFormData({
+          EmployeeID: "",
+          Username: "",
+          Password: "",
+          confirm_password: "",
+          Role: "User",
+          acceptTerms: false,
+        });
+      } else {
+        console.error("Failed to submit form data:", response.statusText);
+        // Optionally, you can handle error response here
+      }
+    } catch (error) {
+      console.error("Error submitting form data:", error.message);
+      // Optionally, you can handle other errors here
+    }
   };
+  
+  
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -139,24 +171,18 @@ export default function SignUp() {
                       </Select>
                     </FormControl>
                   </Grid>
-                  <Grid item xs={6}>
-                    <FormControl fullWidth variant="outlined">
-                      <InputLabel id="username-label">Username</InputLabel>
-                      <Select
-                        labelId="username-label"
-                        id="Username"
-                        name="Username"
-                        value={formData.Username}
-                        onChange={handleChange}
-                        label="Username"
-                      >
-                        {data.map((item) => (
-                          <MenuItem key={item.id} value={item.Username}>
-                            {item.Username}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+
+                 <Grid item xs={6}>
+                    <TextField
+                      label="Username"
+                      variant="outlined"
+                      name="Username"
+                      value={formData.Username}
+                      onChange={handleChange}
+                      fullWidth
+                      size="medium"
+                      required
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
@@ -176,12 +202,12 @@ export default function SignUp() {
                     <TextField
                       required
                       fullWidth
-                      name="ConfirmPassword"
+                      name="confirm_password"
                       label="Confirm Password"
                       type="password"
-                      id="ConfirmPassword"
+                      id="confirm_password"
                       autoComplete="new-password"
-                      value={formData.ConfirmPassword}
+                      value={formData.confirm_password}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -191,14 +217,14 @@ export default function SignUp() {
                       <InputLabel id="role-label">Role</InputLabel>
                       <Select
                         labelId="role-label"
-                        id="role"
-                        name="role"
-                        value={formData.role}
+                        id="Role"
+                        name="Role"
+                        value={formData.Role}
                         onChange={handleChange}
                         label="Role"
                       >
-                        <MenuItem value="admin">Admin</MenuItem>
-                        <MenuItem value="user">User</MenuItem>
+                        <MenuItem value="Admin">Admin</MenuItem>
+                        <MenuItem value="User">User</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
