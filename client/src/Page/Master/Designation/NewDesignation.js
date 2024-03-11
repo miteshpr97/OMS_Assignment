@@ -21,6 +21,9 @@ import {
 } from "@mui/material"; 
 import CloseIcon from "@mui/icons-material/Close"; 
 import ViewDesignation from "./ViewDesignation";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 const NewDesignation = () => {
   const dispatch = useDispatch();
@@ -113,22 +116,24 @@ const NewDesignation = () => {
         <div
             style={{
               backgroundColor: successMessage
+                ? "#b4dab471"
+                : error
+                ? "#ffd2d280"
+                : "transparent",
+                color: successMessage
                 ? "green"
                 : error
                 ? "red"
                 : "transparent",
-                color: successMessage
-                ? "white"
-                : error
-                ? "white"
-                : "transparent",
                 padding:"2px 10px",
             }}
           >
-            {loading && <p style={{margin:"5px"}}>Loading...</p>}
-            {error && <p style={{margin:"5px"}}>{error}</p>}
-            {successMessage && <p style={{margin:"0px"}}>{successMessage}</p>}
+
+            {loading && <p style={{margin:"5px"}}> <HourglassBottomIcon/> Loading...</p>}
+            {error && <p style={{margin:"5px"}}> <ErrorOutlineIcon/> {error}</p>}
+            {successMessage && <p style={{margin:"0px"}}> <TaskAltIcon/> {successMessage}</p>}
           </div>
+
           <div
             style={{
               display: "flex",

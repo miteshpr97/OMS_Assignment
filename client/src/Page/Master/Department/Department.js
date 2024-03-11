@@ -13,6 +13,9 @@ import {
 } from "@mui/material"; // Import IconButton
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 import { useDispatch, useSelector } from "react-redux";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import {
   createDepartmentData,
   fetchDepartmentData,
@@ -65,7 +68,7 @@ const Department = () => {
        // Clear the success message after 2 seconds
        setTimeout(() => {
         setSuccessMessage("");
-      }, 100000);
+      }, 2000);
 
       setFormData({ DepartmentName: "" }); // Reset form fields after submission if needed
       dispatch(fetchDepartmentData());
@@ -116,21 +119,22 @@ const Department = () => {
       <div
             style={{
               backgroundColor: successMessage
+                ? "#b4dab471"
+                : error
+                ? "#ffd2d280"
+                : "transparent",
+                color: successMessage
                 ? "green"
                 : error
                 ? "red"
                 : "transparent",
-                color: successMessage
-                ? "white"
-                : error
-                ? "white"
-                : "transparent",
                 padding:"2px 10px",
             }}
           >
-            {loading && <p style={{margin:"5px"}}>Loading...</p>}
-            {error && <p style={{margin:"5px"}}>{error}</p>}
-            {successMessage && <p style={{margin:"0px"}}>{successMessage}</p>}
+
+            {loading && <p style={{margin:"5px"}}> <HourglassBottomIcon/> Loading...</p>}
+            {error && <p style={{margin:"5px"}}> <ErrorOutlineIcon/> {error}</p>}
+            {successMessage && <p style={{margin:"0px"}}> <TaskAltIcon/> {successMessage}</p>}
           </div>
 
         <div
