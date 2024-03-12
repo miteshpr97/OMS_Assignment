@@ -13,9 +13,9 @@ import {
 } from "@mui/material"; // Import IconButton
 import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
 import { useDispatch, useSelector } from "react-redux";
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import {
   createDepartmentData,
   fetchDepartmentData,
@@ -65,8 +65,8 @@ const Department = () => {
       // Handle success response
       setSuccessMessage("Department Created successfully!");
 
-       // Clear the success message after 2 seconds
-       setTimeout(() => {
+      // Clear the success message after 2 seconds
+      setTimeout(() => {
         setSuccessMessage("");
       }, 2000);
 
@@ -76,8 +76,7 @@ const Department = () => {
     } catch (error) {
       console.error("Error creating department:", error);
       setError("Error adding department");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -105,37 +104,44 @@ const Department = () => {
     } catch (error) {
       console.error("Error deleting department:", error);
       setError("Error deleting department");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
 
-  
-
   return (
-    <Box >
+    <Box>
       <div style={{ padding: "10px", border: "2px solid #dddddd" }}>
-      <div
-            style={{
-              backgroundColor: successMessage
-                ? "#b4dab471"
-                : error
-                ? "#ffd2d280"
-                : "transparent",
-                color: successMessage
-                ? "green"
-                : error
-                ? "red"
-                : "transparent",
-                padding:"2px 10px",
-            }}
-          >
-
-            {loading && <p style={{margin:"5px"}}> <HourglassBottomIcon/> Loading...</p>}
-            {error && <p style={{margin:"5px"}}> <ErrorOutlineIcon/> {error}</p>}
-            {successMessage && <p style={{margin:"0px"}}> <TaskAltIcon/> {successMessage}</p>}
-          </div>
+        <div
+          style={{
+            backgroundColor: successMessage
+              ? "#b4dab471"
+              : error
+              ? "#ffd2d280"
+              : "transparent",
+            color: successMessage ? "green" : error ? "red" : "transparent",
+            padding: "2px 10px",
+          }}
+        >
+          {loading && (
+            <p style={{ margin: "5px" }}>
+              {" "}
+              <HourglassBottomIcon /> Loading...
+            </p>
+          )}
+          {error && (
+            <p style={{ margin: "5px" }}>
+              {" "}
+              <ErrorOutlineIcon /> {error}
+            </p>
+          )}
+          {successMessage && (
+            <p style={{ margin: "0px" }}>
+              {" "}
+              <TaskAltIcon /> {successMessage}
+            </p>
+          )}
+        </div>
 
         <div
           style={{
@@ -165,7 +171,7 @@ const Department = () => {
           departments={departments}
           //  isLoading={isLoading}
           //  error={error}
-          handleDeleteDepartment={handleDeleteDepartment }
+          handleDeleteDepartment={handleDeleteDepartment}
         />
       </div>
       <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>

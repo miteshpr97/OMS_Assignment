@@ -7,6 +7,8 @@ import {
   TextField,
   Grid,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { createTaskData, fetchTaskData } from "../../features/Task/TaskAction";
 
 const TaskDialog = ({ open, onClose }) => {
   const [taskData, setTaskData] = useState({
@@ -15,73 +17,43 @@ const TaskDialog = ({ open, onClose }) => {
     EndDate: "",
     TaskDescription: "",
   });
+
   const [userData, setUserData] = useState(null);
   const [validated, setValidated] = useState(false); // Add state for form validation
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
   }, []);
 
+  useEffect(() => {
+    dispatch(fetchTaskData());
+  }, [dispatch]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setTaskData({ ...taskData, [name]: value });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      const response = await fetch(
-        "http://localhost:3306/api/taskDetails/withID",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...taskData,
-            EmployeeID: userData.EmployeeID,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const responseData = await response.json();
-      console.log("Response:", responseData);
-
-      // Reset the form data after successful submission
-      setTaskData({
-    
-        EmployeeID: "",
-        StartDate: "",
-        EndDate: "",
-   
-        TaskStatus: "",
-        TaskDescription: "",
-      });
-
-      // Reset form validation
-      setValidated(false);
-      window.alert("Form submitted successfully!");
-
-      // Close the dialog
-      onClose();
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    dispatch(
+      createTaskData({
+        ...taskData,
+        EmployeeID: userData.EmployeeID,
+      })
+    );
+    dispatch(fetchTaskData())
+    onClose();
   };
 
   if (!userData) {
     return <div>Loading...</div>;
   }
 
-  if (!userData) {
-    return <div>Loding....</div>;
-  }
-
+ 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Task</DialogTitle>
@@ -134,7 +106,7 @@ const TaskDialog = ({ open, onClose }) => {
                 }}
               />
             </Grid>
-         
+
             <Grid item xs={12}>
               <TextField
                 label="Task Description"
@@ -178,3 +150,9 @@ const TaskDialog = ({ open, onClose }) => {
 };
 
 export default TaskDialog;
+
+// const handleSubmit = (event) => {
+//   event.preventDefault();
+//   dispatch(createTaskData(taskData));
+//   onClose();
+// };

@@ -26,8 +26,8 @@ export const fetchTaskData = createAsyncThunk(
     try {
       const response = await axios.get('http://localhost:3306/api/taskDetails/');
       const data = response.data;
-      //const reverse = data.reverse();
-      return data;
+      const reverse = data.reverse();
+      return reverse;
     } catch (error) {
       return isRejectedWithValue(error.response.data);
     }

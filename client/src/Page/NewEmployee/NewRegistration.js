@@ -139,7 +139,7 @@ function NewRegistration({ addEmployee }) {
       </div>
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
         <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 10px 24px" }}>
-          New Employee
+          Create Employee
         </DialogTitle>
         <IconButton
           aria-label="close"

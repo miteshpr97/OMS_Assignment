@@ -16,8 +16,10 @@ import {
   Pagination,
 } from "@mui/material";
 import "./ViewAssignment.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
+import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
-
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -28,6 +30,13 @@ const ViewAssignment = () => {
   const [activeTabData, setActiveTabData] = useState("Assignment");
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
 
+  const dispatch = useDispatch();
+  const assignmentDatas = useSelector(selectAssignment);
+
+  useEffect(() => {
+    dispatch(fetchAssignmentData());
+  }, [dispatch]);
+
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
@@ -36,14 +45,14 @@ const ViewAssignment = () => {
   useEffect(() => {
     const fetchAssignedEmployees = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3306/api/assignmentDetails/allData"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        const assigned = data.filter(
+        // const response = await fetch(
+        //   "http://localhost:3306/api/assignmentDetails/allData"
+        // );
+        // if (!response.ok) {
+        //   throw new Error("Failed to fetch data");
+        // }
+        // const data = await response.json();
+        const assigned = assignmentDatas.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
         );
         const reversedData = assigned.reverse();
@@ -215,21 +224,63 @@ const TableComponent = ({ data }) => {
     <div className="table-container">
       <Table size="small">
         <TableHead className="customTableHead">
-          <TableRow >
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Assignment ID</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Assigner</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Assignment Description</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Assign Date</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Deadline Date</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Status</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Priority</TableCell>
-            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}} >Add</TableCell>
+          <TableRow>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Assignment ID
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Assigner
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Assignment Description
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Assign Date
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Deadline Date
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Status
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Priority
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Add
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index} className="custom-row">
-              <TableCell className="vertical-border">{item.AssignmentID}</TableCell>
+              <TableCell className="vertical-border">
+                {item.AssignmentID}
+              </TableCell>
               <TableCell className="vertical-border">{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
               <TableCell
                 onClick={() =>
@@ -259,7 +310,9 @@ const TableComponent = ({ data }) => {
               >
                 {item.AssignmentStatus}
               </TableCell>
-              <TableCell className="vertical-border">{item.AssignmentPriority}</TableCell>
+              <TableCell className="vertical-border">
+                {item.AssignmentPriority}
+              </TableCell>
               <TableCell className="vertical-border">
                 {item.AssignmentStatus === "Completed" ? (
                   <CheckCircleIcon sx={{ color: "green" }} />
@@ -298,6 +351,5 @@ const TableComponent = ({ data }) => {
     </div>
   );
 };
-
 
 export default ViewAssignment;

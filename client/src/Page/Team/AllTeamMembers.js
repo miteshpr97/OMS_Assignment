@@ -14,21 +14,20 @@ import {
 import { Link } from "react-router-dom";
 import "./Team.css";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
+import { EmployeeInfoModal } from "./EmployeeInfoModal";
 
 export default function AllTeamMembers() {
   const [data, setData] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [selectedEmployeeData, setSelectedEmployeeData] = useState(null);
+  const [selectedDepartment, setSelectedDepartment] = useState(null); // Add this line
 
   useEffect(() => {
     // Fetch department data when the component mounts
     fetchDepartmentData();
     fetchEmployeeData();
   }, []);
-
-
-
 
   // GET ALL EMPLOYEE DATA USING THIS APIs
   const fetchEmployeeData = async () => {
@@ -67,14 +66,15 @@ export default function AllTeamMembers() {
       )
     : data;
 
-   
+  const handleInfo = (employee) => {
+    setIsInfoModalOpen(true);
+    setSelectedEmployeeData(employee);
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
         {/* page uper header work */}
         <div
           style={{
@@ -83,24 +83,26 @@ export default function AllTeamMembers() {
             justifyContent: "space-between",
             alignItems: "center",
             boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-           // border:"1px solid black",
+            // border:"1px solid black",
             backgroundColor: "white",
             color: "black",
-            padding:'0px 10px',
-            marginTop:"10px"
+            padding: "0px 10px",
+            marginTop: "10px",
           }}
         >
-          <Typography variant="h5" sx={{ textAlign: "start" ,fontWeight: "500"  }}>
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "start", fontWeight: "500" }}
+          >
             All Team
           </Typography>
 
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            
             options={[{ DepartmentName: "All" }, ...departments]}
             getOptionLabel={(option) => option.DepartmentName}
-            sx={{ width: 300, backgroundColor: "whitesmoke"}}
+            sx={{ width: 300, backgroundColor: "whitesmoke" }}
             onChange={(event, newValue) => {
               if (newValue && newValue.DepartmentName === "All") {
                 setSelectedDepartment(null);
@@ -123,10 +125,9 @@ export default function AllTeamMembers() {
                 margin: "10px",
                 transition: "transform 0.3s ease-in-out",
                 boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
-                
               }}
             >
-              <CardActionArea >
+              <CardActionArea onClick={() => handleInfo(item)}>
                 <div
                   style={{
                     display: "flex",
@@ -134,7 +135,6 @@ export default function AllTeamMembers() {
                     paddingTop: "10px",
                   }}
                 >
-                
                   <CardMedia
                     component="img"
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
@@ -152,7 +152,7 @@ export default function AllTeamMembers() {
                     variant="h6"
                     component="div"
                     align="center"
-                    sx={{ textTransform:'capitalize' }}
+                    sx={{ textTransform: "capitalize" }}
                   >
                     {item.FirstName} {item.LastName}
                   </Typography>
@@ -171,7 +171,11 @@ export default function AllTeamMembers() {
                   key={item.EmployeeID}
                   style={{ textDecoration: "none" }}
                 >
-                  <Button size="small" variant="contained" color="primary">
+                  <Button
+                    style={{ backgroundColor: "#055f85" }}
+                    size="small"
+                    variant="contained"
+                  >
                     Create Team
                   </Button>
                 </Link>
@@ -179,6 +183,11 @@ export default function AllTeamMembers() {
             </Card>
           ))}
         </div>
+        <EmployeeInfoModal
+          isOpen={isInfoModalOpen}
+          onClose={() => setIsInfoModalOpen(false)}
+          employeeData={selectedEmployeeData}
+        />
       </Box>
     </Box>
   );

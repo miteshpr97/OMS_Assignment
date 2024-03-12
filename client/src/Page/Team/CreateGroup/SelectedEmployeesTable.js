@@ -103,7 +103,7 @@ const SelectedEmployeesTable = ({
         >
           <Button
             variant="contained"
-            color="primary"
+            style={{ backgroundColor: "#055f85" }}
             onClick={handleSubmitSelectEmployee}
           >
             ADD
