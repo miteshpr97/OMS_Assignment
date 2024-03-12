@@ -131,7 +131,7 @@ console.log(formData, "ijabvsbibcbaiub");
           <Card>
             <CardContent>
               <span style={{ display: "flex", justifyContent: "center" }}>
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <Avatar sx={{ m: 1,  bgcolor: "#055f85", color:"white"  }}>
                   <LockOutlinedIcon />
                 </Avatar>
               </span>
@@ -247,7 +247,7 @@ console.log(formData, "ijabvsbibcbaiub");
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2 , bgcolor: "#055f85"}}
                 >
                   Sign Up
                 </Button>

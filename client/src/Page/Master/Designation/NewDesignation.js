@@ -21,10 +21,16 @@ import {
 } from "@mui/material"; 
 import CloseIcon from "@mui/icons-material/Close"; 
 import ViewDesignation from "./ViewDesignation";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 const NewDesignation = () => {
   const dispatch = useDispatch();
   const designationData = useSelector(selectdesignationData);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     DesignationName: "",
@@ -53,21 +59,52 @@ const NewDesignation = () => {
     event.preventDefault();
     try {
       await dispatch(createDesignationData(formData));
+
+      // Handle success response
+      setSuccessMessage("Designation Created successfully!");
+
+       // Clear the success message after 2 seconds
+       setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+
       setFormData({ DesignationName: "" });
       dispatch(fetchDesignationData());
       handleClose();
     } catch (error) {
-      console.error("Error creating department:", error);
+      console.error("Error creating designation:", error);
+     setError("Error adding designation");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   const handleDeleteDesignation = async (DesignationID) => {
     try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this Designation?"
+      );
+      if (!confirmed) {
+        setLoading(false);
+        return; // Exit function if user cancels deletion
+      }
+
       await dispatch(deleteDesignationData(DesignationID));
-      console.log(DesignationID)
+
+      setSuccessMessage("Designation deleted successfully!");
+
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+      // console.log(DesignationID)
       dispatch(fetchDesignationData());
     } catch (error) {
       console.error("Error deleting designation:", error);
+     setError("Error deleting designation");
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -76,6 +113,27 @@ const NewDesignation = () => {
     
    
         <div style={{ padding: "10px", border: "2px solid #dddddd" }}>
+        <div
+            style={{
+              backgroundColor: successMessage
+                ? "#b4dab471"
+                : error
+                ? "#ffd2d280"
+                : "transparent",
+                color: successMessage
+                ? "green"
+                : error
+                ? "red"
+                : "transparent",
+                padding:"2px 10px",
+            }}
+          >
+
+            {loading && <p style={{margin:"5px"}}> <HourglassBottomIcon/> Loading...</p>}
+            {error && <p style={{margin:"5px"}}> <ErrorOutlineIcon/> {error}</p>}
+            {successMessage && <p style={{margin:"0px"}}> <TaskAltIcon/> {successMessage}</p>}
+          </div>
+
           <div
             style={{
               display: "flex",
