@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   Modal,
@@ -175,7 +173,7 @@
 //           </Button>
 //         </Modal.Footer>
 //       </Modal>
-   
+
 //     </div>
 //   );
 // };
@@ -194,9 +192,6 @@
 // };
 
 // export default AssignmentTable;
-
-
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -215,11 +210,14 @@ import {
   Tabs,
   Typography,
   Pagination,
+  IconButton,
 } from "@mui/material";
 import { format } from "date-fns";
 import "./Assignment.css";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
+const AssignmentTable = ({ userData, assignmentDatas, loading, error, handleDeleteAssignment }) => {
   const [tableData, setTableData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -234,7 +232,7 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
       const reversedData = assigned.reverse();
       setTableData(reversedData);
     }
-  }, [assignmentDatas, userData, loading, error]);
+  }, [assignmentDatas, userData, loading, error, handleDeleteAssignment]);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -291,7 +289,11 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
           <Tab label="Completed" value="Completed" />
         </Tabs>
 
-        <TableComponent data={currentItems} handleDescriptionClick={handleDescriptionClick} />
+        <TableComponent
+          data={currentItems}
+          handleDescriptionClick={handleDescriptionClick}
+          handleDeleteAssignment={handleDeleteAssignment}
+        />
 
         <Pagination
           count={Math.ceil(filteredItems.length / itemsPerPage)}
@@ -321,48 +323,113 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error }) => {
   );
 };
 
-const TableComponent = ({ data, handleDescriptionClick }) => {
+const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }) => {
   return (
     <div>
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead className="customTableHead">
-            <TableRow >
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assignment ID</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>AssignTo</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assignment Description</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Assign Date</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Deadline Date</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Status</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Priority</TableCell>
+            <TableRow>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Assignment ID
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                AssignTo
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Assignment Description
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Assign Date
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Deadline Date
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Status
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Priority
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item, index) => (
               <TableRow key={index} className="custom-row">
-                <TableCell className="vertical-border" >{item.AssignmentID}</TableCell>
-                <TableCell className="vertical-border" >
+                <TableCell className="vertical-border">
+                  {item.AssignmentID}
+                </TableCell>
+                <TableCell className="vertical-border">
                   {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
                 </TableCell>
                 <TableCell
-                className="vertical-border" 
-                  onClick={() => handleDescriptionClick(item.Assignment_Description)}
-                  style={{ cursor: "pointer", maxWidth:"60px" }}
+                  className="vertical-border"
+                  onClick={() =>
+                    handleDescriptionClick(item.Assignment_Description)
+                  }
+                  style={{ cursor: "pointer", maxWidth: "60px" }}
                 >
                   {item.Assignment_Description}
                 </TableCell>
-                <TableCell className="vertical-border" >
+                <TableCell className="vertical-border">
                   {format(new Date(item.AssignDate), "dd/MM/yyyy")}
                 </TableCell>
-                <TableCell className="vertical-border" >
+                <TableCell className="vertical-border">
                   {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
                 </TableCell>
-                <TableCell className="vertical-border" >
-                  <span style={{ color: getStatusColor(item.AssignmentStatus) }}>
+                <TableCell className="vertical-border">
+                  <span
+                    style={{ color: getStatusColor(item.AssignmentStatus) }}
+                  >
                     {item.AssignmentStatus}
                   </span>
                 </TableCell>
-                <TableCell className="vertical-border" >{item.AssignmentPriority}</TableCell>
+                <TableCell className="vertical-border">
+                  {item.AssignmentPriority}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  <IconButton
+                    sx={{
+                      color: "#055f85",
+                    }}
+                  >
+                    <EditNoteIcon />
+                  </IconButton>
+
+                  <IconButton
+                    sx={{ color: "red"}}
+                    onClick={() => handleDeleteAssignment(item.AssignmentID)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

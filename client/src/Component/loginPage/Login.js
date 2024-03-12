@@ -93,7 +93,7 @@ export default function Login() {
           <Card>
             <CardContent>
               <span style={{ display: "flex", justifyContent: "center" }}>
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <Avatar sx={{ m: 1, bgcolor: "#055f85", color:"white" }}>
                   <LockOutlinedIcon />
                 </Avatar>
               </span>
@@ -142,7 +142,7 @@ export default function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2, bgcolor:"#055f85" }}
                   disabled={loading}
                 >
                   {loading ? "Signing in..." : "Sign In"}

@@ -82,15 +82,15 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
               key={item._id}
               className="custom-row"
             >
-              <TableCell className="vertical-border" sx={{ padding:"10px 16px"}}>{item.EmployeeID}</TableCell>
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>{item.EmployeeID}</TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ textTransform: "capitalize", padding:"10px 16px" }}
+                sx={{ textTransform: "capitalize", padding:"10px 16px" , fontSize:"15px"}}
               >{`${item.FirstName} ${item.LastName}`}</TableCell>
-              <TableCell className="vertical-border" sx={{ padding:"10px 16px"}}>
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>
                 {item.DesignationName}
               </TableCell>
-              <TableCell className="vertical-border" sx={{ padding:"10px 16px"}}>
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>
                 {item.DepartmentName}
               </TableCell>
 
@@ -116,16 +116,16 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
                 {item.EmploymentStatus}
               </TableCell>
 
-              <TableCell>
+              <TableCell className="vertical-border">
                 <IconButton
-                  sx={{ color: "#055f85", height: "6px", padding:"10px 16px" }}
+                  sx={{ color: "#055f85", height: "6px" }}
                   onClick={() => handleEditClick(item)}
                 >
                   <EditNoteIcon/>
                 </IconButton>
 
                 <IconButton
-                  sx={{ color: "red", height: "5px" , padding:"10px 16px"}}
+                  sx={{ color: "red", height: "5px"}}
                   onClick={() => deleteEmployee(item.EmployeeID)}
                 >
                   <DeleteIcon />
