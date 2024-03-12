@@ -19,6 +19,7 @@ export default function AllTeamMembers() {
   const [data, setData] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  console.log(data, "data");
 
   console.log(data, "team");
 

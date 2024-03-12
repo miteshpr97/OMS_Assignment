@@ -49,6 +49,36 @@ exports.insertMultipleWorkGroup = async (req, res) => {
 
 // Get all data from employees table
 
+// exports.getAllWorkGroupEmployeesData = async (req, res) => {
+//   const query = `
+//   SELECT 
+//     w.*, 
+//     e1.FirstName AS Assigner_FirstName, 
+//     e1.LastName AS Assigner_LastName,
+//     e2.FirstName AS Assignee_FirstName,
+//     e2.LastName AS Assignee_LastName,
+//     // e1.Employee_Profile AS Assigner_Profile,
+//     // e2.Employee_Profile AS Assignee_Profile,
+//     d.DepartmentName AS Department_Name
+//   FROM 
+//     tb_workGroup AS w
+//   INNER JOIN 
+//     tb_employee AS e1 ON w.EmployeeID_Assigner = e1.EmployeeID
+//   INNER JOIN
+//     tb_employee AS e2 ON w.EmployeeID_AssignTo = e2.EmployeeID
+//   INNER JOIN
+//     tb_department AS d ON w.DepartmentID_AssignTo = d.DepartmentID;
+//   `;
+
+//   try {
+//     const results = await queryAsync(query);
+//     res.status(200).json(results);
+//   } catch (error) {
+//     console.error("Error executing query:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
 exports.getAllWorkGroupEmployeesData = async (req, res) => {
   const query = `
   SELECT 
@@ -57,8 +87,6 @@ exports.getAllWorkGroupEmployeesData = async (req, res) => {
     e1.LastName AS Assigner_LastName,
     e2.FirstName AS Assignee_FirstName,
     e2.LastName AS Assignee_LastName,
-    e1.Employee_Profile AS Assigner_Profile,
-    e2.Employee_Profile AS Assignee_Profile,
     d.DepartmentName AS Department_Name
   FROM 
     tb_workGroup AS w
@@ -78,7 +106,6 @@ exports.getAllWorkGroupEmployeesData = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 // Getting all work group's data
 
 exports.getAllWorkGroups = async (req, res) => {
