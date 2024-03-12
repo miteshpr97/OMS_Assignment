@@ -86,6 +86,56 @@ exports.updateTask = async (req, res) => {
   }
 };
 
+// Progress Task Status
+
+exports.progressTaskStatus = async (req, res) => {
+  const taskId = req.params.TaskID;
+  const query =
+    "UPDATE tb_task SET TaskStatus = 'Progress' WHERE TaskID = ? AND TaskStatus = 'Pending';";
+
+  try {
+    const results = await queryAsync(query, [taskId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Task not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Task Status is up to date already");
+    } else {
+      res
+        .status(200)
+        .json({ message: "Task Status updated successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// Completed Task Status
+
+exports.completedTaskStatus = async (req, res) => {
+  const taskId = req.params.TaskID;
+  const query =
+    "UPDATE tb_task SET TaskStatus = 'Completed' WHERE TaskID = ? AND TaskStatus = 'Progress';";
+
+  try {
+    const results = await queryAsync(query, [taskId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Task not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json("Task Status is up to date already");
+    } else {
+      res
+        .status(200)
+        .json({ message: "Task Status updated successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // Delete Task
 
 exports.deleteTask = async (req, res) => {
