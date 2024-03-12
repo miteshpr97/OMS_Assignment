@@ -8,35 +8,15 @@ import {
   TableCell,
   IconButton,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import EditIcon from "@mui/icons-material/Edit";
+
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import EmployeeEditModal from "./EmployeeEditModal";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import TablePagination from "@mui/material/TablePagination";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
-const useStyles = makeStyles((theme) => ({
-  table: {
-    minWidth: 650,
-  },
-  tableHeaderCell: {
-    fontWeight: "bold",
-    backgroundColor: "#055f85",
-    color: theme.palette.getContrastText(theme.palette.primary.dark),
-  },
-  name: {
-    fontSize: "0.9rem",
-  },
-  status: {
-    fontWeight: "bold",
-    fontSize: "0.75rem",
-    color: "white",
-    borderRadius: 8,
-    padding: "5px 10px",
-    marginTop: "17px",
-    display: "inline-block",
-  },
-}));
+
 
 const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -44,7 +24,6 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
 
-  const classes = useStyles();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -74,27 +53,21 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
 
   return (
     <div className="Employee-table">
-      <div>
-        {/* <Typography variant="h5" style={{ fontWeight: "500" }}>
-          Employee Data
-        </Typography> */}
-      </div>
-      <br />
-      <Table>
-        <TableHead>
+      <Table size="small">
+        <TableHead className="customTableHead">
           <TableRow>
-            <TableCell className={classes.tableHeaderCell}>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
               Employee ID
             </TableCell>
-            <TableCell className={classes.tableHeaderCell}>Name</TableCell>
-            <TableCell className={classes.tableHeaderCell}>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Name</TableCell>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
               Designation
             </TableCell>
-            <TableCell className={classes.tableHeaderCell}>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
               Department / Project
             </TableCell>
-            <TableCell className={classes.tableHeaderCell}>Status</TableCell>
-            <TableCell className={classes.tableHeaderCell}>Action</TableCell>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Status</TableCell>
+            <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -107,28 +80,27 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
           ).map((item, index) => (
             <TableRow
               key={item._id}
-              style={{
-                backgroundColor: index % 2 === 0 ? "#D3D3D3" : "white",
-              }}
+              className="custom-row"
             >
-              <TableCell className={classes.name}>{item.EmployeeID}</TableCell>
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>{item.EmployeeID}</TableCell>
               <TableCell
-                className={classes.name}
-                sx={{ textTransform: "capitalize" }}
+                className="vertical-border"
+                sx={{ textTransform: "capitalize", padding:"10px 16px" , fontSize:"15px"}}
               >{`${item.FirstName} ${item.LastName}`}</TableCell>
-              <TableCell className={classes.name}>
-                {item.DesignationID}
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>
+                {item.DesignationName}
               </TableCell>
-              <TableCell className={classes.name}>
-                {item.DepartmentID}
+              <TableCell className="vertical-border" sx={{ padding:"10px 16px", fontSize:"15px"}}>
+                {item.DepartmentName}
               </TableCell>
 
               <TableCell
-                className={classes.name}
+                className="vertical-border"
                 style={{
                   color:
                     (item.EmploymentStatus === "Active" && "#4E9B47") ||
                     (item.EmploymentStatus === "Inactive" && "#FF5733"),
+                    padding:"10px 16px"
                 }}
               >
                 <FiberManualRecordIcon
@@ -138,21 +110,22 @@ const ViewRegistrationData = ({ employeeData, deleteEmployee }) => {
                       (item.EmploymentStatus === "Inactive" && "#FF5733"),
                     fontSize: "1rem",
                     marginRight: "3px",
+                   
                   }}
                 />
                 {item.EmploymentStatus}
               </TableCell>
 
-              <TableCell>
+              <TableCell className="vertical-border">
                 <IconButton
-                  sx={{ color: "#188bc0", height: "5px" }}
+                  sx={{ color: "#055f85", height: "6px" }}
                   onClick={() => handleEditClick(item)}
                 >
-                  <EditIcon />
+                  <EditNoteIcon/>
                 </IconButton>
 
                 <IconButton
-                  sx={{ color: "#c53531", height: "5px" }}
+                  sx={{ color: "red", height: "5px"}}
                   onClick={() => deleteEmployee(item.EmployeeID)}
                 >
                   <DeleteIcon />

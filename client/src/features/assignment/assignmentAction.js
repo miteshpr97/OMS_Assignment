@@ -48,3 +48,17 @@ export const fetchAssignmentCounts = createAsyncThunk(
     }
   }
 );
+
+//  deleting assignment data
+export const deleteAssignmentData = createAsyncThunk(
+  "assignment/deleteAssignmentData",
+  async (AssignmentID) => {
+    try {
+      const url = `http://localhost:3306/api/assignmentDetails/delete/${AssignmentID}`;
+      const response = await axios.delete(url);
+      return response.data;
+    } catch (error) {
+      return isRejectedWithValue(error.response.data);
+    }
+  }
+);

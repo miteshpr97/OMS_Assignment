@@ -11,6 +11,9 @@ import {
   fetchNextEmployeeId,
   deleteEmployee as deleteEmployeeAction,
 } from "../../features/employee/createAction";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 const RegisterPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
@@ -88,20 +91,26 @@ const RegisterPage = () => {
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
         <div style={{ border:"2px solid #dddddd"}}>
-          <div
+        <div
             style={{
               backgroundColor: successMessage
+                ? "#b4dab471"
+                : error
+                ? "#ffd2d280"
+                : "transparent",
+                color: successMessage
                 ? "green"
                 : error
                 ? "red"
                 : "transparent",
+                padding:"2px 10px",
             }}
           >
-            {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {successMessage && <p>{successMessage}</p>}
-          </div>
 
+            {loading && <p style={{margin:"5px"}}> <HourglassBottomIcon/> Loading...</p>}
+            {error && <p style={{margin:"5px"}}> <ErrorOutlineIcon/> {error}</p>}
+            {successMessage && <p style={{margin:"0px"}}> <TaskAltIcon/> {successMessage}</p>}
+          </div>
           {/* Pass nextEmployeeId to NewRegistration component */}
 
           <NewRegistration

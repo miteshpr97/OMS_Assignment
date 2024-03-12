@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../midderware/auth");
 const employeeController = require("../controllers/employeeDetailsController");
 const path = require("path");
 const multer = require("multer");
 router.use(express.static("public"));
+
+const { authorizeUser } = require("../midderware/auth");
 
 // for saving image using registration form
 const storage = multer.diskStorage({
@@ -20,6 +21,8 @@ const upload = multer({ storage: storage });
 
 // Get all employees
 router.get("/", employeeController.getAllEmployees);
+
+router.get("/profile/:EmployeeID", employeeController.getProfileOfEmployeesByEmployeeId)
 
 // Get all data of employees except admin
 router.get("/allData", employeeController.getAllDataOfEmployees);
@@ -48,6 +51,6 @@ router.patch(
 );
 
 // Deleting employee's data
-router.delete("/delete/:EmployeeID", employeeController.deleteEmployee);
+router.delete("/delete/:EmployeeID", authorizeUser , employeeController.deleteEmployee);
 
 module.exports = router;

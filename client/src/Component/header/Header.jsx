@@ -63,7 +63,13 @@ export default function Header({ open, handleDrawerOpen }) {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-
+  
+    // Ask for confirmation before logging out
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (!confirmLogout) {
+      return; // Cancel logout if user selects cancel
+    }
+  
     try {
       const apiUrl = "http://localhost:3306/api/userDetails/logout";
       const response = await fetch(apiUrl, {
@@ -73,19 +79,20 @@ export default function Header({ open, handleDrawerOpen }) {
         },
         credentials: "include",
       });
-
+  
       if (response.ok) {
         sessionStorage.removeItem("userData");
         localStorage.removeItem("token");
         navigate("/loginpage");
-        alert("logout successful");
+        alert("Logout successful");
       } else {
-        console.log("logout failed");
+        console.log("Logout failed");
       }
     } catch (error) {
       console.error(error);
     }
   };
+  
 
   return (
     <AppBar position="fixed" open={open} style={{ background: "#055f85" }}>
@@ -140,12 +147,12 @@ export default function Header({ open, handleDrawerOpen }) {
             />
           )}
 
-          <Popper id={id} open={isOpen} anchorEl={anchorEl}>
+          <Popper id={id} open={isOpen} anchorEl={anchorEl} >
             <Box
               sx={{
                 border: "none",
                 p: 1,
-                bgcolor: "gray", // Transparent blue color with alpha value 0.5
+                bgcolor: "#dddddd", // Transparent blue color with alpha value 0.5
                 marginTop: "15px",
                 marginRight: "9px",
               }}
@@ -156,7 +163,7 @@ export default function Header({ open, handleDrawerOpen }) {
                     <ListItemButton>
                       <ListItemText
                         primary={`${userData.FirstName} ${userData.LastName} - ${userData.EmployeeID}`}
-                        sx={{ color: "white" }}
+                        sx={{ color: "#055f85" }}
                       />
                     </ListItemButton>
                   </ListItem>
@@ -166,7 +173,7 @@ export default function Header({ open, handleDrawerOpen }) {
                     <ListItemButton>
                       <ListItemText
                         primary="please Sign-in..."
-                        sx={{ color: "white" }}
+                        sx={{ color: "#055f85" }}
                       />
                     </ListItemButton>
                   </ListItem>
@@ -177,10 +184,10 @@ export default function Header({ open, handleDrawerOpen }) {
                   <ListItem disablePadding>
                     <Link
                       to={"/loginpage"}
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{ textDecoration: "none", color: "#055f85" }}
                     >
                       <ListItemButton>
-                        <ListItemIcon sx={{ color: "white" }}>
+                        <ListItemIcon sx={{ color: "#055f85" }}>
                           <LoginIcon />
                         </ListItemIcon>
                         <ListItemText primary="SIGN-IN" />
@@ -194,10 +201,10 @@ export default function Header({ open, handleDrawerOpen }) {
                     <ListItem disablePadding>
                       <Link
                         to={"/signuppage"}
-                        style={{ textDecoration: "none", color: "white" }}
+                        style={{ textDecoration: "none", color: "#055f85" }}
                       >
                         <ListItemButton>
-                          <ListItemIcon sx={{ color: "white" }}>
+                          <ListItemIcon sx={{ color: "#055f85" }}>
                             <AppRegistrationIcon />
                           </ListItemIcon>
                           <ListItemText primary="SIGN-UP" />
@@ -206,12 +213,12 @@ export default function Header({ open, handleDrawerOpen }) {
                     </ListItem>
                     <ListItem disablePadding>
                       <ListItemButton onClick={handleLogout}>
-                        <ListItemIcon sx={{ color: "white" }}>
+                        <ListItemIcon sx={{ color: "#055f85" }}>
                           <LogoutIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary="SIGN-OUT"
-                          sx={{ color: "white" }}
+                          sx={{ color: "#055f85" }}
                         />
                       </ListItemButton>
                     </ListItem>

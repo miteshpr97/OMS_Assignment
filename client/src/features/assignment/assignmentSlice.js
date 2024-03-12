@@ -53,7 +53,7 @@
 
 
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAssignmentData, createAssignment, fetchAssignmentCounts } from "./assignmentAction";
+import { fetchAssignmentData, createAssignment, fetchAssignmentCounts, deleteAssignmentData } from "./assignmentAction";
 
 export const assignmentSlice = createSlice({
   name: 'assignment',
@@ -103,7 +103,20 @@ export const assignmentSlice = createSlice({
       .addCase(fetchAssignmentCounts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+        // Deleting designation data
+        .addCase(deleteAssignmentData.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(deleteAssignmentData.fulfilled, (state, action) => {
+          state.loading = false;
+          state.assignmentData = state.assignmentData.filter(assignment => assignment.AssignmentID !== action.payload.AssignmentID);
+        })
+        .addCase(deleteAssignmentData.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message;
+        });
   },
 });
 

@@ -86,8 +86,8 @@ export const updateEmployee = createAsyncThunk(
   "employee/updateEmployee",
   async (employeeData, { rejectWithValue }) => {
     try {
-      const { employeeId, ...updatedData } = employeeData;
-      const response = await axios.patch(`${UPDATE_EMPLOYEE_URL}${employeeId}`, updatedData);
+      const { EmployeeID, ...updatedData } = employeeData;
+      const response = await axios.patch(`${UPDATE_EMPLOYEE_URL}${EmployeeID}`, updatedData);
 
       if (!response.ok) {
         throw new Error("Failed to update employee");
