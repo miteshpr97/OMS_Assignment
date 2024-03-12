@@ -22,8 +22,6 @@ const upload = multer({ storage: storage });
 // Get all employees
 router.get("/", employeeController.getAllEmployees);
 
-router.get("/profile/:EmployeeID", employeeController.getProfileOfEmployeesByEmployeeId)
-
 // Get all data of employees except admin
 router.get("/allData", employeeController.getAllDataOfEmployees);
 
