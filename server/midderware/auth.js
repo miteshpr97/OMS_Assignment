@@ -49,8 +49,6 @@ const authenticateUser = async (req, res, next) => {
 const authorizeUser = (req, res, next) => {
 
   const isAdmin = req.authenticatedUser && req.authenticatedUser.Role === 'Admin';
-  console.log(req.authenticatedUser.Role === 'Admin');
-  console.log(req.authenticatedUser.Role);
 
   if (isAdmin) {
     // User is authorized, proceed to the next middleware or route handler
