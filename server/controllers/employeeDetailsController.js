@@ -66,20 +66,6 @@ exports.getAllDataOfEmployeesByEmployeeId = async (req, res) => {
   }
 };
 
-exports.getProfileOfEmployeesByEmployeeId = async (req, res) => {
-  const employeeId = req.params.EmployeeID;
-  try {
-    const query =
-      "SELECT Employee_Profile FROM tb_employee WHERE EmployeeID = ?";
-    const results = await queryAsync(query, [employeeId]);
-    res.status(200).json(results[0]);
-  } catch (error) {
-    console.error("Error executing query:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-
 // Get Data of Employees with Their Department and Designation Name
 
 exports.getDataOfEmployeesWithTheirDNames = async (req, res) => {
