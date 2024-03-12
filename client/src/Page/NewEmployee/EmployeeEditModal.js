@@ -62,6 +62,8 @@ const EmployeeEditModal = ({ isOpen, onClose, employeeData }) => {
 
   const handleSave = () => {
     dispatch(updateEmployee(formData));
+
+    console.log(formData, "hhh")
     handleClose();
   };
 
