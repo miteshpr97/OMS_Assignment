@@ -30,16 +30,18 @@ exports.getAllEmployees = async (req, res) => {
 exports.getAllDataOfEmployees = async (req, res) => {
   try {
     const query = `
-      SELECT
-        e.*, u.Role, u.Username , d.DepartmentName, d2.DesignationName
-      FROM
-        tb_employee as e INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
-      INNER JOIN 
-        tb_department as d ON e.DepartmentID = d.DepartmentID 
-      INNER JOIN 
-        tb_designation as d2 ON e.DesignationID = d2.DesignationID
-        ORDER BY
-        e.EmployeeID; `;
+    SELECT
+        e.*, u.Role, u.Username, d.DepartmentName, d2.DesignationName
+    FROM
+        tb_employee as e
+        INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
+        INNER JOIN tb_department as d ON e.DepartmentID = d.DepartmentID
+        INNER JOIN tb_designation as d2 ON e.DesignationID = d2.DesignationID
+    WHERE
+        e.EmploymentStatus = 'Active'
+    ORDER BY
+        e.EmployeeID;`;
+        
     const results = await queryAsync(query);
     const userEmployees = results.filter(
       (employee) => employee.Role === "User"
