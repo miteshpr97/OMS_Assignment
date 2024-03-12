@@ -1,5 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination, Tabs, Tab } from "@mui/material";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TablePagination,
+  Tabs,
+  Tab,
+  IconButton,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
@@ -9,7 +21,7 @@ const TaskTable = () => {
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState('all'); // Default filter is 'all'
+  const [filter, setFilter] = useState("all"); // Default filter is 'all'
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -19,9 +31,7 @@ const TaskTable = () => {
   useEffect(() => {
     const fetchAssignedEmployees = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3306/api/taskDetails"
-        );
+        const response = await fetch("http://localhost:3306/api/taskDetails");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -77,8 +87,8 @@ const TaskTable = () => {
     }
   };
 
-  const filteredTasks = assignedEmployees.filter(task => {
-    if (filter === 'all') {
+  const filteredTasks = assignedEmployees.filter((task) => {
+    if (filter === "all") {
       return true;
     } else {
       return task.TaskStatus.toLowerCase() === filter;
@@ -98,19 +108,61 @@ const TaskTable = () => {
         <Tab label="Completed" value="completed" />
       </Tabs>
 
-      <TableContainer component={Paper} sx={{background:"rgb(240, 240, 240)", boxShadow:"none" }}>
-        <Table size="small" sx={{ marginTop:"16px"}}>
+      <TableContainer
+        component={Paper}
+        sx={{ background: "rgb(240, 240, 240)", boxShadow: "none" }}
+      >
+        <Table size="small" sx={{ marginTop: "16px" }}>
           <TableHead className="customTableHead">
             <TableRow>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task ID</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>EmployeeID</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task Description</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Start Date</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>End Date</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Created At</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Task Status</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Edit</TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Delete</TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Task ID
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                EmployeeID
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Task Description
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Start Date
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                End Date
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Created At
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Task Status
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,33 +170,51 @@ const TaskTable = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((item) => (
                 <TableRow key={item.TaskID} className="custom-row">
-                  <TableCell className="vertical-border">{item.TaskID}</TableCell>
-                  <TableCell className="vertical-border">{item.EmployeeID}</TableCell>
-                  <TableCell className="vertical-border">{item.TaskDescription}</TableCell>
-                  <TableCell className="vertical-border">{moment(item.StartDate).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell className="vertical-border">{moment(item.EndDate).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell className="vertical-border">{moment(item.CreatedAt).format("DD/MM/YYYY")}</TableCell>
-                  <TableCell className="vertical-border" style={{ color: "red" }}>{item.TaskStatus}</TableCell>
-                  <TableCell
-                  className="vertical-border"
-                    style={{
-                      color: "#055f85",
-                      textAlign: "center",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <EditNoteIcon />
+                  <TableCell className="vertical-border">
+                    {item.TaskID}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.EmployeeID}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.TaskDescription}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {moment(item.StartDate).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {moment(item.EndDate).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {moment(item.CreatedAt).format("DD/MM/YYYY")}
                   </TableCell>
                   <TableCell
-                  className="vertical-border"
-                    style={{
-                      color: "red",
-                      textAlign: "center",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleDelete(item.TaskID)}
+                    className="vertical-border"
+                    style={{ color: "red" }}
                   >
-                    <DeleteIcon />
+                    {item.TaskStatus}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    <IconButton
+                      sx={{
+                        color: "#055f85",
+                        textAlign: "center",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <EditNoteIcon />
+                    </IconButton>
+
+                    <IconButton
+                      sx={{
+                        color: "red",
+                        textAlign: "center",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleDelete(item.TaskID)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
