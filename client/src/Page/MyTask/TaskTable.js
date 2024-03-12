@@ -16,7 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTaskData } from "../../features/Task/TaskAction";
+import { fetchTaskData } from "../../features/Task/TaskActions";
 import { selectTaskData } from "../../features/Task/TaskSlice";
 
 const TaskTable = () => {

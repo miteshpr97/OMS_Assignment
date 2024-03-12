@@ -31,7 +31,7 @@ const ViewAssignment = () => {
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const assignmentDatas = useSelector(selectAssignment);
+  const assignment = useSelector(selectAssignment);
 
   useEffect(() => {
     dispatch(fetchAssignmentData());
@@ -52,7 +52,7 @@ const ViewAssignment = () => {
         //   throw new Error("Failed to fetch data");
         // }
         // const data = await response.json();
-        const assigned = assignmentDatas.filter(
+        const assigned = assignment.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
         );
         const reversedData = assigned.reverse();
