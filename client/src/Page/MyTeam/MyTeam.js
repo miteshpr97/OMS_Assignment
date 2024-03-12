@@ -20,9 +20,6 @@ export default function MyTeam() {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
-
-  
-
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
@@ -47,7 +44,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
-        console.log(assigned, "hshshsh")
+        console.log(assigned, "hshshsh");
         setAssignedEmployees(assigned);
         setError(null); // Clear any previous errors
       } catch (error) {
@@ -60,8 +57,6 @@ export default function MyTeam() {
       fetchAssignedEmployees();
     }
   }, [userData]);
-
- 
 
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
@@ -176,6 +171,17 @@ export default function MyTeam() {
                       paddingTop: "20px",
                     }}
                   >
+                    {/* <CardMedia
+                      component="img"
+                      src={
+                        item.Assignee_Profile
+                          ? `http://localhost:3306/api/employee/Profile/${item.EmployeeID_AssignTo}`
+                          : "/placeholder_image.jpg"
+                      }
+                      alt="Employee Profile"
+                      sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                    /> */}
+
                     <CardMedia
                       component="img"
                       src={

@@ -19,15 +19,39 @@ export default function AllTeamMembers() {
   const [data, setData] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  console.log(data, "data");
-
-  console.log(data, "team");
+  const [imageURL, setImageURL] = useState('');
 
   useEffect(() => {
     // Fetch department data when the component mounts
     fetchDepartmentData();
     fetchEmployeeData();
   }, []);
+
+
+   useEffect(() => {
+        // Fetch image from the API endpoint
+        fetch('http://localhost:3306/api/employee/Profile/EMP003')
+            .then(response => {
+                // Check if the response is successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Convert response to blob (binary large object)
+                return response.blob();
+            })
+            .then(blob => {
+                // Create an object URL from the blob
+                const imageURL = URL.createObjectURL(blob);
+                // Set the image source to the object URL
+                setImageURL(imageURL);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+
+        // Clean up function to revoke the object URL when component unmounts
+        return () => URL.revokeObjectURL(imageURL);
+    }, []); // Empty dependency array to run effect only once
 
   // GET ALL EMPLOYEE DATA USING THIS APIs
   const fetchEmployeeData = async () => {
@@ -139,7 +163,7 @@ export default function AllTeamMembers() {
                     sx={{ height: 140, width: 140, borderRadius: "50%" }}
                     src={
                       item.Employee_Profile
-                        ? `http://localhost:3306/api/employee/${item.Employee_Profile}`
+                        ? `http://localhost:3306/api/employee/${item.EMP003}`
                         : ""
                     }
                     alt="Employee Profile"
