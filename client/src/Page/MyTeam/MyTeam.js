@@ -186,7 +186,7 @@ export default function MyTeam() {
                       component="img"
                       src={
                         item.Assignee_Profile
-                          ? `http://localhost:3306/api/employee/${item.Assignee_Profile}`
+                          ? `http://localhost:3306/api/employee//${item.Assignee_Profile}`
                           : "/placeholder_image.jpg"
                       }
                       alt="Employee Profile"
