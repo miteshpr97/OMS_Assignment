@@ -179,7 +179,7 @@ export default function MyTeam() {
                     <CardMedia
                       component="img"
                       src={
-                        item.Assignee_Profile
+                        item.EmployeeID_AssignTo
                           ? `http://localhost:3306/api/employee/Profile/${item.EmployeeID_AssignTo}`
                           : "/placeholder_image.jpg"
                       }
