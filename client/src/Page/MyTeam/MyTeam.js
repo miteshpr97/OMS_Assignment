@@ -20,6 +20,9 @@ export default function MyTeam() {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
 
+
+  
+
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
@@ -44,6 +47,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
+        console.log(assigned, "hshshsh")
         setAssignedEmployees(assigned);
         setError(null); // Clear any previous errors
       } catch (error) {
@@ -56,6 +60,8 @@ export default function MyTeam() {
       fetchAssignedEmployees();
     }
   }, [userData]);
+
+ 
 
   // GET DEPARTMENT id and name FETCH
   const fetchDepartmentData = async () => {
