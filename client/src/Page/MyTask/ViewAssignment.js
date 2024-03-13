@@ -199,7 +199,7 @@ const TableComponent = ({ data }) => {
       if (response.ok) {
         alert(
           `Data moved to ${
-            AssignmentStatus === "Pending" ? "progress" : "completed"
+            AssignmentStatus === "Pending" ? "Progress" : "Completed"
           }`
         );
         window.location.reload();

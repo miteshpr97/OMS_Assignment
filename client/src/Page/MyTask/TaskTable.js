@@ -15,6 +15,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const TaskTable = () => {
   const [assignedEmployees, setAssignedEmployees] = useState([]);
@@ -163,6 +165,12 @@ const TaskTable = () => {
               >
                 Action
               </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Add
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -216,6 +224,19 @@ const TaskTable = () => {
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
+
+                  <TableCell className="vertical-border">
+                {item.AssignmentStatus === "Completed" ? (
+                  <CheckCircleIcon sx={{ color: "green" }} />
+                ) : (
+                  <AddBoxIcon
+                    sx={{ color: "#055f85", cursor: "pointer" }}
+                    // onClick={() =>
+                    //   handleAdd(item.AssignmentID, item.AssignmentStatus)
+                    // }
+                  />
+                )}
+              </TableCell>
                 </TableRow>
               ))}
           </TableBody>
