@@ -144,5 +144,11 @@ http://localhost:3306/api/taskDetails/withID
 // update task details
 http://localhost:3306/api/taskDetails/update/:TaskID
 
+// update assignment status from pending to progress
+http://localhost:3306/api/taskDetails/:TaskID/progress
+
+// update assignment status from progress to completed
+http://localhost:3306/api/taskDetails/:TaskID/completed
+
 // delete task details
 http://localhost:3306/api/taskDetails/delete/:TaskID
