@@ -84,7 +84,7 @@ export default function Header({ open, handleDrawerOpen }) {
         sessionStorage.removeItem("userData");
         localStorage.removeItem("token");
         navigate("/loginpage");
-        alert("Logout successful");
+        
       } else {
         console.log("Logout failed");
       }

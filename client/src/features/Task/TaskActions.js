@@ -3,7 +3,7 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//  creating designation data
+//  creating task data
 
 export const createTaskData = createAsyncThunk(
   "task/createTaskData",
@@ -18,23 +18,22 @@ export const createTaskData = createAsyncThunk(
   }
 );
 
-
-//  fetching designation data
+//  fetching task data
 export const fetchTaskData = createAsyncThunk(
   "Ttask/fetchTaskData",
   async () => {
     try {
       const response = await axios.get('http://localhost:3306/api/taskDetails/');
       const data = response.data;
-      //const reverse = data.reverse();
-      return data;
+      const reverse = data.reverse();
+      return reverse;
     } catch (error) {
       return isRejectedWithValue(error.response.data);
     }
   }
 );
 
-//  deleting designation data
+//  deleting task data
 export const deleteTaskData = createAsyncThunk(
   "task/deleteTaskData",
   async (TaskID) => {
