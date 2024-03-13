@@ -45,14 +45,14 @@ const ViewAssignment = () => {
   useEffect(() => {
     const fetchAssignedEmployees = async () => {
       try {
-        // const response = await fetch(
-        //   "http://localhost:3306/api/assignmentDetails/allData"
-        // );
-        // if (!response.ok) {
-        //   throw new Error("Failed to fetch data");
-        // }
-        // const data = await response.json();
-        const assigned = assignment.filter(
+        const response = await fetch(
+          "http://localhost:3306/api/assignmentDetails/allData"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
         );
         const reversedData = assigned.reverse();
@@ -208,7 +208,7 @@ const TableComponent = ({ data }) => {
       if (response.ok) {
         alert(
           `Data moved to ${
-            AssignmentStatus === "Pending" ? "progress" : "completed"
+            AssignmentStatus === "Pending" ? "Progress" : "Completed"
           }`
         );
         window.location.reload();
@@ -316,7 +316,7 @@ const TableComponent = ({ data }) => {
               <TableCell className="vertical-border">
                 {item.AssignmentStatus === "Completed" ? (
                   <CheckCircleIcon sx={{ color: "green" }} />
-                ) : (
+                ) :(
                   <AddBoxIcon
                     sx={{ color: "#055f85", cursor: "pointer" }}
                     onClick={() =>

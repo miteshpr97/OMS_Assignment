@@ -18,6 +18,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskData } from "../../features/Task/TaskActions";
 import { selectTaskData } from "../../features/Task/TaskSlice";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const TaskTable = () => {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ const TaskTable = () => {
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState("all"); // Default filter is 'all'
+  const [filter, setFilter] = useState("All"); // Default filter is 'all'
   const taskData = useSelector(selectTaskData);
 
   console.log(taskData, "llll");
@@ -94,12 +96,40 @@ const TaskTable = () => {
   };
 
   const filteredTasks = assignedEmployees.filter((task) => {
-    if (filter === "all") {
+    if (filter === "All") {
       return true;
     } else {
       return task.TaskStatus.toLowerCase() === filter;
     }
   });
+
+
+  const handleAdd = async (TaskID, TaskStatus) => {
+    try {
+      const apiUrl = `http://localhost:3306/api/taskDetails/${TaskID}/${
+        TaskStatus === "Pending" ? "Progress" : "Completed"
+      }`;
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        alert(
+          `Data moved to ${
+          TaskStatus === "Pending" ? "Progress" : "Completed"
+          }`
+        );
+        window.location.reload();
+      } else {
+        console.error("Error updating task:", response.status);
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
 
   return (
     <div className="viewTask-table">
@@ -108,7 +138,7 @@ const TaskTable = () => {
         onChange={(event, newValue) => setFilter(newValue)}
         aria-label="Task Filters"
       >
-        <Tab label="All" value="all" />
+        <Tab label="All" value="All" />
         <Tab label="Pending" value="pending" />
         <Tab label="Progress" value="progress" />
         <Tab label="Completed" value="completed" />
@@ -169,6 +199,12 @@ const TaskTable = () => {
               >
                 Action
               </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Add
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -196,7 +232,14 @@ const TaskTable = () => {
                   </TableCell>
                   <TableCell
                     className="vertical-border"
-                    style={{ color: "red" }}
+                    style={{
+                      color:
+                        item.TaskStatus === "Pending"
+                          ? "red"
+                          : item.TaskStatus === "Progress"
+                          ? "orange"
+                          : "green",
+                    }}
                   >
                     {item.TaskStatus}
                   </TableCell>
@@ -221,6 +264,17 @@ const TaskTable = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
+                  </TableCell>
+
+                  <TableCell className="vertical-border">
+                    {item.TaskStatus === "Completed" ? (
+                      <CheckCircleIcon sx={{ color: "green" }} />
+                    ) : (
+                      <AddBoxIcon
+                        sx={{ color: "#055f85", cursor: "pointer" }}
+                        onClick={() => handleAdd(item.TaskID, item.TaskStatus)}
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
