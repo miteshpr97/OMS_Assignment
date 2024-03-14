@@ -199,7 +199,7 @@ useEffect(() => {
                     {item.TaskID}
                   </TableCell>
                   <TableCell className="vertical-border">
-                    {item.EmployeeID}
+                    {item.EmployeeID} -{item.FirstName}
                   </TableCell>
                   <TableCell className="vertical-border">
                     {item.TaskDescription}
