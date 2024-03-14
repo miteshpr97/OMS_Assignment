@@ -388,7 +388,7 @@ export default function Header({ open, handleDrawerOpen }) {
                   padding: "2px",
                 }}
               >
-                <p style={{ margin: "0px", fontSize: "15px" }}> Hi, </p>
+                <p style={{ margin: "0px", fontSize: "15px", marginRight:"3px" }}> Hi, </p>
                 <span style={{ fontSize: "15px" }}>{userData.FirstName}</span>
               </div>
 
@@ -399,6 +399,7 @@ export default function Header({ open, handleDrawerOpen }) {
                   height: "40px",
                   width: "40px",
                   border: "none",
+                  cursor:"pointer"
                 }}
                 src={
                   userData.Employee_Profile

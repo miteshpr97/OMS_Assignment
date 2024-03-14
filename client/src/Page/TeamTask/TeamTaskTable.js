@@ -10,10 +10,10 @@ import {
   TablePagination,
   Tabs,
   Tab,
-  IconButton,
+
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 
 const TeamTaskTable = () => {
@@ -25,44 +25,7 @@ const TeamTaskTable = () => {
   const [filter, setFilter] = useState("All");
 
 
-  console.log(userData, "userData show")
-  console.log(userData.EmployeeID)
-  
-
-//   useEffect(() => {
-//     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
-//     setUserData(userDataFromSession);
-//   }, []);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         if (userData) {
-//           const apiUrl = `http://localhost:3306/api/workGroup/task/${userData.EmployeeID}`;
-//           const response = await fetch(apiUrl, {
-//             method: "GET",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           });
-//           if (!response.ok) {
-//             throw new Error("Network response was not ok");
-//           }
-//           const result = await response.json();
-
-//           const data = result.data
-//           console.log(data);
-          
-//           setData(result.reverse());
-//         }
-//       } catch (error) {
-//         console.error("Error fetching data:", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, [userData]);
-
+console.log(data, "kdvjdb");
 
 
 useEffect(() => {
@@ -71,31 +34,35 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-    const fetchData = async () => {
-        try {
-            if (userData && userData.EmployeeID) { // Add a check for userData.EmployeeID
-                const apiUrl = `http://localhost:3306/api/workGroup/task/${userData.EmployeeID}`;
-                const response = await fetch(apiUrl, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                const result = await response.json();
+  const fetchData = async () => {
+      try {
+          if (userData) {
+              const apiUrl = `http://localhost:3306/api/workGroup/task`;
+              const response = await fetch(apiUrl, {
+                  method: "GET",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+              });
+              if (!response.ok) {
+                  throw new Error("Network response was not ok");
+              }
+              const result = await response.json();
 
-                console.log(result)
-                setData(result.reverse());
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+              // Filter the data where EmployeeID_Assigner matches userData.EmployeeID
+              const filteredData = result.filter(item => item.EmployeeID_Assigner === userData.EmployeeID);
 
-    fetchData();
+              setData(filteredData.reverse());
+          }
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+
+  fetchData();
 }, [userData]);
+
+
 
 
   const handleChangePage = (event, newPage) => {
@@ -211,7 +178,7 @@ useEffect(() => {
               >
                 Task Status
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 className="vertical-border"
                 sx={{
                   color: "white",
@@ -220,7 +187,7 @@ useEffect(() => {
                 }}
               >
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -259,7 +226,7 @@ useEffect(() => {
                   >
                     {item.TaskStatus}
                   </TableCell>
-                  <TableCell className="vertical-border">
+                  {/* <TableCell className="vertical-border">
                     <IconButton
                       sx={{
                         color: "#055f85",
@@ -278,7 +245,7 @@ useEffect(() => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>
