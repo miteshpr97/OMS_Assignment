@@ -55,8 +55,8 @@ const ViewAssignment = () => {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
         );
-        const reversedData = assigned.reverse();
-        setAssignmentData(reversedData);
+
+        setAssignmentData(assigned);
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
       }

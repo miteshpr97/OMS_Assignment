@@ -31,7 +31,7 @@ const AssignmentCard = ({ countAssignmentData }) => {
     },
   ];
 
-  console.log(countAssignmentData);
+ 
   return (
     <div className="Assignmentcard-container">
       <Typography variant="h5" style={{ fontWeight: "500" }}>

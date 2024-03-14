@@ -10,10 +10,10 @@ import {
   TablePagination,
   Tabs,
   Tab,
-  IconButton,
+
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 
 const TeamTaskTable = () => {
@@ -23,40 +23,47 @@ const TeamTaskTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
-  console.log(userData.EmployeeID, "ecajb");
 
-  
 
-  useEffect(() => {
+console.log(data, "kdvjdb");
+
+
+useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
-  }, []);
+}, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
+useEffect(() => {
+  const fetchData = async () => {
       try {
-        if (userData) {
-          const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const result = await response.json();
-          console.log(result, "team task data");
-          setData(result.reverse());
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+          if (userData) {
+              const apiUrl = `http://localhost:3306/api/workGroup/task`;
+              const response = await fetch(apiUrl, {
+                  method: "GET",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+              });
+              if (!response.ok) {
+                  throw new Error("Network response was not ok");
+              }
+              const result = await response.json();
 
-    fetchData();
-  }, [userData]);
+              // Filter the data where EmployeeID_Assigner matches userData.EmployeeID
+              const filteredData = result.filter(item => item.EmployeeID_Assigner === userData.EmployeeID);
+
+              setData(filteredData.reverse());
+          }
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+
+  fetchData();
+}, [userData]);
+
+
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -76,9 +83,10 @@ const TeamTaskTable = () => {
   });
 
   if(!userData){
-    return <div>Loding ...</div>
+    return <div> Loding...</div>
   }
 
+ 
   return (
     <div className="viewTask-table">
       <Tabs
@@ -169,7 +177,7 @@ const TeamTaskTable = () => {
               >
                 Task Status
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 className="vertical-border"
                 sx={{
                   color: "white",
@@ -178,7 +186,7 @@ const TeamTaskTable = () => {
                 }}
               >
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -190,7 +198,7 @@ const TeamTaskTable = () => {
                     {item.TaskID}
                   </TableCell>
                   <TableCell className="vertical-border">
-                    {item.EmployeeID}
+                    {item.EmployeeID} -{item.FirstName}
                   </TableCell>
                   <TableCell className="vertical-border">
                     {item.TaskDescription}
@@ -217,7 +225,7 @@ const TeamTaskTable = () => {
                   >
                     {item.TaskStatus}
                   </TableCell>
-                  <TableCell className="vertical-border">
+                  {/* <TableCell className="vertical-border">
                     <IconButton
                       sx={{
                         color: "#055f85",
@@ -236,7 +244,7 @@ const TeamTaskTable = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

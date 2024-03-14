@@ -45,7 +45,14 @@ const TaskDialog = ({ open, onClose }) => {
         EmployeeID: userData.EmployeeID,
       })
     );
-    dispatch(fetchTaskData())
+    dispatch(fetchTaskData(taskData));
+    setTaskData({
+      EmployeeID: "",
+      StartDate: "",
+      EndDate: "",
+      TaskDescription: "",
+    });
+
     onClose();
   };
 
@@ -53,7 +60,6 @@ const TaskDialog = ({ open, onClose }) => {
     return <div>Loading...</div>;
   }
 
- 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add New Task</DialogTitle>

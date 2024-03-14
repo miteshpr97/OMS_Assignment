@@ -12,7 +12,9 @@ const TeamTask = () => {
         <Typography variant="h5" style={{ fontWeight: "500" }}>
               Team Task
             </Typography>
+            <div style={{marginTop:"20px"}}>
             <TeamTaskTable/>
+            </div>
         </div>
       </Box>
     </Box>

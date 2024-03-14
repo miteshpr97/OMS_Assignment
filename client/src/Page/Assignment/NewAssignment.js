@@ -39,6 +39,7 @@ export default function NewAssignment() {
   const countAssignmentData = useSelector(selectAssignmentCounts);
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
+  console.log(assignmentDatas, "ddgd")
 
 
 
@@ -51,7 +52,6 @@ export default function NewAssignment() {
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
 
-console.log(userData)
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -299,7 +299,7 @@ console.log(userData)
           </div>
           <AssignmentTable
             userData={userData}
-            assignm entDatas={assignmentDatas}
+            assignmentDatas={assignmentDatas}
             loading={loading}
             error={error}
             handleDeleteAssignment ={handleDeleteAssignment }
