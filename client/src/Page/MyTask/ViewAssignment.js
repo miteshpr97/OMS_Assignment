@@ -45,18 +45,18 @@ const ViewAssignment = () => {
   useEffect(() => {
     const fetchAssignedEmployees = async () => {
       try {
-        // const response = await fetch(
-        //   "http://localhost:3306/api/assignmentDetails/allData"
-        // );
-        // if (!response.ok) {
-        //   throw new Error("Failed to fetch data");
-        // }
-        // const data = await response.json();
-        const assigned = assignment.filter(
+        const response = await fetch(
+          "http://localhost:3306/api/assignmentDetails/allData"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
         );
-        const reversedData = assigned.reverse();
-        setAssignmentData(reversedData);
+
+        setAssignmentData(assigned);
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
       }

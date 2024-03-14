@@ -13,7 +13,7 @@ import {
   Select,
 } from "@mui/material";
 import { format } from "date-fns";
-import { updateEmployee } from "../../features/employee/createAction";
+import { updateEmployee, showEmployee } from "../../features/employee/createAction";
 
 const EmployeeEditModal = ({ isOpen, onClose, employeeData }) => {
   const [formData, setFormData] = useState(null);
@@ -62,8 +62,9 @@ const EmployeeEditModal = ({ isOpen, onClose, employeeData }) => {
 
   const handleSave = () => {
     dispatch(updateEmployee(formData));
+    dispatch(showEmployee(formData))
 
-    console.log(formData, "hhh")
+    console.log(formData, "hhh");
     handleClose();
   };
 
