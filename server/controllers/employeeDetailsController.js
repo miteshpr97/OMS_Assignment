@@ -83,7 +83,7 @@ exports.getAllDataOfEmployees = async (req, res) => {
     const userEmployees = results.filter(
       (employee) => employee.Role === "User"
     );
-    res.status(200).json(results);
+    res.status(200).json(userEmployees);
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -103,7 +103,7 @@ exports.getAllDataOfEmployees = async (req, res) => {
 //         INNER JOIN tb_department as d ON e.DepartmentID = d.DepartmentID
 //         INNER JOIN tb_designation as d2 ON e.DesignationID = d2.DesignationID
 //     WHERE
-//         e.EmploymentStatus = 'Active'
+//         e.EmploymentStatus = 'Active' AND e.EmployeeID = 'EMP003'
 //     ORDER BY
 //         e.EmployeeID;`;
         

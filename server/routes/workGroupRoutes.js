@@ -8,6 +8,9 @@ router.get("/", workGroupController.getAllWorkGroups);
 // Get tasks of particular team  
 router.get("/task/:EmployeeID_Assigner", workGroupController.getTasksOfParticularTeam);
 
+// Get tasks with work group information 
+router.get("/task", workGroupController.getAllTasks);
+
 // Get tasks of particular employee of particular team 
 // router.get("/task/:EmployeeID_Assigner/:EmployeeID_AssignTo", workGroupController.getTasksOfParticularEmployee);
 
