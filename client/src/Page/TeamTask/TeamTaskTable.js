@@ -10,10 +10,10 @@ import {
   TablePagination,
   Tabs,
   Tab,
-  IconButton,
+
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 
 const TeamTaskTable = () => {
@@ -22,13 +22,21 @@ const TeamTaskTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
+<<<<<<< HEAD
   
+=======
 
-  useEffect(() => {
+>>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
+
+console.log(data, "kdvjdb");
+
+
+useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
-  }, []);
+}, []);
 
+<<<<<<< HEAD
 
 
 
@@ -50,6 +58,39 @@ const TeamTaskTable = () => {
     };
 
     fetchData(); 
+=======
+useEffect(() => {
+  const fetchData = async () => {
+      try {
+          if (userData) {
+              const apiUrl = `http://localhost:3306/api/workGroup/task`;
+              const response = await fetch(apiUrl, {
+                  method: "GET",
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+              });
+              if (!response.ok) {
+                  throw new Error("Network response was not ok");
+              }
+              const result = await response.json();
+
+              // Filter the data where EmployeeID_Assigner matches userData.EmployeeID
+              const filteredData = result.filter(item => item.EmployeeID_Assigner === userData.EmployeeID);
+
+              setData(filteredData.reverse());
+          }
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      }
+  };
+
+  fetchData();
+}, [userData]);
+
+
+
+>>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
 
   }, []);
 
@@ -100,9 +141,16 @@ const TeamTaskTable = () => {
     }
   });
 
+<<<<<<< HEAD
   if (!userData) {
     return <div>Loading...</div>;
+=======
+  if(!userData){
+    return <div> Loding...</div>
+>>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
   }
+
+ 
 
   return (
     <div className="viewTask-table">
@@ -194,7 +242,7 @@ const TeamTaskTable = () => {
               >
                 Task Status
               </TableCell>
-              <TableCell
+              {/* <TableCell
                 className="vertical-border"
                 sx={{
                   color: "white",
@@ -203,7 +251,7 @@ const TeamTaskTable = () => {
                 }}
               >
                 Action
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -215,7 +263,7 @@ const TeamTaskTable = () => {
                     {item.TaskID}
                   </TableCell>
                   <TableCell className="vertical-border">
-                    {item.EmployeeID}
+                    {item.EmployeeID} -{item.FirstName}
                   </TableCell>
                   <TableCell className="vertical-border">
                     {item.TaskDescription}
@@ -242,7 +290,7 @@ const TeamTaskTable = () => {
                   >
                     {item.TaskStatus}
                   </TableCell>
-                  <TableCell className="vertical-border">
+                  {/* <TableCell className="vertical-border">
                     <IconButton
                       sx={{
                         color: "#055f85",
@@ -261,7 +309,7 @@ const TeamTaskTable = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

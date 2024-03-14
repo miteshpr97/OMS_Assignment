@@ -47,39 +47,19 @@ exports.insertMultipleWorkGroup = async (req, res) => {
   }
 };
 
-// get tasks of particular team
-
-exports.getTasksOfParticularTeam = async (req, res) => {
-  const EmployeeID = req.params.EmployeeID_Assigner;
-
-  const query = `
-    SELECT 
-        w.*, t.*
-    FROM
-        tb_workGroup as w
-        INNER JOIN tb_task as t ON w.EmployeeID_AssignTo = t.EmployeeID
-        WHERE
-        w.EmployeeID_Assigner = ? ;`;
-
-  try {
-    const results = await queryAsync(query,[EmployeeID]);
-    res.status(200).json(results);
-  } catch (error) {
-    console.error("Error executing query:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 // get tasks with work group information
 
 exports.getAllTasks = async (req, res) => {
-
   const query = `
-    SELECT 
-        w.*, t.*
-    FROM
-        tb_workGroup as w
-        INNER JOIN tb_task as t ON w.EmployeeID_AssignTo = t.EmployeeID ;`;
+  SELECT 
+    w.*, 
+    t.*,
+    e.FirstName,
+    e.LastName
+  FROM
+    tb_workGroup AS w
+    INNER JOIN tb_task AS t ON w.EmployeeID_AssignTo = t.EmployeeID
+    INNER JOIN tb_employee AS e ON w.EmployeeID_AssignTo = e.EmployeeID;`;
 
   try {
     const results = await queryAsync(query);
@@ -96,7 +76,7 @@ exports.getAllTasks = async (req, res) => {
 //   const { EmployeeID_Assigner, EmployeeID_AssignTo } = req.params;
 
 //   const query = `
-//     SELECT 
+//     SELECT
 //         w.*, t.*
 //     FROM
 //         tb_workGroup as w
