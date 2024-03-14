@@ -64,7 +64,26 @@ exports.getTasksOfParticularTeam = async (req, res) => {
   try {
     const results = await queryAsync(query,[EmployeeID]);
     res.status(200).json(results);
-    console.log(results);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// get tasks with work group information
+
+exports.getAllTasks = async (req, res) => {
+
+  const query = `
+    SELECT 
+        w.*, t.*
+    FROM
+        tb_workGroup as w
+        INNER JOIN tb_task as t ON w.EmployeeID_AssignTo = t.EmployeeID ;`;
+
+  try {
+    const results = await queryAsync(query);
+    res.status(200).json(results);
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });

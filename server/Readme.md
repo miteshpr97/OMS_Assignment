@@ -93,6 +93,9 @@ http://localhost:3306/api/workGroup/allData
 // Get all data about a particular group
 http://localhost:3306/api/workGroup/:EmployeeID_Assigner
 
+// Get tasks of particular team  
+http://localhost:3306/api/workGroup/task/:EmployeeID_Assigner
+
 // Add a new work group (multiple)
 http://localhost:3306/api/workGroup/multiple
 
