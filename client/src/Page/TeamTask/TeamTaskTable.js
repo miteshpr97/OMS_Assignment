@@ -18,15 +18,12 @@ import moment from "moment";
 
 const TeamTaskTable = () => {
   const [data, setData] = useState([]);
+
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
-<<<<<<< HEAD
-  
-=======
 
->>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
 
 console.log(data, "kdvjdb");
 
@@ -36,29 +33,6 @@ useEffect(() => {
     setUserData(userDataFromSession);
 }, []);
 
-<<<<<<< HEAD
-
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3306/api/workGroup/task`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setData(data)
-   
-        console.log(data, "jjjjj");
-      } catch (error) {
-  
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); 
-=======
 useEffect(() => {
   const fetchData = async () => {
       try {
@@ -90,40 +64,7 @@ useEffect(() => {
 
 
 
->>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
 
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (userData) {
-  //         const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
-  //         const response = await fetch(apiUrl, {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //         });
-  //         if (!response.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
-  //         const result = await response.json();
-  //         console.log(result, "team task data");
-  //         setData(result.reverse());
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [userData]);
-
-
-
-
-  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -141,17 +82,11 @@ useEffect(() => {
     }
   });
 
-<<<<<<< HEAD
-  if (!userData) {
-    return <div>Loading...</div>;
-=======
   if(!userData){
     return <div> Loding...</div>
->>>>>>> 8ebf14d0af5072e9c36740c729ae8314aa63c8d5
   }
 
  
-
   return (
     <div className="viewTask-table">
       <Tabs
