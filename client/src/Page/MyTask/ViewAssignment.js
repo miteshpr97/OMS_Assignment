@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Modal, Button } from "@mui/material";
+import { Box, Typography, Modal, Button, TextField } from "@mui/material";
 import { format } from "date-fns";
 import SideBar from "../../Component/SideBar";
 import TaskTable from "./TaskTable";
@@ -77,12 +77,6 @@ const ViewAssignment = () => {
     setCurrentPage(1);
   };
 
-  // const filterDataByTab = () => {
-  //   return activeTabData === "Assignment"
-  //     ? assignmentData.filter((item) => item.AssignmentStatus === activeTab)
-  //     : [];
-  // };
-
   const filterDataByTab = () => {
     if (activeTab === "All") {
       return assignmentData;
@@ -118,10 +112,6 @@ const ViewAssignment = () => {
     <Box sx={{ display: "flex" }}>
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
-        {/* <Typography style={{ textTransform: "capitalize", fontSize: "1.2rem" }}>
-          {userDatas.FirstName} {userDatas.LastName}
-        </Typography> */}
-
         <div className="viewAssignment-table">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Typography variant="h5" style={{ fontWeight: "500" }}>
@@ -190,9 +180,35 @@ const ViewAssignment = () => {
 const TableComponent = ({ data }) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
+
   const handleDescriptionClick = (description) =>
     setSelectedDescription(description);
-  const handleClose = () => setSelectedDescription(null);
+  const handleCloseDescription = () => setSelectedDescription(null);
+
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [feedbackInput, setFeedbackInput] = useState("");
+
+  const handleFeedbackClick = (feedback) => {
+    setSelectedFeedback(feedback);
+    setIsFeedbackModalOpen(true);
+  };
+
+  const handleCloseFeedback = () => {
+    setIsFeedbackModalOpen(false);
+    setFeedbackInput(""); // Clear the feedback input when closing the modal
+  };
+
+  const handleFeedbackInputChange = (event) => {
+    setFeedbackInput(event.target.value);
+  };
+
+  const handleSubmitFeedback = () => {
+    // Handle submission of feedback here
+    console.log("Feedback submitted:", feedbackInput);
+    handleCloseFeedback();
+  };
+
 
   const handleAdd = async (AssignmentID, AssignmentStatus) => {
     try {
@@ -219,6 +235,7 @@ const TableComponent = ({ data }) => {
       console.error("Error updating task:", error);
     }
   };
+
 
   return (
     <div className="table-container">
@@ -271,6 +288,12 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
+              Feedback
+            </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
               Add
             </TableCell>
           </TableRow>
@@ -313,10 +336,18 @@ const TableComponent = ({ data }) => {
               <TableCell className="vertical-border">
                 {item.AssignmentPriority}
               </TableCell>
+              <TableCell
+                className="vertical-border"
+                onClick={() =>
+                  handleFeedbackClick(item.Feedback)
+                }
+              >
+                {item.Feedback}
+              </TableCell>
               <TableCell className="vertical-border">
                 {item.AssignmentStatus === "Completed" ? (
                   <CheckCircleIcon sx={{ color: "green" }} />
-                ) :(
+                ) : (
                   <AddBoxIcon
                     sx={{ color: "#055f85", cursor: "pointer" }}
                     onClick={() =>
@@ -330,7 +361,7 @@ const TableComponent = ({ data }) => {
         </TableBody>
       </Table>
 
-      <Modal open={selectedDescription !== null} onClose={handleClose}>
+      <Modal open={selectedDescription !== null} onClose={handleCloseDescription}>
         <Box
           sx={{
             position: "absolute",
@@ -345,7 +376,38 @@ const TableComponent = ({ data }) => {
         >
           <Typography variant="h6">Assignment Description</Typography>
           <Typography>{selectedDescription}</Typography>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleCloseDescription}>Close</Button>
+        </Box>
+      </Modal>
+      <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h6">Provide Feedback</Typography>
+          <TextField
+            label="Feedback"
+            multiline
+            rows={4}
+            fullWidth
+            value={feedbackInput}
+            onChange={handleFeedbackInputChange}
+            sx={{ mt: 2 }}
+          />
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={handleCloseFeedback}>Cancel</Button>
+            <Button onClick={handleSubmitFeedback} variant="contained" color="primary">
+              Submit
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </div>
