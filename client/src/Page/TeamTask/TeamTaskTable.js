@@ -15,26 +15,17 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTaskData } from "../../features/Task/TaskActions";
-import { selectTaskData } from "../../features/Task/TaskSlice";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const TaskTable = () => {
-  const dispatch = useDispatch();
-  const [assignedEmployees, setAssignedEmployees] = useState([]);
+const TeamTaskTable = () => {
+  const [data, setData] = useState([]);
+
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState("All"); // Default filter is 'all'
-  const taskData = useSelector(selectTaskData);
+  const [filter, setFilter] = useState("All");
+  console.log(userData.EmployeeID, "ecajb");
 
-  console.log(taskData, "llll");
-
-  useEffect(() => {
-    dispatch(fetchTaskData());
-  }, [dispatch]);
+  
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -42,21 +33,29 @@ const TaskTable = () => {
   }, []);
 
   useEffect(() => {
-    const fetchAssignedEmployees = async () => {
+    const fetchData = async () => {
       try {
-        const assigned = taskData.filter(
-          (employee) => userData.EmployeeID === employee.EmployeeID
-        );
-        // const reversedData = assigned.reverse();
-        setAssignedEmployees(assigned);
+        if (userData) {
+          const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
+          const response = await fetch(apiUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const result = await response.json();
+          console.log(result, "team task data");
+          setData(result.reverse());
+        }
       } catch (error) {
-        console.error("Error fetching assigned employees:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    if (userData) {
-      fetchAssignedEmployees();
-    }
+    fetchData();
   }, [userData]);
 
   const handleChangePage = (event, newPage) => {
@@ -68,34 +67,7 @@ const TaskTable = () => {
     setPage(0);
   };
 
-  const handleDelete = async (TaskID) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-
-    if (!confirmDelete) {
-      return;
-    }
-
-    try {
-      const apiUrl = `http://localhost:3306/api/taskDetails/delete/${TaskID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setAssignedEmployees((prevData) =>
-          prevData.filter((item) => item.TaskID !== TaskID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
-  };
-
-  const filteredTasks = assignedEmployees.filter((task) => {
+  const filteredTasks = data.filter((task) => {
     if (filter === "All") {
       return true;
     } else {
@@ -103,33 +75,9 @@ const TaskTable = () => {
     }
   });
 
-
-  const handleAdd = async (TaskID, TaskStatus) => {
-    try {
-      const apiUrl = `http://localhost:3306/api/taskDetails/${TaskID}/${
-        TaskStatus === "Pending" ? "Progress" : "Completed"
-      }`;
-      const response = await fetch(apiUrl, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        alert(
-          `Data moved to ${
-          TaskStatus === "Pending" ? "Progress" : "Completed"
-          }`
-        );
-        window.location.reload();
-      } else {
-        console.error("Error updating task:", response.status);
-      }
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
-
+  if(!userData){
+    return <div>Loding ...</div>
+  }
 
   return (
     <div className="viewTask-table">
@@ -153,57 +101,83 @@ const TaskTable = () => {
             <TableRow>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task ID
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 EmployeeID
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task Description
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Start Date
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 End Date
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Created At
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task Status
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Action
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Add
               </TableCell>
             </TableRow>
           </TableHead>
@@ -253,28 +227,15 @@ const TaskTable = () => {
                     >
                       <EditNoteIcon />
                     </IconButton>
-
                     <IconButton
                       sx={{
                         color: "red",
                         textAlign: "center",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleDelete(item.TaskID)}
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </TableCell>
-
-                  <TableCell className="vertical-border">
-                    {item.TaskStatus === "Completed" ? (
-                      <CheckCircleIcon sx={{ color: "green" }} />
-                    ) : (
-                      <AddBoxIcon
-                        sx={{ color: "#055f85", cursor: "pointer" }}
-                        onClick={() => handleAdd(item.TaskID, item.TaskStatus)}
-                      />
-                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -294,4 +255,4 @@ const TaskTable = () => {
   );
 };
 
-export default TaskTable;
+export default TeamTaskTable;

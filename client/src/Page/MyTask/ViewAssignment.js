@@ -208,7 +208,7 @@ const TableComponent = ({ data }) => {
       if (response.ok) {
         alert(
           `Data moved to ${
-            AssignmentStatus === "Pending" ? "progress" : "completed"
+            AssignmentStatus === "Pending" ? "Progress" : "Completed"
           }`
         );
         window.location.reload();
@@ -316,7 +316,7 @@ const TableComponent = ({ data }) => {
               <TableCell className="vertical-border">
                 {item.AssignmentStatus === "Completed" ? (
                   <CheckCircleIcon sx={{ color: "green" }} />
-                ) : (
+                ) :(
                   <AddBoxIcon
                     sx={{ color: "#055f85", cursor: "pointer" }}
                     onClick={() =>

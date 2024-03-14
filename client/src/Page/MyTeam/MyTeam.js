@@ -44,7 +44,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
-        console.log(assigned, "hshshsh");
+        console.log(assigned, "profile");
         setAssignedEmployees(assigned);
         setError(null); // Clear any previous errors
       } catch (error) {

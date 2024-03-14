@@ -41,12 +41,11 @@ export default function SignUp() {
     acceptTerms: false,
   });
 
-console.log(formData, "ijabvsbibcbaiub");
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiUrl = "http://localhost:3306/api/employee";
+        const apiUrl =
+          "http://localhost:3306/api/employee/extra-employees-without-credentials";
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -67,21 +66,34 @@ console.log(formData, "ijabvsbibcbaiub");
   const handleChange = (event) => {
     const { name, value, checked, type } = event.target;
     const newValue = type === "checkbox" ? checked : value;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: newValue,
-    }));
+
+    if (name === "EmployeeID") {
+      const selectedEmployee = data.find(
+        (item) => item.EmployeeID === newValue
+      );
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+        Username: selectedEmployee ? selectedEmployee.Email : "",
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: newValue,
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     // Check if the Password and Confirm_Password fields match
     if (formData.Password !== formData.confirm_password) {
       alert("Passwords do not match. Please re-enter.");
       return; // Do not proceed with form submission
     }
-  
+
     try {
       const apiUrl = "http://localhost:3306/api/userDetails";
       const response = await fetch(apiUrl, {
@@ -91,7 +103,7 @@ console.log(formData, "ijabvsbibcbaiub");
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
         console.log("Form data submitted successfully");
         // Reset form inputs
@@ -112,8 +124,6 @@ console.log(formData, "ijabvsbibcbaiub");
       // Optionally, you can handle other errors here
     }
   };
-  
-  
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -131,7 +141,7 @@ console.log(formData, "ijabvsbibcbaiub");
           <Card>
             <CardContent>
               <span style={{ display: "flex", justifyContent: "center" }}>
-                <Avatar sx={{ m: 1,  bgcolor: "#055f85", color:"white"  }}>
+                <Avatar sx={{ m: 1, bgcolor: "#055f85", color: "white" }}>
                   <LockOutlinedIcon />
                 </Avatar>
               </span>
@@ -172,7 +182,7 @@ console.log(formData, "ijabvsbibcbaiub");
                     </FormControl>
                   </Grid>
 
-                 <Grid item xs={6}>
+                  <Grid item xs={6}>
                     <TextField
                       label="Username"
                       variant="outlined"
@@ -247,7 +257,7 @@ console.log(formData, "ijabvsbibcbaiub");
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 , bgcolor: "#055f85"}}
+                  sx={{ mt: 3, mb: 2, bgcolor: "#055f85" }}
                 >
                   Sign Up
                 </Button>

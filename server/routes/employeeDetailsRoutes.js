@@ -22,6 +22,9 @@ const upload = multer({ storage: storage });
 // Get all employees
 router.get("/", employeeController.getAllEmployees);
 
+// Get all employees whose user credential is not updated
+router.get("/extra-employees-without-credentials", employeeController.getEmployeeWithNoUserCredential);
+
 // Get all data of employees except admin
 router.get("/allData", employeeController.getAllDataOfEmployees);
 
