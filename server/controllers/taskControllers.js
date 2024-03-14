@@ -136,6 +136,34 @@ exports.completedTaskStatus = async (req, res) => {
   }
 };
 
+// Number of Tasks By Status
+
+exports.numberOfTasksByStatus = async (req, res) => {
+  const employeeId = req.params.EmployeeID;
+  const query = `
+    SELECT
+      COUNT(CASE WHEN TaskStatus = 'Pending' THEN 1 END) AS num_pending_tasks,
+      COUNT(CASE WHEN TaskStatus = 'Progress' THEN 1 END) AS num_progress_tasks,
+      COUNT(CASE WHEN TaskStatus = 'Completed' THEN 1 END) AS num_completed_tasks
+    FROM tb_task
+    WHERE EmployeeID = ?;
+  `;
+
+  try {
+    const results = await queryAsync(query, [employeeId]);
+    const taskCounts = {
+      pending_tasks: results[0].num_pending_tasks,
+      progress_tasks: results[0].num_progress_tasks,
+      complete_tasks: results[0].num_completed_tasks,
+    };
+
+    res.status(200).json(taskCounts);
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // Delete Task
 
 exports.deleteTask = async (req, res) => {
