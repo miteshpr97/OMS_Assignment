@@ -1,4 +1,25 @@
 const { queryAsync } = require("../db");
+const path = require('path');
+const fs = require('fs').promises;
+
+// Define the directory where images are stored
+const imageDirectory = path.join(__dirname, '../public');
+
+async function loadImageData(imageFilename) {
+  try {
+    // Construct the full image path by combining the directory and the filename
+    const imagePath = path.join(imageDirectory, imageFilename);
+    console.log(imagePath);
+
+    // Read image file as binary data
+    const imageData = await fs.readFile(imagePath);
+    console.log(imageData);
+    return imageData;
+  } catch (error) {
+    console.error('Error loading image data:', error);
+    throw error; // Rethrow the error to be caught by the caller
+  }
+}
 
 exports.getEmployeeWithNoUserCredential = async (req, res) => {
   try {
@@ -62,12 +83,45 @@ exports.getAllDataOfEmployees = async (req, res) => {
     const userEmployees = results.filter(
       (employee) => employee.Role === "User"
     );
-    res.status(200).json(userEmployees);
+    res.status(200).json(results);
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// Get All Data of Employees(experiment)
+
+// exports.getAllDataOfEmployees = async (req, res) => {
+//   try {
+//     const query = `
+//     SELECT
+//         e.*, u.Role, u.Username, d.DepartmentName, d2.DesignationName
+//     FROM
+//         tb_employee as e
+//         INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
+//         INNER JOIN tb_department as d ON e.DepartmentID = d.DepartmentID
+//         INNER JOIN tb_designation as d2 ON e.DesignationID = d2.DesignationID
+//     WHERE
+//         e.EmploymentStatus = 'Active'
+//     ORDER BY
+//         e.EmployeeID;`;
+        
+//     const results = await queryAsync(query);
+//     // const userEmployees = results.filter(
+//     //   (employee) => employee.Role === "User"
+//     // );
+//      // Modify each result to include image data
+//      for (const employee of results) {
+//       // Load image data for Employee_Profile
+//       employee.Employee_Profile = await loadImageData(employee.Employee_Profile);
+//     }
+//     res.status(200).json(results);
+//   } catch (error) {
+//     console.error("Error executing query:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 // Get All Data of Employees by Employee ID
 

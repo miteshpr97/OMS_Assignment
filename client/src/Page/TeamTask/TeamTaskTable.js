@@ -16,17 +16,16 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 
-
-
 const TeamTaskTable = () => {
-    const [data, setData] = useState();
-    
-  const [assignedEmployees, setAssignedEmployees] = useState([]);
+  const [data, setData] = useState([]);
+
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState("All"); // Default filter is 'all'
+  const [filter, setFilter] = useState("All");
+  console.log(userData.EmployeeID, "ecajb");
 
+  
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -34,47 +33,29 @@ const TeamTaskTable = () => {
   }, []);
 
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const apiUrl = '';
+    const fetchData = async () => {
+      try {
+        if (userData) {
+          const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
           const response = await fetch(apiUrl, {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           });
-  
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
           const result = await response.json();
-          const reversedData = result.reverse();
-          setData(reversedData);
-        } catch (error) {
-          console.error('Error fetching data:', error);
+          console.log(result, "team task data");
+          setData(result.reverse());
         }
-      };
-  
-      fetchData();
-    }, []);
-
-
-
-
-
-  useEffect(() => {
-    const fetchAssignedEmployees = async () => {
-      try {
-        const assigned = data.filter(
-          (employee) => userData.EmployeeID === employee.EmployeeID
-        );
-        // const reversedData = assigned.reverse();
-        setAssignedEmployees(assigned);
       } catch (error) {
-        console.error("Error fetching assigned employees:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    if (userData) {
-      fetchAssignedEmployees();
-    }
+    fetchData();
   }, [userData]);
 
   const handleChangePage = (event, newPage) => {
@@ -86,34 +67,7 @@ const TeamTaskTable = () => {
     setPage(0);
   };
 
-  const handleDelete = async (TaskID) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this item?"
-    );
-
-    if (!confirmDelete) {
-      return;
-    }
-
-    try {
-      const apiUrl = `http://localhost:3306/api/taskDetails/delete/${TaskID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setAssignedEmployees((prevData) =>
-          prevData.filter((item) => item.TaskID !== TaskID)
-        );
-      } else {
-        console.error("Error deleting item:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
-  };
-
-  const filteredTasks = assignedEmployees.filter((task) => {
+  const filteredTasks = data.filter((task) => {
     if (filter === "All") {
       return true;
     } else {
@@ -121,8 +75,10 @@ const TeamTaskTable = () => {
     }
   });
 
+  if(!userData){
+    return <div>Loding ...</div>
+  }
 
- 
   return (
     <div className="viewTask-table">
       <Tabs
@@ -145,53 +101,84 @@ const TeamTaskTable = () => {
             <TableRow>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task ID
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 EmployeeID
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task Description
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Start Date
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 End Date
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Created At
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Task Status
               </TableCell>
               <TableCell
                 className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+                sx={{
+                  color: "white",
+                  padding: "10px 16px",
+                  fontSize: "15px",
+                }}
               >
                 Action
               </TableCell>
-             
             </TableRow>
           </TableHead>
           <TableBody>
@@ -240,19 +227,16 @@ const TeamTaskTable = () => {
                     >
                       <EditNoteIcon />
                     </IconButton>
-
                     <IconButton
                       sx={{
                         color: "red",
                         textAlign: "center",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleDelete(item.TaskID)}
                     >
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
-
                 </TableRow>
               ))}
           </TableBody>
