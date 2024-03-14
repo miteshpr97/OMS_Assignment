@@ -299,7 +299,7 @@ console.log(userData)
           </div>
           <AssignmentTable
             userData={userData}
-            assignmentDatas={assignmentDatas}
+            assignm entDatas={assignmentDatas}
             loading={loading}
             error={error}
             handleDeleteAssignment ={handleDeleteAssignment }

@@ -125,19 +125,26 @@ export default function AllTeamMembers() {
                 margin: "10px",
                 transition: "transform 0.3s ease-in-out",
                 boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
+                display:"flex",
+                flexDirection:"column",
+                justifyContent:"space-between",
+                alignItems:"center"
+          
               }}
             >
-              <CardActionArea onClick={() => handleInfo(item)}>
+              <CardActionArea onClick={() => handleInfo(item)}  >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "center",
+                    alignItems:"center",
                     paddingTop: "10px",
+                 
                   }}
                 >
                   <CardMedia
                     component="img"
-                    sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                    sx={{ height: 120, width: 120, borderRadius: "50%" }}
                     src={
                       item.Employee_Profile
                         ? `http://localhost:3306/api/employee/${item.Employee_Profile}`
@@ -149,7 +156,7 @@ export default function AllTeamMembers() {
                 <CardContent>
                   <Typography
                     gutterBottom
-                    variant="h6"
+                    variant="h7"
                     component="div"
                     align="center"
                     sx={{ textTransform: "capitalize" }}

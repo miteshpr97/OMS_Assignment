@@ -63,13 +63,13 @@ export default function Header({ open, handleDrawerOpen }) {
 
   const handleLogout = async (e) => {
     e.preventDefault();
-  
+
     // Ask for confirmation before logging out
     const confirmLogout = window.confirm("Are you sure you want to logout?");
     if (!confirmLogout) {
       return; // Cancel logout if user selects cancel
     }
-  
+
     try {
       const apiUrl = "http://localhost:3306/api/userDetails/logout";
       const response = await fetch(apiUrl, {
@@ -79,12 +79,11 @@ export default function Header({ open, handleDrawerOpen }) {
         },
         credentials: "include",
       });
-  
+
       if (response.ok) {
         sessionStorage.removeItem("userData");
         localStorage.removeItem("token");
         navigate("/loginpage");
-        
       } else {
         console.log("Logout failed");
       }
@@ -92,7 +91,6 @@ export default function Header({ open, handleDrawerOpen }) {
       console.error(error);
     }
   };
-  
 
   return (
     <AppBar position="fixed" open={open} style={{ background: "#055f85" }}>
@@ -113,28 +111,49 @@ export default function Header({ open, handleDrawerOpen }) {
             <MenuIcon />
           </IconButton>
         </div>
+
         <div
-          style={{ display: "flex", alignItems: "center", marginRight: "5px" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginRight: "5px",
+          }}
         >
           {userData ? (
-            <CardMedia
-              component="img"
-              sx={{
-                borderRadius: "50%",
-                height: "40px",
-                width: "40px",
-                border: "none",
-              }}
-              src={
-                userData.Employee_Profile
-                  ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
-                  : ""
-              }
-              alt="Employee Profile"
-              aria-describedby={id}
-              type="button"
-              onClick={handleClick}
-            />
+            <>
+              <div
+                style={{
+                  textTransform: "capitalize",
+                  color: "white",
+                  display:"flex",
+                  textAlign: "center",
+                  marginRight: "5px",
+                  padding: "2px",
+                }}
+              >
+                <p style={{ margin: "0px", fontSize:"15px" }}> Hi, </p>
+                <span style={{fontSize:"15px"}}>{userData.FirstName}</span>
+              </div>
+
+              <CardMedia
+                component="img"
+                sx={{
+                  borderRadius: "50%",
+                  height: "40px",
+                  width: "40px",
+                  border: "none",
+                }}
+                src={
+                  userData.Employee_Profile
+                    ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
+                    : ""
+                }
+                alt="Employee Profile"
+                aria-describedby={id}
+                type="button"
+                onClick={handleClick}
+              />
+            </>
           ) : (
             <AccountCircleIcon
               sx={{
@@ -147,7 +166,7 @@ export default function Header({ open, handleDrawerOpen }) {
             />
           )}
 
-          <Popper id={id} open={isOpen} anchorEl={anchorEl} >
+          <Popper id={id} open={isOpen} anchorEl={anchorEl}>
             <Box
               sx={{
                 border: "none",

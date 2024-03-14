@@ -10,6 +10,7 @@ import MyTeam from "./Page/MyTeam/MyTeam";
 import Create from "./Page/Team/CreateGroup/Create";
 import NewAssignment from "./Page/Assignment/NewAssignment";
 import MyTask from "./Page/MyTask/ViewAssignment";
+import TeamTask from "./Page/TeamTask/TeamTask";
 import Report from "./Page/Report/Report";
 
 
@@ -29,8 +30,10 @@ export default function App() {
           <Route path="/createteam/:EmployeeID" element={<Create />}></Route>
           <Route path="/team" element={<TeamMember />}></Route>
           <Route path="/myteam" element={<MyTeam />}></Route>
+          {/* <Route path="/myteam" element={<MyTeam />}></Route> */}
           <Route path="/assignment" element={<NewAssignment />}></Route>
           <Route path="/view-assignment" element={<MyTask />}></Route>
+          <Route path="teamTask" element={<TeamTask/>}></Route>
           <Route path="/report" element={<Report />}></Route>
          
         </Route>
