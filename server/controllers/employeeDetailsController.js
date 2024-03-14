@@ -1,22 +1,4 @@
 const { queryAsync } = require("../db");
-const fs = require('fs').promises; // Import the 'fs' module for file operations
-
-// Define the directory where images are stored
-const imageDirectory = "../public";
-
-async function loadImageData(imageFilename) {
-  try {
-    // Construct the full image path by combining the directory and the filename
-    const imagePath = `${imageDirectory}/${imageFilename}`;
-
-    // Read image file as binary data
-    const imageData = await fs.readFile(imagePath);
-    return imageData;
-  } catch (error) {
-    console.error('Error loading image data:', error);
-    throw error; // Rethrow the error to be caught by the caller
-  }
-}
 
 exports.getEmployeeWithNoUserCredential = async (req, res) => {
   try {
@@ -77,15 +59,10 @@ exports.getAllDataOfEmployees = async (req, res) => {
         e.EmployeeID;`;
         
     const results = await queryAsync(query);
-    // const userEmployees = results.filter(
-    //   (employee) => employee.Role === "User"
-    // );
-     // Modify each result to include image data
-     for (const employee of results) {
-      // Load image data for Employee_Profile
-      employee.Employee_Profile = await loadImageData(employee.Employee_Profile);
-    }
-    res.status(200).json(results);
+    const userEmployees = results.filter(
+      (employee) => employee.Role === "User"
+    );
+    res.status(200).json(userEmployees);
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });
