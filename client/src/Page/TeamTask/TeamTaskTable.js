@@ -18,13 +18,10 @@ import moment from "moment";
 
 const TeamTaskTable = () => {
   const [data, setData] = useState([]);
-
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
-  console.log(userData.EmployeeID, "ecajb");
-
   
 
   useEffect(() => {
@@ -32,32 +29,60 @@ const TeamTaskTable = () => {
     setUserData(userDataFromSession);
   }, []);
 
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (userData) {
-          const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const result = await response.json();
-          console.log(result, "team task data");
-          setData(result.reverse());
+        const response = await fetch(`http://localhost:3306/api/workGroup/task`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        setData(data)
+   
+        console.log(data, "jjjjj");
       } catch (error) {
-        console.error("Error fetching data:", error);
+  
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchData();
-  }, [userData]);
+    fetchData(); 
 
+  }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (userData) {
+  //         const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
+  //         const response = await fetch(apiUrl, {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         });
+  //         if (!response.ok) {
+  //           throw new Error("Network response was not ok");
+  //         }
+  //         const result = await response.json();
+  //         console.log(result, "team task data");
+  //         setData(result.reverse());
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [userData]);
+
+
+
+
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -75,8 +100,8 @@ const TeamTaskTable = () => {
     }
   });
 
-  if(!userData){
-    return <div>Loding ...</div>
+  if (!userData) {
+    return <div>Loading...</div>;
   }
 
   return (
