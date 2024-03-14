@@ -136,6 +136,7 @@ export default function SignUp() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+         
           }}
         >
           <Card>

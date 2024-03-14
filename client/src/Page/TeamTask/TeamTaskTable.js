@@ -23,40 +23,80 @@ const TeamTaskTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
-  console.log(userData.EmployeeID, "ecajb");
 
+
+  console.log(userData, "userData show")
+  console.log(userData.EmployeeID)
   
 
-  useEffect(() => {
+//   useEffect(() => {
+//     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
+//     setUserData(userDataFromSession);
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         if (userData) {
+//           const apiUrl = `http://localhost:3306/api/workGroup/task/${userData.EmployeeID}`;
+//           const response = await fetch(apiUrl, {
+//             method: "GET",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//           });
+//           if (!response.ok) {
+//             throw new Error("Network response was not ok");
+//           }
+//           const result = await response.json();
+
+//           const data = result.data
+//           console.log(data);
+          
+//           setData(result.reverse());
+//         }
+//       } catch (error) {
+//         console.error("Error fetching data:", error);
+//       }
+//     };
+
+//     fetchData();
+//   }, [userData]);
+
+
+
+useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
-  }, []);
+}, []);
 
-  useEffect(() => {
+useEffect(() => {
     const fetchData = async () => {
-      try {
-        if (userData) {
-          const apiUrl = 'http://localhost:3306/api/workGroup/task/EMP002';
-          const response = await fetch(apiUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const result = await response.json();
-          console.log(result, "team task data");
-          setData(result.reverse());
+        try {
+            if (userData && userData.EmployeeID) { // Add a check for userData.EmployeeID
+                const apiUrl = `http://localhost:3306/api/workGroup/task/${userData.EmployeeID}`;
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const result = await response.json();
+
+                console.log(result)
+                setData(result.reverse());
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
     };
 
     fetchData();
-  }, [userData]);
+}, [userData]);
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -76,8 +116,10 @@ const TeamTaskTable = () => {
   });
 
   if(!userData){
-    return <div>Loding ...</div>
+    return <div> Loding...</div>
   }
+
+ 
 
   return (
     <div className="viewTask-table">
