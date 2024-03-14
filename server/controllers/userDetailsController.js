@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../midderware/auth");
 const sendEmail = require("../emailServices");
+const nodemailer = require("nodemailer");
 
 // inserting user details
 
@@ -23,14 +24,21 @@ exports.addUserDetails = async (req, res) => {
       Username,
       hashedPassword,
     ]);
+    const query1 = "SELECT EmployeeID, Email FROM tb_employee";
 
     console.log("User registered successfully");
     res.status(201).json({ message: "User registered successfully" });
+
   } catch (error) {
     console.error("Error hashing password:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
+
+
 
 // getting all user details
 

@@ -93,8 +93,8 @@ http://localhost:3306/api/workGroup/allData
 // Get all data about a particular group
 http://localhost:3306/api/workGroup/:EmployeeID_Assigner
 
-// Get tasks of particular team  
-http://localhost:3306/api/workGroup/task/:EmployeeID_Assigner
+// Get all tasks with work group details  
+http://localhost:3306/api/workGroup/task
 
 // Add a new work group (multiple)
 http://localhost:3306/api/workGroup/multiple
@@ -152,6 +152,9 @@ http://localhost:3306/api/taskDetails/:TaskID/progress
 
 // update assignment status from progress to completed
 http://localhost:3306/api/taskDetails/:TaskID/completed
+
+// number of pending progress and completed tasks of a particular employee
+http://localhost:3306/api/taskDetails/:EmployeeID/taskCounts
 
 // delete task details
 http://localhost:3306/api/taskDetails/delete/:TaskID

@@ -2,8 +2,8 @@ import React from "react";
 import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-export function EmployeeInfoModal({ isOpen, onClose, employeeData }) {
-  console.log(employeeData, "123");
+export function MyTeamInfoModal({ isOpen, onClose, employeeData }) {
+  console.log(employeeData, "dhodw123");
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box
@@ -42,20 +42,16 @@ export function EmployeeInfoModal({ isOpen, onClose, employeeData }) {
 
          
             <Typography variant="body1" sx={{ mb: 2, textTransform: "capitalize" }}>
-              <strong>Name :</strong> {employeeData.FirstName}{" "}
-              {employeeData.LastName}
+              <strong>Name :</strong> {employeeData.Assignee_FirstName}{" "}{employeeData.Assignee_LastName}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
-              <strong>ID :</strong> {employeeData.EmployeeID}
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              <strong>Email :</strong> {employeeData.Email}
+              <strong>ID :</strong> {employeeData.EmployeeID_AssignTo}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, textTransform: "capitalize" }}>
-              <strong>Department Name :</strong> {employeeData.DepartmentName}
+              <strong>Department Name :</strong> {employeeData.DepartmentID_AssignTo}
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, textTransform: "capitalize" }}>
-              <strong>Designation Name :</strong> {employeeData.DesignationName}
+              <strong>Designation Name :</strong> {employeeData.Department_Name}
             </Typography>
             <Typography
               variant="body1"

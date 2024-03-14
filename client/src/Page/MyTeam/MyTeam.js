@@ -12,22 +12,31 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import SideBar from "../../Component/SideBar";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
-import { selectAssignment } from "../../features/assignment/assignmentSlice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
+// import { selectAssignment } from "../../features/assignment/assignmentSlice";
+
+import { MyTeamInfoModal } from "./MyTeamInfoModal";
 
 export default function MyTeam() {
-  const dispatch = useDispatch();
-  const assignmentData = useSelector(selectAssignment);
+  // const dispatch = useDispatch();
+  // const assignmentData = useSelector(selectAssignment);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [selectedEmployeeData, setSelectedEmployeeData] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchAssignmentData());
-  }, [dispatch]);
+
+ 
+
+  // useEffect(() => {
+  //   dispatch(fetchAssignmentData());
+  // }, [dispatch]);
+
+
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
@@ -51,7 +60,7 @@ export default function MyTeam() {
         const assigned = data.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID_Assigner
         );
-        console.log(assigned, "hshshsh");
+   
         setAssignedEmployees(assigned);
         setError(null); // Clear any previous errors
       } catch (error) {
@@ -88,10 +97,13 @@ export default function MyTeam() {
       )
     : assignedEmployees;
 
-    const filteredData = assignmentData.filter(item =>  "EMP003" === item.EmployeeID_Assigner );
-    console.log(filteredData);
-    
+   
 
+    const handleInfo = (assignedEmployees) => {
+      setIsInfoModalOpen(true);
+      setSelectedEmployeeData(assignedEmployees);
+    };
+    
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -172,14 +184,19 @@ export default function MyTeam() {
                   margin: "10px",
                   transition: "transform 0.3s ease-in-out",
                   boxShadow: "0px 0px 3px rgba(0, 0, 0, 0.5)",
+                  display:"flex",
+                  flexDirection:"column",
+                  justifyContent:"space-between",
+                  alignItems:"center"
                 }}
               >
-                <CardActionArea>
+                <CardActionArea onClick={() => handleInfo(item)} >
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "center",
-                      paddingTop: "20px",
+                      alignItems:"center",
+                      paddingTop: "10px",
                     }}
                   >
                     {/* <CardMedia
@@ -201,15 +218,16 @@ export default function MyTeam() {
                           : "/placeholder_image.jpg"
                       }
                       alt="Employee Profile"
-                      sx={{ height: 140, width: 140, borderRadius: "50%" }}
+                      sx={{ height: 120, width: 120, borderRadius: "50%" }}
                     />
                   </div>
                   <CardContent>
                     <Typography
                       gutterBottom
-                      variant="h6"
+                      variant="h7"
                       component="div"
                       align="center"
+                      sx={{ textTransform: "capitalize" }}
                     >
                       {item.Assignee_FirstName} {item.Assignee_LastName}
                     </Typography>
@@ -231,6 +249,11 @@ export default function MyTeam() {
             ))
           )}
         </div>
+        <MyTeamInfoModal
+          isOpen={isInfoModalOpen}
+          onClose={() => setIsInfoModalOpen(false)}
+          employeeData={selectedEmployeeData}
+        />
       </Box>
     </Box>
   );

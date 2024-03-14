@@ -8,9 +8,6 @@ router.get("/", workGroupController.getAllWorkGroups);
 // Get tasks with work group information 
 router.get("/task", workGroupController.getAllTasks);
 
-// Get tasks of particular employee of particular team 
-// router.get("/task/:EmployeeID_Assigner/:EmployeeID_AssignTo", workGroupController.getTasksOfParticularEmployee);
-
 //get all data from employee table using join and merged it with work group table
 router.get("/allData", workGroupController.getAllWorkGroupEmployeesData);
 

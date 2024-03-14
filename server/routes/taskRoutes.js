@@ -20,6 +20,9 @@ router.patch("/:TaskID/completed", taskController.completedTaskStatus);
 // update task details
 router.patch("/update/:TaskID", taskController.updateTask);
 
+// number of pending progress and completed tasks of a particular employee
+router.get("/:EmployeeID/taskCounts", taskController.numberOfTasksByStatus);
+
 // delete task details
 router.delete("/delete/:TaskID", taskController.deleteTask);
 
