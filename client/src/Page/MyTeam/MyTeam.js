@@ -11,9 +11,14 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
+import SideBar from "../../Component/SideBar";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
+import { selectAssignment } from "../../features/assignment/assignmentSlice";
 
 export default function MyTeam() {
+  const dispatch = useDispatch();
+  const assignmentData = useSelector(selectAssignment);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
@@ -21,12 +26,14 @@ export default function MyTeam() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    dispatch(fetchAssignmentData());
+  }, [dispatch]);
+  useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
     setUserData(userDataFromSession);
   }, []);
 
   useEffect(() => {
-    // Fetch department data when the component mounts
     fetchDepartmentData();
     // fetchEmployeeData();
   }, []);
@@ -81,6 +88,10 @@ export default function MyTeam() {
       )
     : assignedEmployees;
 
+    const filteredData = assignmentData.filter(item =>  "EMP003" === item.EmployeeID_Assigner );
+    console.log(filteredData);
+    
+
   return (
     <Box sx={{ display: "flex" }}>
       <SideBar />
@@ -102,7 +113,7 @@ export default function MyTeam() {
             marginTop: "10px",
           }}
         >
-          <Typography 
+          <Typography
             variant="h5"
             sx={{
               textTransform: "capitalize",
