@@ -3,7 +3,9 @@ const router = express.Router();
 const employeeController = require("../controllers/employeeDetailsController");
 const path = require("path");
 const multer = require("multer");
-router.use(express.static("public"));
+// router.use(express.static("public"));
+router.use(express.static(path.join(__dirname, '../public')));
+
 
 const { authorizeUser } = require("../midderware/auth");
 
