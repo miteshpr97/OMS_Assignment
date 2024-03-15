@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Dialog,
   DialogTitle,
@@ -8,15 +7,16 @@ import {
   Button,
   Grid,
   FormControl,
- 
   MenuItem,
   Select,
 } from "@mui/material";
 import { format } from "date-fns";
-
+import {useDispatch} from "react-redux";
+import { fetchAssignmentData,updateAssignmentData } from "../../features/assignment/assignmentAction";
 
 const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
   const [formData, setFormData] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (assignmentData) {
@@ -28,17 +28,11 @@ const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
     onClose();
   };
 
-
   if (!isOpen || !formData) {
     return null;
   }
 
-  const {
-    Assignment_Description,
-    DeadlineDate,
-    AssignmentPriority
-
-  } = formData;
+  const { Assignment_Description, DeadlineDate, AssignmentPriority } = formData;
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "yyyy-MM-dd");
@@ -53,8 +47,8 @@ const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
   };
 
   const handleSave = () => {
-   
-
+    dispatch(updateAssignmentData(formData));
+    dispatch(fetchAssignmentData(formData));
     handleClose();
   };
 
@@ -76,16 +70,15 @@ const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
           <Grid item xs={6}>
             <TextField
               label="DeadlineDate"
-               name="DeadlineDate"
-              value={formatDate(DeadlineDate)}              
+              name="DeadlineDate"
+              value={formatDate(DeadlineDate)}
               fullWidth
               onChange={handleChange}
             />
           </Grid>
-        
+
           <Grid item xs={6}>
             <FormControl fullWidth>
-            
               <Select
                 name="AssignmentPriority"
                 value={AssignmentPriority}
@@ -98,7 +91,6 @@ const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
               </Select>
             </FormControl>
           </Grid>
-         
         </Grid>
         <br />
         <div

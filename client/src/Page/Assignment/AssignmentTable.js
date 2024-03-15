@@ -335,7 +335,7 @@ const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
 
-console.log(data, "assigment data");
+
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
     setSelectedAssignmentData(data);

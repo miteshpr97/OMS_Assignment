@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAssignmentData, createAssignment, fetchAssignmentCounts, deleteAssignmentData } from "./assignmentAction";
+import { fetchAssignmentData, createAssignment, fetchAssignmentCounts, deleteAssignmentData, updateAssignmentData } from "./assignmentAction";
 
 export const assignmentSlice = createSlice({
   name: 'assignment',
@@ -50,6 +50,29 @@ export const assignmentSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
+      //update
+
+      .addCase(updateAssignmentData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateAssignmentData.fulfilled, (state, action) => {
+        state.loading = false;
+        const updateAssignment = action.payload;
+        state.assignmentData = state.assignmentData.map(assignment => {
+          if (assignment.AssignmentID === updateAssignment.AssignmentID) {
+            return { ...assignment, ...updateAssignment  };
+          }
+          return assignment;
+        });
+      })
+      .addCase(updateAssignmentData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+
 
         // Deleting designation data
         .addCase(deleteAssignmentData.pending, (state) => {
