@@ -262,16 +262,16 @@ const TaskTable = () => {
                       }}
                       onClick={() => handleDelete(item.TaskID)}
                     >
-                      <DeleteIcon />
+                      <DeleteIcon sx={{fontSize:"1.3rem"}}/>
                     </IconButton>
                   </TableCell>
 
                   <TableCell className="vertical-border">
                     {item.TaskStatus === "Completed" ? (
-                      <CheckCircleIcon sx={{ color: "green" }} />
+                      <CheckCircleIcon sx={{ color: "green", fontSize:"1.4rem" }} />
                     ) : (
                       <AddBoxIcon
-                        sx={{ color: "#055f85", cursor: "pointer" }}
+                        sx={{ color: "#055f85", cursor: "pointer", fontSize:"1.5rem" }}
                         onClick={() => handleAdd(item.TaskID, item.TaskStatus)}
                       />
                     )}

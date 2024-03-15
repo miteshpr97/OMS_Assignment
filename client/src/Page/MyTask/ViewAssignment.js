@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
-
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -286,7 +286,7 @@ const TableComponent = ({ data }) => {
             </TableCell>
             <TableCell
               className="vertical-border"
-              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px", }}
             >
               Feedback
             </TableCell>
@@ -301,23 +301,23 @@ const TableComponent = ({ data }) => {
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index} className="custom-row">
-              <TableCell className="vertical-border">
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
                 {item.AssignmentID}
               </TableCell>
-              <TableCell className="vertical-border">{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
               <TableCell
                 onClick={() =>
                   handleDescriptionClick(item.Assignment_Description)
                 }
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", padding:"10px 16px" }}
                 className="vertical-border"
               >
                 {item.Assignment_Description.slice(0, 50)}
               </TableCell>
-              <TableCell className="vertical-border">
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
                 {format(new Date(item.AssignDate), "dd/MM/yyyy")}
               </TableCell>
-              <TableCell className="vertical-border">
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
                 {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
               </TableCell>
               <TableCell
@@ -328,26 +328,35 @@ const TableComponent = ({ data }) => {
                       : item.AssignmentStatus === "Progress"
                       ? "orange"
                       : "green",
+                      padding:"10px 16px"
                 }}
                 className="vertical-border"
               >
                 {item.AssignmentStatus}
               </TableCell>
-              <TableCell className="vertical-border">
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
                 {item.AssignmentPriority}
               </TableCell>
               <TableCell
                 className="vertical-border"
                 onClick={() => handleFeedbackClick(item.Feedback)}
+                sx={{padding:"10px 16px"}}
               >
-                {item.Feedback}
+                {item.Feedback ? (
+                  item.Feedback
+                ) : (
+                  <p style={{color:"#a8a8a8d0", fontSize:"11px", margin:"0px"}}>
+                  <FeedbackIcon sx={{fontSize:"15px"}}/>
+                Send Feedback
+                </p>
+                )}
               </TableCell>
-              <TableCell className="vertical-border">
+              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
                 {item.AssignmentStatus === "Completed" ? (
-                  <CheckCircleIcon sx={{ color: "green" }} />
+                  <CheckCircleIcon sx={{ color: "green", fontSize:"1.4rem" }} />
                 ) : (
                   <AddBoxIcon
-                    sx={{ color: "#055f85", cursor: "pointer" }}
+                    sx={{ color: "#055f85", cursor: "pointer", fontSize:"1.5rem" }}
                     onClick={() =>
                       handleAdd(item.AssignmentID, item.AssignmentStatus)
                     }
@@ -393,7 +402,7 @@ const TableComponent = ({ data }) => {
             p: 4,
           }}
         >
-          <Typography variant="h6">Provide Feedback</Typography>
+          <Typography variant="h6">Send Feedback</Typography>
           <TextField
             label="Feedback"
             multiline
