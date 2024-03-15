@@ -78,7 +78,7 @@ const ViewDepartmentData = ({ departments, handleDeleteDepartment}) => {
                 </TableCell>
                 <TableCell className="vertical-border" >
                   <IconButton
-                    sx={{color:"red"}}
+                    sx={{color:"red" }}
                     onClick={() => handleDeleteDepartment(item.DepartmentID)}
                   >
                     <DeleteIcon />
