@@ -18,7 +18,6 @@ export const createDepartmentData = createAsyncThunk(
   }
 );
 
-
 //  fetching department data
 export const fetchDepartmentData = createAsyncThunk(
   "department/fetchDepartmentData",
@@ -34,12 +33,6 @@ export const fetchDepartmentData = createAsyncThunk(
   }
 );
 
-
-
-
-
-
-
 // update department data
 export const updateDepartmentData = createAsyncThunk(
   "department/updateDepartmentData", 
@@ -53,14 +46,6 @@ export const updateDepartmentData = createAsyncThunk(
     }
   }
 );
-
-
-
-
-
-
-
-
 
 
 //  deleting department data
