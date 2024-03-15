@@ -13,7 +13,7 @@ import { createTaskData, fetchTaskData } from "../../features/Task/TaskActions";
 const TaskDialog = ({ open, onClose }) => {
   const [taskData, setTaskData] = useState({
     EmployeeID: "",
-    StartDate: "",
+    StartDate: new Date().toISOString().split("T")[0],
     EndDate: "",
     TaskDescription: "",
   });

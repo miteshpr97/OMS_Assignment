@@ -286,7 +286,7 @@ const TableComponent = ({ data }) => {
             </TableCell>
             <TableCell
               className="vertical-border"
-              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px", }}
             >
               Feedback
             </TableCell>
@@ -342,7 +342,13 @@ const TableComponent = ({ data }) => {
                   handleFeedbackClick(item.Feedback)
                 }
               >
-                {item.Feedback}
+                {item.Feedback ? (
+                  item.Feedback
+                ) : (
+                  <p style={{color:"grey"}}>
+                  Give Feedback
+                  </p> 
+                )}
               </TableCell>
               <TableCell className="vertical-border">
                 {item.AssignmentStatus === "Completed" ? (
@@ -398,7 +404,7 @@ const TableComponent = ({ data }) => {
             multiline
             rows={4}
             fullWidth
-            value={feedbackInput}
+            value={selectedFeedback}
             onChange={handleFeedbackInputChange}
             sx={{ mt: 2 }}
           />
