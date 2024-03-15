@@ -20,6 +20,7 @@ import { fetchTaskData } from "../../features/Task/TaskActions";
 import { selectTaskData } from "../../features/Task/TaskSlice";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import TaskEditModal from "./TaskEditModal";
 
 const TaskTable = () => {
   const dispatch = useDispatch();
@@ -104,6 +105,7 @@ const TaskTable = () => {
   });
 
 
+
   const handleAdd = async (TaskID, TaskStatus) => {
     try {
       const apiUrl = `http://localhost:3306/api/taskDetails/${TaskID}/${
@@ -128,6 +130,14 @@ const TaskTable = () => {
     } catch (error) {
       console.error("Error updating task:", error);
     }
+  };
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedtaskData, setSelectedtaskData] = useState(null);
+
+  const handleEditClick = (assignedEmployees) => {
+    setIsEditModalOpen(true);
+    setSelectedtaskData(assignedEmployees);
   };
 
 
@@ -250,6 +260,7 @@ const TaskTable = () => {
                         textAlign: "center",
                         cursor: "pointer",
                       }}
+                      onClick={() => handleEditClick(item)}
                     >
                       <EditNoteIcon />
                     </IconButton>
@@ -289,6 +300,11 @@ const TaskTable = () => {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+       <TaskEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        taskData={selectedtaskData}
       />
     </div>
   );
