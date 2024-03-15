@@ -21,6 +21,7 @@ import { fetchAssignmentData } from "../../features/assignment/assignmentAction"
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
 
+
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
@@ -29,6 +30,7 @@ const ViewAssignment = () => {
   const itemsPerPage = 20;
   const [activeTabData, setActiveTabData] = useState("Assignment");
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
+
 
   const dispatch = useDispatch();
   const assignment = useSelector(selectAssignment);
@@ -180,7 +182,6 @@ const ViewAssignment = () => {
 const TableComponent = ({ data }) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
-
   const handleDescriptionClick = (description) =>
     setSelectedDescription(description);
   const handleCloseDescription = () => setSelectedDescription(null);
@@ -190,6 +191,7 @@ const TableComponent = ({ data }) => {
   const [feedbackInput, setFeedbackInput] = useState("");
 
   const handleFeedbackClick = (feedback) => {
+    console.log(feedback);
     setSelectedFeedback(feedback);
     setIsFeedbackModalOpen(true);
   };
@@ -208,7 +210,6 @@ const TableComponent = ({ data }) => {
     console.log("Feedback submitted:", feedbackInput);
     handleCloseFeedback();
   };
-
 
   const handleAdd = async (AssignmentID, AssignmentStatus) => {
     try {
@@ -235,7 +236,6 @@ const TableComponent = ({ data }) => {
       console.error("Error updating task:", error);
     }
   };
-
 
   return (
     <div className="table-container">
@@ -338,9 +338,7 @@ const TableComponent = ({ data }) => {
               </TableCell>
               <TableCell
                 className="vertical-border"
-                onClick={() =>
-                  handleFeedbackClick(item.Feedback)
-                }
+                onClick={() => handleFeedbackClick(item.Feedback)}
               >
                 {item.Feedback}
               </TableCell>
@@ -361,7 +359,10 @@ const TableComponent = ({ data }) => {
         </TableBody>
       </Table>
 
-      <Modal open={selectedDescription !== null} onClose={handleCloseDescription}>
+      <Modal
+        open={selectedDescription !== null}
+        onClose={handleCloseDescription}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -398,13 +399,17 @@ const TableComponent = ({ data }) => {
             multiline
             rows={4}
             fullWidth
-            value={feedbackInput}
+            value={selectedFeedback}
             onChange={handleFeedbackInputChange}
             sx={{ mt: 2 }}
           />
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
             <Button onClick={handleCloseFeedback}>Cancel</Button>
-            <Button onClick={handleSubmitFeedback} variant="contained" color="primary">
+            <Button
+              onClick={handleSubmitFeedback}
+              variant="contained"
+              color="primary"
+            >
               Submit
             </Button>
           </Box>

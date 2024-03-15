@@ -34,6 +34,7 @@ export default function SignUp() {
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState({
     EmployeeID: "",
+    // FirstName:"",
     Username: "",
     Password: "",
     confirm_password: "",
@@ -109,6 +110,7 @@ export default function SignUp() {
         // Reset form inputs
         setFormData({
           EmployeeID: "",
+          // FirstName:"",
           Username: "",
           Password: "",
           confirm_password: "",
