@@ -34,6 +34,23 @@ export const fetchDesignationData = createAsyncThunk(
   }
 );
 
+
+// Update designation data
+export const updateDesigantionData = createAsyncThunk(
+  "desigantion/updateDesigantionData", 
+  async ({ DesignationID, formData }) => {
+    try {
+      const url = `http://localhost:3306/api/designation/update/${DesignationID}`;
+      const response = await axios.patch(url, formData); 
+      return response.data;
+    } catch (error) {
+      return isRejectedWithValue(error.response.data);
+    }
+  }
+);
+
+
+
 //  deleting designation data
 export const deleteDesignationData = createAsyncThunk(
   "designation/deleteDesignationData",

@@ -34,6 +34,35 @@ export const fetchDepartmentData = createAsyncThunk(
   }
 );
 
+
+
+
+
+
+
+// update department data
+export const updateDepartmentData = createAsyncThunk(
+  "department/updateDepartmentData", 
+  async ({ DepartmentID, formData }) => {
+    try {
+      const url = `http://localhost:3306/api/department/update/${DepartmentID}`;
+      const response = await axios.patch(url, formData); 
+      return response.data;
+    } catch (error) {
+      return isRejectedWithValue(error.response.data);
+    }
+  }
+);
+
+
+
+
+
+
+
+
+
+
 //  deleting department data
 export const deleteDepartmentData = createAsyncThunk(
   "department/deleteDepartmentData",

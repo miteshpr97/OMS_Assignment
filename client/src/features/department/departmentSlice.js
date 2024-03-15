@@ -1,7 +1,8 @@
 
+// departmentSlice.js
 
 import { createSlice } from "@reduxjs/toolkit";
-import { createDepartmentData, fetchDepartmentData, deleteDepartmentData } from "./departmentActions";
+import { createDepartmentData, fetchDepartmentData, deleteDepartmentData, updateDepartmentData } from "./departmentActions";
 
 export const departmentSlice = createSlice({
   name: 'department',
@@ -17,7 +18,6 @@ export const departmentSlice = createSlice({
     builder
       .addCase(fetchDepartmentData.pending, (state) => {
         state.loading = true;
-        // state.error = null;
       })
       .addCase(fetchDepartmentData.fulfilled, (state, action) => {
         state.loading = false;
@@ -39,8 +39,6 @@ export const departmentSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
-      // Deleting designation data
       .addCase(deleteDepartmentData.pending, (state) => {
         state.loading = true;
       })
@@ -51,8 +49,29 @@ export const departmentSlice = createSlice({
       .addCase(deleteDepartmentData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+
+
+      .addCase(updateDepartmentData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateDepartmentData.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedDepartment = action.payload;
+        state.departmentName = state.departmentName.map(department => {
+          if (department.DepartmentID === updatedDepartment.DepartmentID) {
+            return { ...department, ...updatedDepartment };
+          }
+          return department;
+        });
+      })
+      .addCase(updateDepartmentData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
 
+      
   },
 });
 

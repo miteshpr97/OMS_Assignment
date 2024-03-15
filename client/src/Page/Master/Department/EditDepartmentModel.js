@@ -6,13 +6,19 @@ import {
   DialogActions,
   TextField,
   Button,
-  Grid
+  Grid,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+
+import {
+  fetchDepartmentData,
+  updateDepartmentData,
+} from "../../../features/department/departmentActions";
 
 const EditDepartmentModel = ({ isOpen, handleClose, department }) => {
   const [editedDepartment, setEditedDepartment] = useState({});
+  const dispatch = useDispatch();
 
- 
   useEffect(() => {
     setEditedDepartment({ ...department });
   }, [department]);
@@ -23,7 +29,13 @@ const EditDepartmentModel = ({ isOpen, handleClose, department }) => {
   };
 
   const handleSaveChanges = () => {
-    // You can add logic here to save changes
+    dispatch(
+      updateDepartmentData({
+        DepartmentID: editedDepartment.DepartmentID,
+        formData: editedDepartment,
+      })
+    );
+    dispatch(fetchDepartmentData());
     handleClose();
   };
 
@@ -32,13 +44,13 @@ const EditDepartmentModel = ({ isOpen, handleClose, department }) => {
       <DialogTitle>Edit Department</DialogTitle>
       <DialogContent>
         <form>
-          <Grid container spacing={3} >
+          <Grid container spacing={3}>
             <Grid item md={12}>
               <TextField
                 label="Department Name"
                 variant="outlined"
                 name="DepartmentName"
-                value={editedDepartment.DepartmentName || ''}
+                value={editedDepartment.DepartmentName || ""}
                 onChange={handleInputChange}
                 fullWidth
                 margin="normal"
