@@ -11,11 +11,16 @@ import {
   TextField,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
+import SideBar from "../../Component/SideBar";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
+// import { selectAssignment } from "../../features/assignment/assignmentSlice";
 
 import { MyTeamInfoModal } from "./MyTeamInfoModal";
 
 export default function MyTeam() {
+  // const dispatch = useDispatch();
+  // const assignmentData = useSelector(selectAssignment);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [assignedEmployees, setAssignedEmployees] = useState([]);
@@ -24,8 +29,13 @@ export default function MyTeam() {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedEmployeeData, setSelectedEmployeeData] = useState(null);
 
-console.log(selectedEmployeeData, "123456");
+
  
+
+  // useEffect(() => {
+  //   dispatch(fetchAssignmentData());
+  // }, [dispatch]);
+
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -33,7 +43,6 @@ console.log(selectedEmployeeData, "123456");
   }, []);
 
   useEffect(() => {
-    // Fetch department data when the component mounts
     fetchDepartmentData();
     // fetchEmployeeData();
   }, []);
@@ -88,7 +97,7 @@ console.log(selectedEmployeeData, "123456");
       )
     : assignedEmployees;
 
-    console.log(assignedEmployees, "cjksabjb123");
+   
 
     const handleInfo = (assignedEmployees) => {
       setIsInfoModalOpen(true);
@@ -116,7 +125,7 @@ console.log(selectedEmployeeData, "123456");
             marginTop: "10px",
           }}
         >
-          <Typography 
+          <Typography
             variant="h5"
             sx={{
               textTransform: "capitalize",
