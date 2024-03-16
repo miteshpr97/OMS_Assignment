@@ -219,6 +219,8 @@ import { format } from "date-fns";
 import "./Assignment.css";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AssignmentEditModal from "./AssignmentEditModal";
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 const AssignmentTable = ({ userData, assignmentDatas, loading, error, handleDeleteAssignment }) => {
   const [tableData, setTableData] = useState([]);
@@ -226,6 +228,7 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error, handleDele
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
+ 
 
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
@@ -329,7 +332,14 @@ const AssignmentTable = ({ userData, assignmentDatas, loading, error, handleDele
 
 const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }) => {
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
 
+
+  const handleEditClick = (data) => {
+    setIsEditModalOpen(true);
+    setSelectedAssignmentData(data);
+  };
  
   return (
     <div>
@@ -383,6 +393,12 @@ const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
+                Feedback
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
                 Action
               </TableCell>
             </TableRow>
@@ -421,11 +437,26 @@ const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }
                 <TableCell className="vertical-border">
                   {item.AssignmentPriority}
                 </TableCell>
+                <TableCell
+                className="vertical-border"
+             
+              >
+                {item.Feedback ? (
+                  item.Feedback
+                ) : (
+                  <p style={{color:"#a8a8a8d0", fontSize:"11px", margin:"0px"}}>
+                    <FeedbackIcon sx={{fontSize:"15px"}}/>
+                  No Feedback
+                  </p> 
+                )}
+              </TableCell>
                 <TableCell className="vertical-border">
                   <IconButton
                     sx={{
                       color: "#055f85",
+                     
                     }}
+                    onClick={() => handleEditClick(item)}
                   >
                     <EditNoteIcon />
                   </IconButton>
@@ -434,7 +465,7 @@ const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }
                     sx={{ color: "red"}}
                     onClick={() => handleDeleteAssignment(item.AssignmentID)}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon sx={{fontSize:"1.3rem"}} />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -442,6 +473,11 @@ const TableComponent = ({ data, handleDescriptionClick, handleDeleteAssignment }
           </TableBody>
         </Table>
       </TableContainer>
+      <AssignmentEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        assignmentData={selectedAssignmentData}
+      />
     </div>
   );
 };

@@ -39,9 +39,6 @@ export default function NewAssignment() {
   const countAssignmentData = useSelector(selectAssignmentCounts);
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
-  console.log(assignmentDatas, "ddgd")
-
-
 
   useEffect(() => {
     // Fetch assignment data when the component mounts
@@ -51,7 +48,6 @@ export default function NewAssignment() {
 
   const [assignedEmployees, setAssignedEmployees] = useState([]);
   const [userData, setUserData] = useState(null);
-
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -125,8 +121,6 @@ export default function NewAssignment() {
     return <div>Loading...</div>;
   }
 
-
-
   const handleEmployeeSelect = async (event) => {
     const selectedEmployeeId = event.target.value;
     const selectedEmployee = assignedEmployees.find(
@@ -135,36 +129,27 @@ export default function NewAssignment() {
     try {
       // Dispatch the thunk action creator to fetch assignment counts
       dispatch(fetchAssignmentCounts(selectedEmployee.EmployeeID_AssignTo));
-     
     } catch (error) {
       console.error("Error fetching assignment counts:", error);
     }
   };
-  
-
 
   const handleDeleteAssignment = async (DepartmentID) => {
- 
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this Department?"
       );
       if (!confirmed) {
-    
         return; // Exit function if user cancels deletion
       }
 
       await dispatch(deleteAssignmentData(DepartmentID));
       // console.log(DepartmentID);
 
-   
-
       dispatch(fetchAssignmentData());
     } catch (error) {
       console.error("Error deleting department:", error);
-     
     }
-  
   };
 
   return (
@@ -172,13 +157,13 @@ export default function NewAssignment() {
       <SideBar />
       <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: "55px" }}>
         <div className="assignment-container">
-          <AssignmentCard  countAssignmentData = {countAssignmentData}/>
+          <AssignmentCard countAssignmentData={countAssignmentData} />
           <div className="create-assignment">
             <Typography variant="h5" style={{ fontWeight: "500" }}>
-              Create Assignment 
+              Create Assignment
             </Typography>
             <form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Grid container spacing={3} className="mb-3" >
+              <Grid container spacing={3} className="mb-3">
                 <Grid item md={6}>
                   <TextField
                     fullWidth
@@ -212,8 +197,6 @@ export default function NewAssignment() {
                     {assignedEmployees.map((item, index) => (
                       <option key={index} value={item.EmployeeID_AssignTo}>
                         {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
-                       
-                       
                       </option>
                     ))}
                   </TextField>
@@ -302,7 +285,7 @@ export default function NewAssignment() {
             assignmentDatas={assignmentDatas}
             loading={loading}
             error={error}
-            handleDeleteAssignment ={handleDeleteAssignment }
+            handleDeleteAssignment={handleDeleteAssignment}
           />
         </div>
       </Box>

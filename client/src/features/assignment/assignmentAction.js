@@ -67,3 +67,21 @@ export const deleteAssignmentData = createAsyncThunk(
     }
   }
 );
+
+
+
+// update department data
+export const updateAssignmentData = createAsyncThunk(
+  "assignment/updateAssignmentData", 
+  async ({ AssignmentID, formData }) => {
+    try {
+      const url = `http://localhost:3306/api/assignmentDetails/update/${AssignmentID}`;
+      const response = await axios.patch(url, formData); 
+      return response.data;
+    } catch (error) {
+      return isRejectedWithValue(error.response.data);
+    }
+  }
+);
+
+

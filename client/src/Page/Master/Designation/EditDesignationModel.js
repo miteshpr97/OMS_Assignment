@@ -8,9 +8,13 @@ import {
   Button,
   Grid
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { fetchDesignationData, updateDesigantionData } from "../../../features/designation/designationAction";
 
 const EditDesignationModel = ({ isOpen, handleClose, designation }) => {
   const [editedDesignation, setEditedDesignation] = useState({});
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     setEditedDesignation({ ...designation  });
@@ -21,8 +25,17 @@ const EditDesignationModel = ({ isOpen, handleClose, designation }) => {
     setEditedDesignation({ ...editedDesignation, [name]: value });
   };
 
+ 
+
   const handleSaveChanges = () => {
-    // You can add logic here to save changes
+    dispatch(
+      updateDesigantionData({
+        DesignationID: editedDesignation.DesignationID,
+        formData: editedDesignation,
+      })
+    );
+    
+    dispatch(fetchDesignationData());
     handleClose();
   };
 
