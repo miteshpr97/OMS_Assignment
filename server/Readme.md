@@ -1,7 +1,7 @@
 tb_employee's Api
 
 // Get all employees
-http://localhost:3306/api/employee/
+http://localhost:3306/api/employee
 
 // Get overall data of employees
 http://localhost:3306/api/employee/allData

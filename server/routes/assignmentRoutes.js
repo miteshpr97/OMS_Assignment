@@ -12,13 +12,19 @@ router.get('/allData', assignmentController.getAssignmentEmployeesData);
 router.get("/:AssignmentID", assignmentController.getAssignmentById); 
 
 // add Assignment with auto generated id
-router.post("/withID", assignmentController.addAssignmentWithId);
+// router.post("/withID", assignmentController.addAssignmentWithId);
+
+// add Assignment with auto generated id
+router.post("/",assignmentController.addAssignment);
 
 // update assignment
 router.patch("/update/:AssignmentID", assignmentController.updateAssignment);
 
 // update assignment status to progress
-router.patch("/:AssignmentID/progress", assignmentController.progressAssignmentStatus);
+// router.patch("/:AssignmentID/progress", assignmentController.progressAssignmentStatus);
+
+// update assignment status to progress
+router.patch("/:AssignmentID/progress", assignmentController.updateAssignmentStatusToProgress);
 
 // update assignment status to completed
 router.patch("/:AssignmentID/completed", assignmentController.completedAssignmentStatus);
