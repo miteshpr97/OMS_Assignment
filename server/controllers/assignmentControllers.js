@@ -199,11 +199,17 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
 
 exports.updateAssignmentStatusToRegret = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
+  const  feedback  = req.body; // Assuming feedback is sent in the request body
+
+
+  console.log(feedback, "fhfhfh")
+
   const cancelTimestamp = new Date();
 
   const updateQuery = `
       UPDATE tb_assignment 
       SET AssignmentStatus = 'Regret', 
+          Feedback = ?,
           CancelTimestamp = ? 
       WHERE AssignmentID = ? 
           AND (AssignmentStatus = 'Assigned' OR AssignmentStatus = 'Progress');
@@ -211,6 +217,7 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
 
   try {
     const results = await queryAsync(updateQuery, [
+      feedback,
       cancelTimestamp,
       assignmentId,
     ]);
@@ -229,6 +236,7 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 // Completed Assignment Status
 
@@ -323,9 +331,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
   try {
     const employeeId = req.params.EmployeeID_AssignTo;
     if (!employeeId) {
-      return res
-        .status(400)
-        .json({ error: "EmployeeID_AssignTo parameter is required." });
+      return res.status(400).json({ error: "EmployeeID_AssignTo parameter is required." });
     }
 
     const query = `
