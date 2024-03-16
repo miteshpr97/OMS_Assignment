@@ -1,8 +1,4 @@
 const { queryAsync } = require("../db");
-<<<<<<< HEAD
-
-=======
->>>>>>> 103d894b139658f8f8f16f470cd839d4778833b0
 
 // Get All Assignments
 
@@ -327,7 +323,9 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
   try {
     const employeeId = req.params.EmployeeID_AssignTo;
     if (!employeeId) {
-      return res.status(400).json({ error: "EmployeeID_AssignTo parameter is required." });
+      return res
+        .status(400)
+        .json({ error: "EmployeeID_AssignTo parameter is required." });
     }
 
     const query = `
