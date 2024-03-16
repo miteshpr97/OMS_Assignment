@@ -26,8 +26,14 @@ router.patch("/update/:AssignmentID", assignmentController.updateAssignment);
 // update assignment status to progress
 router.patch("/:AssignmentID/progress", assignmentController.updateAssignmentStatusToProgress);
 
+// update assignment status to Regret
+router.patch("/:AssignmentID/regret", assignmentController.updateAssignmentStatusToRegret);
+
 // update assignment status to completed
-router.patch("/:AssignmentID/completed", assignmentController.completedAssignmentStatus);
+// router.patch("/:AssignmentID/completed", assignmentController.completedAssignmentStatus);
+
+// update assignment status to completed
+router.patch("/:AssignmentID/completed", assignmentController.updateAssignmentStatusToCompleted);
 
 // number of pending progress and completed assignments of a particular employee
 router.get("/:EmployeeID_AssignTo/assignmentCounts", assignmentController.numberOfAssignmentsByStatus);

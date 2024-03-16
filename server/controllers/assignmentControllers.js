@@ -1,5 +1,8 @@
 const { queryAsync } = require("../db");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 103d894b139658f8f8f16f470cd839d4778833b0
 
 // Get All Assignments
 
@@ -168,17 +171,62 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
   const acceptTimestamp = new Date();
 
-  const updateQuery = `UPDATE tb_assignment SET AssignmentStatus = 'Progress', AcceptTimestamp = ? WHERE AssignmentID = ? AND AssignmentStatus = 'Assigned';`;
+  const updateQuery = `
+      UPDATE tb_assignment 
+      SET AssignmentStatus = 'Progress',
+          AcceptTimestamp = ? 
+      WHERE AssignmentID = ? 
+          AND AssignmentStatus = 'Assigned';`;
 
   try {
-    const results = await queryAsync(updateQuery, [acceptTimestamp, assignmentId]);
+    const results = await queryAsync(updateQuery, [
+      acceptTimestamp,
+      assignmentId,
+    ]);
 
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Assignment not found" });
     } else if (results.affectedRows > 0 && results.changedRows === 0) {
       res.status(200).json({ message: "Assignment is up to date already" });
     } else {
-      res.status(200).json({ message: "Assignment status updated successfully" });
+      res
+        .status(200)
+        .json({ message: "Assignment status updated successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// update Assignment Status To Regret
+
+exports.updateAssignmentStatusToRegret = async (req, res) => {
+  const assignmentId = req.params.AssignmentID;
+  const cancelTimestamp = new Date();
+
+  const updateQuery = `
+      UPDATE tb_assignment 
+      SET AssignmentStatus = 'Regret', 
+          CancelTimestamp = ? 
+      WHERE AssignmentID = ? 
+          AND (AssignmentStatus = 'Assigned' OR AssignmentStatus = 'Progress');
+  `;
+
+  try {
+    const results = await queryAsync(updateQuery, [
+      cancelTimestamp,
+      assignmentId,
+    ]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Assignment not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json({ message: "Assignment is up to date already" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Assignment status updated successfully" });
     }
   } catch (error) {
     console.error("Error executing query:", error);
@@ -188,48 +236,117 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
 
 // Completed Assignment Status
 
-exports.completedAssignmentStatus = async (req, res) => {
+// exports.completedAssignmentStatus = async (req, res) => {
+//   const assignmentId = req.params.AssignmentID;
+//   const query =
+//     "UPDATE tb_assignment SET AssignmentStatus = 'Completed' WHERE AssignmentID = ? AND AssignmentStatus = 'Progress';";
+
+//   try {
+//     const results = await queryAsync(query, [assignmentId]);
+
+//     if (results.affectedRows === 0) {
+//       res.status(404).json({ error: "Assignment not found" });
+//     } else if (results.affectedRows > 0 && results.changedRows === 0) {
+//       res.status(200).json("Assignment Status is up to date already");
+//     } else {
+//       res
+//         .status(200)
+//         .json({ message: "Assignment Status updated successfully" });
+//     }
+//   } catch (error) {
+//     console.error("Error executing query:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+// update Assignment Status To Completed
+
+exports.updateAssignmentStatusToCompleted = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
-  const query =
-    "UPDATE tb_assignment SET AssignmentStatus = 'Completed' WHERE AssignmentID = ? AND AssignmentStatus = 'Progress';";
+  const completionTimestamp = new Date();
+
+  const updateQuery = `
+      UPDATE tb_assignment 
+      SET AssignmentStatus = 'Completed',
+          CompletionTimestamp = ? 
+      WHERE AssignmentID = ? 
+          AND AssignmentStatus = 'Progress';`;
 
   try {
-    const results = await queryAsync(query, [assignmentId]);
+    const results = await queryAsync(updateQuery, [
+      completionTimestamp,
+      assignmentId,
+    ]);
 
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Assignment not found" });
     } else if (results.affectedRows > 0 && results.changedRows === 0) {
-      res.status(200).json("Assignment Status is up to date already");
+      res.status(200).json({ message: "Assignment is up to date already" });
     } else {
       res
         .status(200)
-        .json({ message: "Assignment Status updated successfully" });
+        .json({ message: "Assignment status updated successfully" });
     }
   } catch (error) {
     console.error("Error executing query:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
 // Number of Assignments By Status
 
-exports.numberOfAssignmentsByStatus = async (req, res) => {
-  const employeeId = req.params.EmployeeID_AssignTo;
-  const query = `
-    SELECT
-      COUNT(CASE WHEN AssignmentStatus = 'Pending' THEN 1 END) AS num_pending_assignments,
-      COUNT(CASE WHEN AssignmentStatus = 'Progress' THEN 1 END) AS num_progress_assignments,
-      COUNT(CASE WHEN AssignmentStatus = 'Completed' THEN 1 END) AS num_completed_assignments
-    FROM tb_assignment
-    WHERE EmployeeID_AssignTo = ?;
-  `;
+// exports.numberOfAssignmentsByStatus = async (req, res) => {
+//   const employeeId = req.params.EmployeeID_AssignTo;
+//   const query = `
+//     SELECT
+//       COUNT(CASE WHEN AssignmentStatus = 'Pending' THEN 1 END) AS num_pending_assignments,
+//       COUNT(CASE WHEN AssignmentStatus = 'Progress' THEN 1 END) AS num_progress_assignments,
+//       COUNT(CASE WHEN AssignmentStatus = 'Completed' THEN 1 END) AS num_completed_assignments
+//     FROM tb_assignment
+//     WHERE EmployeeID_AssignTo = ?;
+//   `;
 
+//   try {
+//     const results = await queryAsync(query, [employeeId]);
+//     const assignmentCounts = {
+//       pending_assignments: results[0].num_pending_assignments,
+//       progress_assignments: results[0].num_progress_assignments,
+//       complete_assignments: results[0].num_completed_assignments,
+//     };
+
+//     res.status(200).json(assignmentCounts);
+//   } catch (error) {
+//     console.error("Error executing query:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+// Number of Assignments By Status
+
+exports.numberOfAssignmentsByStatus = async (req, res) => {
   try {
+    const employeeId = req.params.EmployeeID_AssignTo;
+    if (!employeeId) {
+      return res.status(400).json({ error: "EmployeeID_AssignTo parameter is required." });
+    }
+
+    const query = `
+      SELECT
+        SUM(CASE WHEN AssignmentStatus = 'Assigned' THEN 1 ELSE 0 END) AS num_pending_assignments,
+        SUM(CASE WHEN AssignmentStatus = 'Progress' THEN 1 ELSE 0 END) AS num_progress_assignments,
+        SUM(CASE WHEN AssignmentStatus = 'Regret' THEN 1 ELSE 0 END) AS num_regret_assignments,
+        SUM(CASE WHEN AssignmentStatus = 'Completed' THEN 1 ELSE 0 END) AS num_completed_assignments
+      FROM tb_assignment
+      WHERE EmployeeID_AssignTo = ?;
+    `;
+
     const results = await queryAsync(query, [employeeId]);
+
     const assignmentCounts = {
-      pending_assignments: results[0].num_pending_assignments,
-      progress_assignments: results[0].num_progress_assignments,
-      complete_assignments: results[0].num_completed_assignments,
+      Assigned_assignments: results[0].num_pending_assignments,
+      Progress_assignments: results[0].num_progress_assignments,
+      Regret_assignments: results[0].num_regret_assignments,
+      Completed_assignments: results[0].num_completed_assignments,
     };
 
     res.status(200).json(assignmentCounts);
