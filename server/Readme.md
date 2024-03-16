@@ -114,8 +114,8 @@ http://localhost:3306/api/assignmentDetails
 // get particular Assignment by id
 http://localhost:3306/api/assignmentDetails/:AssignmentID
 
-// Post or add Assignment with auto generated id
-http://localhost:3306/api/assignmentDetails/withID
+// add Assignment with auto generated id
+http://localhost:3306/api/assignmentDetails
 
 // update assignment
 http://localhost:3306/api/assignmentDetails/update/:AssignmentID
@@ -123,10 +123,13 @@ http://localhost:3306/api/assignmentDetails/update/:AssignmentID
 // update assignment status from pending to progress
 http://localhost:3306/api/assignmentDetails/:AssignmentID/progress
 
+// update assignment status from either assigned or progress to regret
+http://localhost:3306/api/assignmentDetails/:AssignmentID/regret
+
 // update assignment status from progress to completed
 http://localhost:3306/api/assignmentDetails/:AssignmentID/completed
 
-// number of pending progress and completed assignments of a particular employee
+// number of pending , progress , regret and completed assignments of a particular employee
 http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/assignmentCounts
 
 // delete assignment
