@@ -20,7 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
-import FeedbackIcon from '@mui/icons-material/Feedback';
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import FeedbackDialog from "./FeedbackDialog";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -30,7 +31,6 @@ const ViewAssignment = () => {
   const itemsPerPage = 20;
   const [activeTabData, setActiveTabData] = useState("Assignment");
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
-
 
   const dispatch = useDispatch();
   const assignment = useSelector(selectAssignment);
@@ -106,7 +106,7 @@ const ViewAssignment = () => {
 
   const handleCreateTask = (taskName) => {
     // Implement your logic for creating a task
-    console.log("Creating task:", taskName);
+
     handleTaskDialogClose(); // Close the dialog after task creation
   };
 
@@ -182,18 +182,19 @@ const ViewAssignment = () => {
 const TableComponent = ({ data }) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [feedbackInput, setFeedbackInput] = useState("");
+  const [assignment, setAssignmentData] = useState("");
+
   const handleDescriptionClick = (description) =>
     setSelectedDescription(description);
   const handleCloseDescription = () => setSelectedDescription(null);
 
-  const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
-  const [feedbackInput, setFeedbackInput] = useState("");
-
-  const handleFeedbackClick = (feedback) => {
-    console.log(feedback);
-    setSelectedFeedback(feedback);
+  const handleFeedbackClick = (item) => {
+    console.log(item, "item data show");
     setIsFeedbackModalOpen(true);
+
+    setAssignmentData(item);
   };
 
   const handleCloseFeedback = () => {
@@ -201,41 +202,37 @@ const TableComponent = ({ data }) => {
     setFeedbackInput(""); // Clear the feedback input when closing the modal
   };
 
-  const handleFeedbackInputChange = (event) => {
-    setFeedbackInput(event.target.value);
-  };
-
   const handleSubmitFeedback = () => {
     // Handle submission of feedback here
-    console.log("Feedback submitted:", feedbackInput);
+
     handleCloseFeedback();
   };
 
-  const handleAdd = async (AssignmentID, AssignmentStatus) => {
-    try {
-      const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
-        AssignmentStatus === "Pending" ? "Progress" : "Completed"
-      }`;
-      const response = await fetch(apiUrl, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
+  // const handleAdd = async (AssignmentID, AssignmentStatus) => {
+  //   try {
+  //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
+  //       AssignmentStatus === "Pending" ? "Progress" : "Completed"
+  //     }`;
+  //     const response = await fetch(apiUrl, {
+  //       method: "PATCH",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //     });
 
-      if (response.ok) {
-        alert(
-          `Data moved to ${
-            AssignmentStatus === "Pending" ? "Progress" : "Completed"
-          }`
-        );
-        window.location.reload();
-      } else {
-        console.error("Error updating task:", response.status);
-      }
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
+  //     if (response.ok) {
+  //       alert(
+  //         `Data moved to ${
+  //           AssignmentStatus === "Pending" ? "Progress" : "Completed"
+  //         }`
+  //       );
+  //       window.location.reload();
+  //     } else {
+  //       console.error("Error updating task:", response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //   }
+  // };
 
   return (
     <div className="table-container">
@@ -272,54 +269,97 @@ const TableComponent = ({ data }) => {
             >
               Deadline Date
             </TableCell>
-            <TableCell
-              className="vertical-border"
-              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-            >
-              Status
-            </TableCell>
+
             <TableCell
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
               Priority
             </TableCell>
+
+
+{/*             
             <TableCell
               className="vertical-border"
-              sx={{ color: "white", padding: "10px 16px", fontSize: "15px", }}
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
               Feedback
-            </TableCell>
+            </TableCell> */}
+
+
+
+
             <TableCell
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
               Add
             </TableCell>
+            <TableCell
+              className="vertical-border"
+              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+            >
+              Status
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((item, index) => (
             <TableRow key={index} className="custom-row">
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >
                 {item.AssignmentID}
               </TableCell>
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
               <TableCell
                 onClick={() =>
                   handleDescriptionClick(item.Assignment_Description)
                 }
-                style={{ cursor: "pointer", padding:"10px 16px" }}
+                style={{ cursor: "pointer", padding: "10px 16px" }}
                 className="vertical-border"
               >
                 {item.Assignment_Description.slice(0, 50)}
               </TableCell>
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >
                 {format(new Date(item.AssignDate), "dd/MM/yyyy")}
               </TableCell>
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >
                 {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
               </TableCell>
+
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >
+                {item.AssignmentPriority}
+              </TableCell>
+
+              {/* <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px" }}
+              >
+                <FeedbackIcon sx={{ fontSize: "15px" }} />
+              </TableCell> */}
+
+              <TableCell
+                className="vertical-border"
+                sx={{ padding: "10px 16px", cursor:"pointer" }}
+                onClick={() => handleFeedbackClick(item)}
+              >
+                ADD
+              </TableCell>
+
               <TableCell
                 style={{
                   color:
@@ -328,40 +368,11 @@ const TableComponent = ({ data }) => {
                       : item.AssignmentStatus === "Progress"
                       ? "orange"
                       : "green",
-                      padding:"10px 16px"
+                  padding: "10px 16px",
                 }}
                 className="vertical-border"
               >
                 {item.AssignmentStatus}
-              </TableCell>
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
-                {item.AssignmentPriority}
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                onClick={() => handleFeedbackClick(item.Feedback)}
-                sx={{padding:"10px 16px"}}
-              >
-                {item.Feedback ? (
-                  item.Feedback
-                ) : (
-                  <p style={{color:"#a8a8a8d0", fontSize:"11px", margin:"0px"}}>
-                  <FeedbackIcon sx={{fontSize:"15px"}}/>
-                Send Feedback
-                </p>
-                )}
-              </TableCell>
-              <TableCell className="vertical-border" sx={{padding:"10px 16px"}}>
-                {item.AssignmentStatus === "Completed" ? (
-                  <CheckCircleIcon sx={{ color: "green", fontSize:"1.4rem" }} />
-                ) : (
-                  <AddBoxIcon
-                    sx={{ color: "#055f85", cursor: "pointer", fontSize:"1.5rem" }}
-                    onClick={() =>
-                      handleAdd(item.AssignmentID, item.AssignmentStatus)
-                    }
-                  />
-                )}
               </TableCell>
             </TableRow>
           ))}
@@ -389,7 +400,8 @@ const TableComponent = ({ data }) => {
           <Button onClick={handleCloseDescription}>Close</Button>
         </Box>
       </Modal>
-      <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
+
+      {/* <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
         <Box
           sx={{
             position: "absolute",
@@ -408,7 +420,7 @@ const TableComponent = ({ data }) => {
             multiline
             rows={4}
             fullWidth
-            value={selectedFeedback}
+            // value={selectedFeedback}
             onChange={handleFeedbackInputChange}
             sx={{ mt: 2 }}
           />
@@ -423,7 +435,14 @@ const TableComponent = ({ data }) => {
             </Button>
           </Box>
         </Box>
-      </Modal>
+      </Modal> */}
+
+      <FeedbackDialog
+        open={isFeedbackModalOpen}
+        statusData={assignment}
+        onClose={handleCloseFeedback}
+        onSubmit={handleSubmitFeedback}
+      />
     </div>
   );
 };

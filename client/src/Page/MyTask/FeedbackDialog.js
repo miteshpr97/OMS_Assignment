@@ -1,7 +1,17 @@
 import React, { useState } from "react";
-import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import {
+  Modal,
+  Box,
 
-const FeedbackDialog = ({ open, onClose, onSubmit }) => {
+  TextField,
+  Button,
+  IconButton,
+} from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import CloseIcon from "@mui/icons-material/Close";
+
+const FeedbackDialog = ({ open, onClose, onSubmit, statusData }) => {
   const [feedbackInput, setFeedbackInput] = useState("");
 
   const handleFeedbackInputChange = (event) => {
@@ -11,6 +21,32 @@ const FeedbackDialog = ({ open, onClose, onSubmit }) => {
   const handleSubmitFeedback = () => {
     onSubmit(feedbackInput);
     setFeedbackInput(""); // Clear feedback input after submission
+  };
+
+  const handleAdd = async (AssignmentID, AssignmentStatus) => {
+    try {
+      const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
+        AssignmentStatus === "Pending" ? "Progress" : "Completed"
+      }`;
+      const response = await fetch(apiUrl, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        alert(
+          `Data moved to ${
+            AssignmentStatus === "Pending" ? "Progress" : "Completed"
+          }`
+        );
+        window.location.reload();
+      } else {
+        console.error("Error updating task:", response.status);
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   };
 
   return (
@@ -27,7 +63,38 @@ const FeedbackDialog = ({ open, onClose, onSubmit }) => {
           p: 4,
         }}
       >
-        <Typography variant="h6">Provide Feedback</Typography>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 15,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>{" "}
+
+        
+        {statusData.AssignmentStatus === "Completed" ? (
+          <CheckCircleIcon sx={{ color: "green", fontSize: "1.4rem" }} />
+        ) : (
+          <AddBoxIcon
+            sx={{
+              color: "#055f85",
+              cursor: "pointer",
+              fontSize: "1.5rem",
+            }}
+                    
+            onClick={() =>
+              handleAdd(statusData.AssignmentID, statusData.AssignmentStatus)
+            }
+            
+          />
+         
+        )}
+        
         <TextField
           label="Feedback"
           multiline
@@ -38,9 +105,12 @@ const FeedbackDialog = ({ open, onClose, onSubmit }) => {
           sx={{ mt: 2 }}
         />
         <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={handleSubmitFeedback} variant="contained" color="primary">
-            Submit
+          <Button
+            onClick={handleSubmitFeedback}
+            variant="contained"
+            color="primary"
+          >
+            cancel Assignment
           </Button>
         </Box>
       </Box>
