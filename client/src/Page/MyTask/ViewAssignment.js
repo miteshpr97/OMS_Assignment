@@ -202,12 +202,7 @@ const TableComponent = ({ data }) => {
     setFeedbackInput(""); // Clear the feedback input when closing the modal
   };
 
-  const handleSubmitFeedback = () => {
-    // Handle submission of feedback here
-
-    handleCloseFeedback();
-  };
-
+ 
   // const handleAdd = async (AssignmentID, AssignmentStatus) => {
   //   try {
   //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
@@ -441,7 +436,7 @@ const TableComponent = ({ data }) => {
         open={isFeedbackModalOpen}
         statusData={assignment}
         onClose={handleCloseFeedback}
-        onSubmit={handleSubmitFeedback}
+      
       />
     </div>
   );

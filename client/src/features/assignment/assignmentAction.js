@@ -25,7 +25,7 @@ export const createAssignment = createAsyncThunk(
   async (assignmentData) => {
     try {
       const response = await axios.post(
-        "http://localhost:3306/api/assignmentDetails/withID",
+        "http://localhost:3306/api/assignmentDetails/",
         assignmentData
       );
       const data = response.data;
