@@ -120,7 +120,7 @@ http://localhost:3306/api/assignmentDetails
 // update assignment
 http://localhost:3306/api/assignmentDetails/update/:AssignmentID
 
-// update assignment status from pending to progress
+// update assignment status from assigned to progress
 http://localhost:3306/api/assignmentDetails/:AssignmentID/progress
 
 // update assignment status from either assigned or progress to regret
