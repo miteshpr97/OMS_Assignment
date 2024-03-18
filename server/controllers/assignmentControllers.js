@@ -199,8 +199,12 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
 
 exports.updateAssignmentStatusToRegret = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
-  const  feedback  = req.body; // Assuming feedback is sent in the request body
+  const  feedback  = req.body; 
 
+
+  // if (feedback === null) {
+  //   return res.status(400).json({ error: "Feedback cannot be null" });
+  // }
 
   console.log(feedback, "fhfhfh")
 
@@ -236,6 +240,9 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
 
 
 // Completed Assignment Status

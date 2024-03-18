@@ -192,9 +192,7 @@ const TableComponent = ({ data }) => {
   const handleCloseDescription = () => setSelectedDescription(null);
 
   const handleFeedbackClick = (item) => {
-    console.log(item, "item data show");
     setIsFeedbackModalOpen(true);
-
     setAssignmentData(item);
   };
 
@@ -203,7 +201,6 @@ const TableComponent = ({ data }) => {
     setFeedbackInput(""); // Clear the feedback input when closing the modal
   };
 
- 
   // const handleAdd = async (AssignmentID, AssignmentStatus) => {
   //   try {
   //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
@@ -273,17 +270,13 @@ const TableComponent = ({ data }) => {
               Priority
             </TableCell>
 
-
-{/*             
+            {/*             
             <TableCell
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
               Feedback
             </TableCell> */}
-
-
-
 
             <TableCell
               className="vertical-border"
@@ -350,7 +343,7 @@ const TableComponent = ({ data }) => {
 
               <TableCell
                 className="vertical-border"
-                sx={{ padding: "10px 16px", cursor:"pointer" }}
+                sx={{ padding: "10px 16px", cursor: "pointer" }}
                 onClick={() => handleFeedbackClick(item)}
               >
                 ADD
@@ -439,7 +432,6 @@ const TableComponent = ({ data }) => {
         open={isFeedbackModalOpen}
         statusData={assignment}
         onClose={handleCloseFeedback}
-      
       />
     </div>
   );
