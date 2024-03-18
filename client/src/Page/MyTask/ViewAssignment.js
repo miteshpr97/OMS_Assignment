@@ -152,9 +152,10 @@ const ViewAssignment = () => {
                 textColor="primary"
               >
                 <Tab label="All" value="All" />
-                <Tab label="Pending" value="Pending" />
+                <Tab label="Assigned" value="Assigned" />
                 <Tab label="Progress" value="Progress" />
                 <Tab label="Completed" value="Completed" />
+                <Tab label="Regret" value="Regret" />
               </Tabs>
 
               <TableComponent data={currentItems} />
@@ -358,10 +359,12 @@ const TableComponent = ({ data }) => {
               <TableCell
                 style={{
                   color:
-                    item.AssignmentStatus === "Pending"
-                      ? "red"
+                    item.AssignmentStatus === "Assigned"
+                      ? "blue"
                       : item.AssignmentStatus === "Progress"
                       ? "orange"
+                      : item.AssignmentStatus === "Regret"
+                      ? "red"
                       : "green",
                   padding: "10px 16px",
                 }}

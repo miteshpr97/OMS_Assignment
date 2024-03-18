@@ -10,13 +10,15 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
   });
 
   const handleFeedbackInputChange = (event) => {
-    setFeedbackInput(event.target.value);
+    setFeedbackInput({
+      ...feedbackInput,
+      feedback: event.target.value,
+    });
   };
 
   const handleSubmitFeedback = () => {
     // Handle submission of feedback here
     console.log(feedbackInput);
-
     onClose();
   };
 
@@ -71,40 +73,55 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
           }}
         >
           <CloseIcon />
-        </IconButton>{" "}
+        </IconButton>
         {statusData.AssignmentStatus === "Completed" ? (
           <CheckCircleIcon sx={{ color: "green", fontSize: "1.4rem" }} />
         ) : (
-          <AddBoxIcon
-            sx={{
-              color: "#055f85",
-              cursor: "pointer",
-              fontSize: "1.5rem",
-            }}
-            onClick={() =>
-              handleAdd(statusData.AssignmentID, statusData.AssignmentStatus)
-            }
-          />
+          <>
+            <span>Add To Progress</span> 
+            <AddBoxIcon
+              sx={{
+                color: "#055f85",
+                cursor: "pointer",
+                fontSize: "1.5rem",
+              }}
+              onClick={() =>
+                handleAdd(statusData.AssignmentID, statusData.AssignmentStatus)
+              }
+            />
+          </>
         )}
-        <TextField
-          label="Feedback"
-          multiline
-          rows={4}
-          fullWidth
-          value={feedbackInput.feedback}
-          onChange={handleFeedbackInputChange}
-          sx={{ mt: 2 }}
-          required
-        />
-        <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-          <Button
-            onClick={handleSubmitFeedback}
-            variant="contained"
-            color="primary"
-          >
-            cancel Assignment
-          </Button>
-        </Box>
+
+        {statusData.AssignmentStatus !== "Completed" && (
+          <>
+            <TextField
+              label="Feedback"
+              multiline
+              rows={4}
+              fullWidth
+              value={feedbackInput.feedback}
+              onChange={handleFeedbackInputChange}
+              sx={{ mt: 2 }}
+              required
+            />
+
+            <Box
+              sx={{
+                mt: 2,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                onClick={handleSubmitFeedback}
+                variant="contained"
+                color="primary"
+              >
+                Cancel Assignment
+              </Button>
+            </Box>
+          </>
+        )}
       </Box>
     </Modal>
   );
