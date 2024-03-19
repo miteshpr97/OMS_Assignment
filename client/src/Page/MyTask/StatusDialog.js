@@ -16,38 +16,63 @@ const StatusDialog = ({ open, onClose, statusData }) => {
     });
   };
 
-  const handleSubmitFeedback = () => {
-    // Handle submission of feedback here
-    console.log(feedbackInput);
-    onClose();
-  };
-
-  const handleAdd = async (AssignmentID, AssignmentStatus) => {
+  const handleSubmitFeedback = async () => {
     try {
-      const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
-        AssignmentStatus === "Assigned" ? "Progress" : "Completed"
-      }`;
-
+      let apiUrl;
+      if (statusData.AssignmentStatus === "Progress") {
+        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/regret`;
+      } else if (statusData.AssignmentStatus === "Assigned") {
+        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/reject`;
+      } else {
+        // Handle other cases or throw an error
+        return;
+      }
+  
       const response = await fetch(apiUrl, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-
+  
       if (response.ok) {
-        alert(
-          `Data moved to ${
-            AssignmentStatus === "Assigned" ? "Progress" : "Completed"
-          }`
-        );
-        window.location.reload();
+        alert(`Assignment ${statusData.AssignmentStatus === "Progress" ? "regreted" : "rejected"}`);
+        onClose();
+        // Optionally, you might want to trigger a refresh or update state to reflect the change
       } else {
-        console.error("Error updating task:", response.status);
+        console.error("Error updating assignment:", response.status);
       }
     } catch (error) {
-      console.error("Error updating task:", error);
+      console.error("Error updating assignment:", error);
     }
   };
+  
+
+  // const handleAdd = async (AssignmentID, AssignmentStatus) => {
+  //   try {
+  //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
+  //       AssignmentStatus === "Assigned" ? "Progress" : "Completed"
+  //     }`;
+
+  //     const response = await fetch(apiUrl, {
+  //       method: "PATCH",
+  //       headers: { "Content-Type": "application/json" },
+  //       credentials: "include",
+  //     });
+
+  //     if (response.ok) {
+  //       alert(
+  //         `Data moved to ${
+  //           AssignmentStatus === "Assigned" ? "Progress" : "Completed"
+  //         }`
+  //       );
+  //       window.location.reload();
+  //     } else {
+  //       console.error("Error updating task:", response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //   }
+  // };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -75,7 +100,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         >
           <CloseIcon />
         </IconButton>
-        {statusData.AssignmentStatus === "Completed" ? (
+        {/* {statusData.AssignmentStatus === "Completed" ? (
           <CheckCircleIcon sx={{ color: "green", fontSize: "1.4rem" }} />
         ) : (
           statusData.AssignmentStatus !== "Regret" && (
@@ -96,10 +121,11 @@ const StatusDialog = ({ open, onClose, statusData }) => {
               />
             </>
           )
-        )}
+        )} */}
 
         {statusData.AssignmentStatus !== "Completed" &&
-          statusData.AssignmentStatus !== "Regret" && (
+          statusData.AssignmentStatus !== "Regret" && 
+            statusData.AssignmentStatus !== "Reject" && (
             <>
               <TextField
                 label="Feedback"
@@ -133,9 +159,11 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         {statusData.AssignmentStatus === "Completed" && (
           <span>Assignment is completed</span>
         )}
-
+        {statusData.AssignmentStatus === "Reject" && (
+          <span>Assignment has been rejected</span>
+        )}
         {statusData.AssignmentStatus === "Regret" && (
-          <span>Cancel Assignment</span>
+          <span>Assignment has been regreted</span>
         )}
       </Box>
     </Modal>
