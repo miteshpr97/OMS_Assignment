@@ -20,13 +20,23 @@ const StatusDialog = ({ open, onClose, statusData }) => {
   const handleSubmitFeedback = async () => {
     try {
       let apiUrl;
+      let actionVerb;
+      
       if (statusData.AssignmentStatus === "Progress") {
         apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/regret`;
+        actionVerb = "regreted";
       } else if (statusData.AssignmentStatus === "Assigned") {
         apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/reject`;
+        actionVerb = "rejected";
       } else {
         // Handle other cases or throw an error
         return;
+      }
+  
+      const confirmed = window.confirm(`Are you sure you want to ${actionVerb} this assignment?`);
+  
+      if (!confirmed) {
+        return; // User cancelled, do nothing
       }
   
       const response = await fetch(apiUrl, {
@@ -37,8 +47,9 @@ const StatusDialog = ({ open, onClose, statusData }) => {
       });
   
       if (response.ok) {
-        alert(`Assignment ${statusData.AssignmentStatus === "Progress" ? "regreted" : "rejected"} successfully`);
+        
         onClose();
+        window.location.reload(); // Reload the page
       } else {
         console.error("Error updating assignment:", response.status);
       }
@@ -48,32 +59,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
   };
   
 
-  // const handleAdd = async (AssignmentID, AssignmentStatus) => {
-  //   try {
-  //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
-  //       AssignmentStatus === "Assigned" ? "Progress" : "Completed"
-  //     }`;
-
-  //     const response = await fetch(apiUrl, {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //     });
-
-  //     if (response.ok) {
-  //       alert(
-  //         `Data moved to ${
-  //           AssignmentStatus === "Assigned" ? "Progress" : "Completed"
-  //         }`
-  //       );
-  //       window.location.reload();
-  //     } else {
-  //       console.error("Error updating task:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating task:", error);
-  //   }
-  // };
+ 
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -101,28 +87,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         >
           <CloseIcon />
         </IconButton>
-        {/* {statusData.AssignmentStatus === "Completed" ? (
-          <CheckCircleIcon sx={{ color: "green", fontSize: "1.4rem" }} />
-        ) : (
-          statusData.AssignmentStatus !== "Regret" && (
-            <>
-              <span>Add To Progress</span>
-              <AddBoxIcon
-                sx={{
-                  color: "#055f85",
-                  cursor: "pointer",
-                  fontSize: "1.5rem",
-                }}
-                onClick={() =>
-                  handleAdd(
-                    statusData.AssignmentID,
-                    statusData.AssignmentStatus
-                  )
-                }
-              />
-            </>
-          )
-        )} */}
+    
 
         {statusData.AssignmentStatus !== "Completed" &&
           statusData.AssignmentStatus !== "Regret" && 
