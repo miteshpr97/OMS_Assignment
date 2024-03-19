@@ -161,6 +161,49 @@ exports.updateAssignment = async (req, res) => {
 //   }
 // };
 
+// update Assignment Status To Reject
+
+exports.updateAssignmentStatusToReject = async (req, res) => {
+  const assignmentId = req.params.AssignmentID;
+  const feedback  = req.body; 
+  const rejectTimestamp = new Date();
+  
+  if (!feedback) {
+      return res.status(400).json({ error: "Feedback is required" });
+    }
+
+  const updateQuery = `
+      UPDATE tb_assignment 
+      SET AssignmentStatus = 'Reject', 
+          Feedback = ?,
+          RejectTimestamp = ? 
+      WHERE AssignmentID = ? 
+      AND 
+      AssignmentStatus = 'Assigned';
+  `;
+
+  try {
+    const results = await queryAsync(updateQuery, [
+      feedback,
+      rejectTimestamp,
+      assignmentId,
+    ]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Assignment not found" });
+    } else if (results.affectedRows > 0 && results.changedRows === 0) {
+      res.status(200).json({ message: "Assignment is up to date already" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Assignment status updated successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // update Assignment Status To Progress
 
 exports.updateAssignmentStatusToProgress = async (req, res) => {
@@ -199,30 +242,27 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
 
 exports.updateAssignmentStatusToRegret = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
-  const  feedback  = req.body; 
-
-
-  // if (feedback === null) {
-  //   return res.status(400).json({ error: "Feedback cannot be null" });
-  // }
-
-  console.log(feedback, "fhfhfh")
-
-  const cancelTimestamp = new Date();
+  const feedback  = req.body; 
+  const regretTimestamp = new Date();
+  
+  if (!feedback) {
+      return res.status(400).json({ error: "Feedback is required" });
+    }
 
   const updateQuery = `
       UPDATE tb_assignment 
       SET AssignmentStatus = 'Regret', 
           Feedback = ?,
-          CancelTimestamp = ? 
+          RegretTimestamp = ? 
       WHERE AssignmentID = ? 
-          AND (AssignmentStatus = 'Assigned' OR AssignmentStatus = 'Progress');
+      AND 
+      AssignmentStatus = 'Progress';
   `;
 
   try {
     const results = await queryAsync(updateQuery, [
       feedback,
-      cancelTimestamp,
+      regretTimestamp,
       assignmentId,
     ]);
 
@@ -240,10 +280,6 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
 
 // Completed Assignment Status
 
@@ -344,6 +380,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
     const query = `
       SELECT
         SUM(CASE WHEN AssignmentStatus = 'Assigned' THEN 1 ELSE 0 END) AS num_pending_assignments,
+        SUM(CASE WHEN AssignmentStatus = 'Reject' THEN 1 ELSE 0 END) AS num_reject_assignments,
         SUM(CASE WHEN AssignmentStatus = 'Progress' THEN 1 ELSE 0 END) AS num_progress_assignments,
         SUM(CASE WHEN AssignmentStatus = 'Regret' THEN 1 ELSE 0 END) AS num_regret_assignments,
         SUM(CASE WHEN AssignmentStatus = 'Completed' THEN 1 ELSE 0 END) AS num_completed_assignments
@@ -355,6 +392,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
 
     const assignmentCounts = {
       Assigned_assignments: results[0].num_pending_assignments,
+      Rejected_assignments: results[0].num_reject_assignments,
       Progress_assignments: results[0].num_progress_assignments,
       Regret_assignments: results[0].num_regret_assignments,
       Completed_assignments: results[0].num_completed_assignments,

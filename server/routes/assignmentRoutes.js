@@ -23,6 +23,9 @@ router.patch("/update/:AssignmentID", assignmentController.updateAssignment);
 // update assignment status to progress
 // router.patch("/:AssignmentID/progress", assignmentController.progressAssignmentStatus);
 
+// update assignment status to Reject
+router.patch("/:AssignmentID/reject", assignmentController.updateAssignmentStatusToReject);
+
 // update assignment status to progress
 router.patch("/:AssignmentID/progress", assignmentController.updateAssignmentStatusToProgress);
 
