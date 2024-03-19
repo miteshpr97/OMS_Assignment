@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-function Action({StatusData}) {
-  const [selectedValue, setSelectedValue] = useState("select"); 
-
+function Action({ StatusData }) {
+  const [selectedValue, setSelectedValue] = useState("select");
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
