@@ -186,60 +186,14 @@ const ViewAssignment = () => {
 const TableComponent = ({ data }) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
-  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
-  const [feedbackInput, setFeedbackInput] = useState("");
-  const [assignment, setAssignmentData] = useState("");
+
 
   const handleDescriptionClick = (description) =>
     setSelectedDescription(description);
   const handleCloseDescription = () => setSelectedDescription(null);
 
-  const handleFeedbackClick = (item) => {
-    setIsFeedbackModalOpen(true);
-    setAssignmentData(item);
-  };
-
-  const handleCloseFeedback = () => {
-    setIsFeedbackModalOpen(false);
-    setFeedbackInput(""); // Clear the feedback input when closing the modal
-  };
-
-  const handleAdd = async (item) => {
-    try {
-      let newStatus;
-      if (item.AssignmentStatus === "Assigned") {
-        newStatus = "Progress";
-      } else if (item.AssignmentStatus === "Progress") {
-        newStatus = "Completed";
-      } else {
-        // Handle other cases or throw an error
-        return;
-      }
-
-      const confirmed = window.confirm(`Move data to ${newStatus}?`);
-
-      if (confirmed) {
-        const apiUrl = `http://localhost:3306/api/assignmentDetails/${item.AssignmentID}/${newStatus}`;
-
-        const response = await fetch(apiUrl, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-        });
-
-        if (response.ok) {
-          // alert(`Data moved to ${newStatus}`);
-          window.location.reload();
-        } else {
-          console.error("Error updating task:", response.status);
-        }
-      } else {
-        // User clicked cancel, do nothing
-      }
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
+ 
+ 
 
   return (
     <div className="table-container">
@@ -456,11 +410,7 @@ const TableComponent = ({ data }) => {
         </Box>
       </Modal>
 
-      <StatusDialog
-        open={isFeedbackModalOpen}
-        statusData={assignment}
-        onClose={handleCloseFeedback}
-      />
+     
     </div>
   );
 };
