@@ -6,15 +6,16 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const StatusDialog = ({ open, onClose, statusData }) => {
   const [feedbackInput, setFeedbackInput] = useState({
-    feedback: "",
+    Feedback: "",
   });
 
   const handleFeedbackInputChange = (event) => {
     setFeedbackInput({
       ...feedbackInput,
-      feedback: event.target.value,
+      Feedback: event.target.value,
     });
   };
+  
 
   const handleSubmitFeedback = async () => {
     try {
@@ -32,12 +33,12 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
+        body: JSON.stringify(feedbackInput),
       });
   
       if (response.ok) {
-        alert(`Assignment ${statusData.AssignmentStatus === "Progress" ? "regreted" : "rejected"}`);
+        alert(`Assignment ${statusData.AssignmentStatus === "Progress" ? "regreted" : "rejected"} successfully`);
         onClose();
-        // Optionally, you might want to trigger a refresh or update state to reflect the change
       } else {
         console.error("Error updating assignment:", response.status);
       }
@@ -132,7 +133,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
                 multiline
                 rows={4}
                 fullWidth
-                value={feedbackInput.feedback}
+                value={feedbackInput.Feedback}
                 onChange={handleFeedbackInputChange}
                 sx={{ mt: 2 }}
                 required

@@ -214,26 +214,31 @@ const TableComponent = ({ data }) => {
         // Handle other cases or throw an error
         return;
       }
-  
-      const apiUrl = `http://localhost:3306/api/assignmentDetails/${item.AssignmentID}/${newStatus}`;
-  
-      const response = await fetch(apiUrl, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-  
-      if (response.ok) {
-        alert(`Data moved to ${newStatus}`);
-        window.location.reload();
+
+      const confirmed = window.confirm(`Move data to ${newStatus}?`);
+
+      if (confirmed) {
+        const apiUrl = `http://localhost:3306/api/assignmentDetails/${item.AssignmentID}/${newStatus}`;
+
+        const response = await fetch(apiUrl, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          // alert(`Data moved to ${newStatus}`);
+          window.location.reload();
+        } else {
+          console.error("Error updating task:", response.status);
+        }
       } else {
-        console.error("Error updating task:", response.status);
+        // User clicked cancel, do nothing
       }
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
-  
 
   return (
     <div className="table-container">
@@ -277,8 +282,6 @@ const TableComponent = ({ data }) => {
             >
               Priority
             </TableCell>
-
-           
 
             <TableCell
               className="vertical-border"
@@ -336,14 +339,65 @@ const TableComponent = ({ data }) => {
                 {item.AssignmentPriority}
               </TableCell>
 
-            
               <TableCell
                 className="vertical-border"
-                sx={{ padding: "10px 16px", cursor: "pointer" , display:"flex"}}
-                
+                sx={{ padding: "10px 16px" }}
               >
-                <button onClick={() => handleFeedbackClick(item)} >reject</button>
-                <button onClick={() => handleAdd(item)}>accept</button>
+                {item.AssignmentStatus === "Assigned" && (
+                  <>
+                    <button
+                      onClick={() => handleFeedbackClick(item)}
+                      style={{
+                        background: "red",
+                        border: "none",
+                        color: "white",
+                        marginRight:"5px"
+                      }}
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => handleAdd(item)}
+                      style={{
+                        background: "green",
+                        border: "none",
+                        color: "white",
+                      }}
+                    >
+                      Accept
+                    </button>
+                  </>
+                )}
+                {item.AssignmentStatus === "Progress" && (
+                  <>
+                    <button onClick={() => handleFeedbackClick(item)} 
+                     style={{
+                        background: "brown",
+                        border: "none",
+                        color: "white",
+                        marginRight:"5px"
+                      }}>
+                      Regret
+                    </button>
+                    <button onClick={() => handleAdd(item)}
+                     style={{
+                      background: "blue",
+                      border: "none",
+                      color: "white",
+                      
+                    }}
+                    >Next</button>
+                  </>
+                )}
+                {item.AssignmentStatus === "Completed" && (
+                  <span>{item.AssignmentStatus}</span>
+                )}
+                {item.AssignmentStatus === "Reject" && (
+                  <span>{item.AssignmentStatus}</span>
+                )}
+                {item.AssignmentStatus === "Regret" && (
+                  <span>{item.AssignmentStatus}</span>
+                )}
               </TableCell>
 
               <TableCell
@@ -354,7 +408,7 @@ const TableComponent = ({ data }) => {
                       : item.AssignmentStatus === "Progress"
                       ? "orange"
                       : item.AssignmentStatus === "Reject"
-                      ? "red" 
+                      ? "red"
                       : item.AssignmentStatus === "Regret"
                       ? "brown"
                       : "green",
@@ -390,8 +444,6 @@ const TableComponent = ({ data }) => {
           <Button onClick={handleCloseDescription}>Close</Button>
         </Box>
       </Modal>
-
-    
 
       <StatusDialog
         open={isFeedbackModalOpen}
