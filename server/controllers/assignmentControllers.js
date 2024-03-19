@@ -165,10 +165,10 @@ exports.updateAssignment = async (req, res) => {
 
 exports.updateAssignmentStatusToReject = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
-  const feedback  = req.body; 
+  const { Feedback } = req.body; 
   const rejectTimestamp = new Date();
   
-  if (!feedback) {
+  if (!Feedback) {
       return res.status(400).json({ error: "Feedback is required" });
     }
 
@@ -184,7 +184,7 @@ exports.updateAssignmentStatusToReject = async (req, res) => {
 
   try {
     const results = await queryAsync(updateQuery, [
-      feedback,
+      Feedback,
       rejectTimestamp,
       assignmentId,
     ]);
@@ -242,10 +242,10 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
 
 exports.updateAssignmentStatusToRegret = async (req, res) => {
   const assignmentId = req.params.AssignmentID;
-  const feedback  = req.body; 
+  const { Feedback } = req.body; 
   const regretTimestamp = new Date();
   
-  if (!feedback) {
+  if (!Feedback) {
       return res.status(400).json({ error: "Feedback is required" });
     }
 
@@ -261,7 +261,7 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
 
   try {
     const results = await queryAsync(updateQuery, [
-      feedback,
+      Feedback,
       regretTimestamp,
       assignmentId,
     ]);
