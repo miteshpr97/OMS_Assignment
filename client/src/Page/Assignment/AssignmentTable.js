@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Box,
   Table,
   TableBody,
   TableCell,
@@ -17,12 +18,15 @@ import {
   Typography,
   Pagination,
   IconButton,
+  Modal,
 } from "@mui/material";
 import { format } from "date-fns";
 import "./Assignment.css";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
+import Feedback from "@mui/icons-material/Feedback";
 
 const AssignmentTable = ({
   userData,
@@ -144,14 +148,21 @@ const TableComponent = ({
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
-  console.log(data, "data show For Assigner");
+ 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
     setSelectedAssignmentData(data);
   };
 
-  console.log(data, "djhdhdh");
+  const handleFeedback = () => {
+    setIsFeedbackModalOpen(true); 
+  };
+
+  const handleCloseFeedback = () => {
+    setIsFeedbackModalOpen(false);
+  };
 
   return (
     <div>
@@ -271,6 +282,10 @@ const TableComponent = ({
                     <>
                       {format(new Date(item.CancelTimestamp), "dd/MM/yyyy")}{" "}
                       {format(new Date(item.CancelTimestamp), "HH:mm:ss")}
+                      <FeedbackIcon
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleFeedback}
+                      />
                     </>
                   )}
                 </TableCell>
@@ -324,6 +339,29 @@ const TableComponent = ({
         onClose={() => setIsEditModalOpen(false)}
         assignmentData={selectedAssignmentData}
       />
+
+      <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+
+
+          <Typography variant="h6">{data.Feedback}</Typography>
+
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={handleCloseFeedback}>Cancel</Button>
+          </Box>
+        </Box>
+      </Modal>
     </div>
   );
 };
