@@ -390,13 +390,13 @@ const TableComponent = ({ data }) => {
                   </>
                 )}
                 {item.AssignmentStatus === "Completed" && (
-                  <span>{item.AssignmentStatus}</span>
+                  <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
                 )}
                 {item.AssignmentStatus === "Reject" && (
-                  <span>{item.AssignmentStatus}</span>
+                   <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
                 )}
                 {item.AssignmentStatus === "Regret" && (
-                  <span>{item.AssignmentStatus}</span>
+                  <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
                 )}
               </TableCell>
 

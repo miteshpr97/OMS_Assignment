@@ -158,7 +158,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
           )}
 
         {statusData.AssignmentStatus === "Completed" && (
-          <span>Assignment is completed</span>
+          <span><CheckCircleIcon sx={{color:"green"}}/> Assignment is completed</span>
         )}
         {statusData.AssignmentStatus === "Reject" && (
           <span>Assignment has been rejected</span>
