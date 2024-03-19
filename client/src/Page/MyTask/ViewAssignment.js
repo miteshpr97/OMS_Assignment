@@ -21,7 +21,8 @@ import { fetchAssignmentData } from "../../features/assignment/assignmentAction"
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
 import FeedbackIcon from "@mui/icons-material/Feedback";
-import FeedbackDialog from "./FeedbackDialog";
+
+import StatusDialog from "./StatusDialog";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -282,7 +283,7 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              Add
+              Reject/Accept
             </TableCell>
             <TableCell
               className="vertical-border"
@@ -343,10 +344,11 @@ const TableComponent = ({ data }) => {
 
               <TableCell
                 className="vertical-border"
-                sx={{ padding: "10px 16px", cursor: "pointer" }}
-                onClick={() => handleFeedbackClick(item)}
+                sx={{ padding: "10px 16px", cursor: "pointer" , display:"flex"}}
+                
               >
-                ADD
+                <button onClick={() => handleFeedbackClick(item)} >reject</button>
+                <button>accept</button>
               </TableCell>
 
               <TableCell
@@ -428,7 +430,7 @@ const TableComponent = ({ data }) => {
         </Box>
       </Modal> */}
 
-      <FeedbackDialog
+      <StatusDialog
         open={isFeedbackModalOpen}
         statusData={assignment}
         onClose={handleCloseFeedback}

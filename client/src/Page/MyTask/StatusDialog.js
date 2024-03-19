@@ -4,7 +4,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import CloseIcon from "@mui/icons-material/Close";
 
-const FeedbackDialog = ({ open, onClose, statusData }) => {
+const StatusDialog = ({ open, onClose, statusData }) => {
   const [feedbackInput, setFeedbackInput] = useState({
     feedback: "",
   });
@@ -142,4 +142,4 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
   );
 };
 
-export default FeedbackDialog;
+export default StatusDialog;
