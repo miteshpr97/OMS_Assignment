@@ -53,37 +53,6 @@ exports.getAssignmentEmployeesData = async (req, res) => {
   }
 };
 
-// Add Assignment With ID
-
-// exports.addAssignmentWithId = async (req, res) => {
-//   const newAssignment = req.body;
-//   newAssignment.AssignmentStatus = newAssignment.AssignmentStatus || "Pending";
-//   newAssignment.Type = newAssignment.Type || "A";
-
-//   try {
-//     const maxIDQuery =
-//       "SELECT MAX(SUBSTRING(AssignmentID, 3)) AS maxID FROM tb_assignment";
-//     const results = await queryAsync(maxIDQuery);
-
-//     let nextID = 1;
-
-//     if (results && results[0].maxID !== null) {
-//       nextID = parseInt(results[0].maxID, 10) + 1;
-//     }
-
-//     const formattedID = `AS${nextID.toString().padStart(3, "0")}`;
-//     newAssignment.AssignmentID = formattedID;
-
-//     const insertQuery = "INSERT INTO tb_assignment SET ?";
-//     await queryAsync(insertQuery, newAssignment);
-
-//     res.status(201).json({ message: "Assignment added successfully" });
-//   } catch (error) {
-//     console.error("Error executing query:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 // add assignment
 
 exports.addAssignment = async (req, res) => {
@@ -135,31 +104,6 @@ exports.updateAssignment = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-// Progress Assignment Status
-
-// exports.progressAssignmentStatus = async (req, res) => {
-//   const assignmentId = req.params.AssignmentID;
-//   const query =
-//     "UPDATE tb_assignment SET AssignmentStatus = 'Progress' WHERE AssignmentID = ? AND AssignmentStatus = 'Pending';";
-
-//   try {
-//     const results = await queryAsync(query, [assignmentId]);
-
-//     if (results.affectedRows === 0) {
-//       res.status(404).json({ error: "Assignment not found" });
-//     } else if (results.affectedRows > 0 && results.changedRows === 0) {
-//       res.status(200).json("Assignment Status is up to date already");
-//     } else {
-//       res
-//         .status(200)
-//         .json({ message: "Assignment Status updated successfully" });
-//     }
-//   } catch (error) {
-//     console.error("Error executing query:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
 
 // update Assignment Status To Reject
 
@@ -281,31 +225,6 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
   }
 };
 
-// Completed Assignment Status
-
-// exports.completedAssignmentStatus = async (req, res) => {
-//   const assignmentId = req.params.AssignmentID;
-//   const query =
-//     "UPDATE tb_assignment SET AssignmentStatus = 'Completed' WHERE AssignmentID = ? AND AssignmentStatus = 'Progress';";
-
-//   try {
-//     const results = await queryAsync(query, [assignmentId]);
-
-//     if (results.affectedRows === 0) {
-//       res.status(404).json({ error: "Assignment not found" });
-//     } else if (results.affectedRows > 0 && results.changedRows === 0) {
-//       res.status(200).json("Assignment Status is up to date already");
-//     } else {
-//       res
-//         .status(200)
-//         .json({ message: "Assignment Status updated successfully" });
-//     }
-//   } catch (error) {
-//     console.error("Error executing query:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 // update Assignment Status To Completed
 
 exports.updateAssignmentStatusToCompleted = async (req, res) => {
@@ -339,34 +258,6 @@ exports.updateAssignmentStatusToCompleted = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-// Number of Assignments By Status
-
-// exports.numberOfAssignmentsByStatus = async (req, res) => {
-//   const employeeId = req.params.EmployeeID_AssignTo;
-//   const query = `
-//     SELECT
-//       COUNT(CASE WHEN AssignmentStatus = 'Pending' THEN 1 END) AS num_pending_assignments,
-//       COUNT(CASE WHEN AssignmentStatus = 'Progress' THEN 1 END) AS num_progress_assignments,
-//       COUNT(CASE WHEN AssignmentStatus = 'Completed' THEN 1 END) AS num_completed_assignments
-//     FROM tb_assignment
-//     WHERE EmployeeID_AssignTo = ?;
-//   `;
-
-//   try {
-//     const results = await queryAsync(query, [employeeId]);
-//     const assignmentCounts = {
-//       pending_assignments: results[0].num_pending_assignments,
-//       progress_assignments: results[0].num_progress_assignments,
-//       complete_assignments: results[0].num_completed_assignments,
-//     };
-
-//     res.status(200).json(assignmentCounts);
-//   } catch (error) {
-//     console.error("Error executing query:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
 
 // Number of Assignments By Status
 
