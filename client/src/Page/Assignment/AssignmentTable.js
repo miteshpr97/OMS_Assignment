@@ -26,7 +26,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
-import Feedback from "@mui/icons-material/Feedback";
+
 
 const AssignmentTable = ({
   userData,
@@ -228,6 +228,12 @@ const TableComponent = ({
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
+                feedback
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
                 Priority
               </TableCell>
 
@@ -307,6 +313,9 @@ const TableComponent = ({
                   >
                     {item.AssignmentStatus}
                   </span>
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.Feedback}
                 </TableCell>
                 <TableCell className="vertical-border">
                   {item.AssignmentPriority}

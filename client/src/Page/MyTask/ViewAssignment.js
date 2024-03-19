@@ -23,6 +23,7 @@ import TaskDialog from "./Task";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 
 import StatusDialog from "./StatusDialog";
+import Action from "./Action";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -156,6 +157,7 @@ const ViewAssignment = () => {
                 <Tab label="Assigned" value="Assigned" />
                 <Tab label="Progress" value="Progress" />
                 <Tab label="Completed" value="Completed" />
+                <Tab label="Reject" value="Reject" />
                 <Tab label="Regret" value="Regret" />
               </Tabs>
 
@@ -202,31 +204,42 @@ const TableComponent = ({ data }) => {
     setFeedbackInput(""); // Clear the feedback input when closing the modal
   };
 
-  // const handleAdd = async (AssignmentID, AssignmentStatus) => {
-  //   try {
-  //     const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
-  //       AssignmentStatus === "Pending" ? "Progress" : "Completed"
-  //     }`;
-  //     const response = await fetch(apiUrl, {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       credentials: "include",
-  //     });
+  const handleAdd = async (item) => {
+    try {
+      let newStatus;
+      if (item.AssignmentStatus === "Assigned") {
+        newStatus = "Progress";
+      } else if (item.AssignmentStatus === "Progress") {
+        newStatus = "Completed";
+      } else {
+        // Handle other cases or throw an error
+        return;
+      }
 
-  //     if (response.ok) {
-  //       alert(
-  //         `Data moved to ${
-  //           AssignmentStatus === "Pending" ? "Progress" : "Completed"
-  //         }`
-  //       );
-  //       window.location.reload();
-  //     } else {
-  //       console.error("Error updating task:", response.status);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating task:", error);
-  //   }
-  // };
+      const confirmed = window.confirm(`Move data to ${newStatus}?`);
+
+      if (confirmed) {
+        const apiUrl = `http://localhost:3306/api/assignmentDetails/${item.AssignmentID}/${newStatus}`;
+
+        const response = await fetch(apiUrl, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          // alert(`Data moved to ${newStatus}`);
+          window.location.reload();
+        } else {
+          console.error("Error updating task:", response.status);
+        }
+      } else {
+        // User clicked cancel, do nothing
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
 
   return (
     <div className="table-container">
@@ -271,19 +284,11 @@ const TableComponent = ({ data }) => {
               Priority
             </TableCell>
 
-            {/*             
             <TableCell
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              Feedback
-            </TableCell> */}
-
-            <TableCell
-              className="vertical-border"
-              sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-            >
-              Reject/Accept
+              Action
             </TableCell>
             <TableCell
               className="vertical-border"
@@ -335,20 +340,75 @@ const TableComponent = ({ data }) => {
                 {item.AssignmentPriority}
               </TableCell>
 
-              {/* <TableCell
+              <TableCell
                 className="vertical-border"
                 sx={{ padding: "10px 16px" }}
               >
-                <FeedbackIcon sx={{ fontSize: "15px" }} />
-              </TableCell> */}
+                {/* {item.AssignmentStatus === "Assigned" && (
+                  <>
+                    <button
+                      onClick={() => handleFeedbackClick(item)}
+                      style={{
+                        background: "red",
+                        border: "none",
+                        color: "white",
+                        marginRight: "5px",
+                      }}
+                    >
+                      Reject
+                    </button>
+                    <button
+                      onClick={() => handleAdd(item)}
+                      style={{
+                        background: "green",
+                        border: "none",
+                        color: "white",
+                      }}
+                    >
+                      Accept
+                    </button>
+                  </>
+                )}
+                {item.AssignmentStatus === "Progress" && (
+                  <>
+                    <button
+                      onClick={() => handleFeedbackClick(item)}
+                      style={{
+                        background: "brown",
+                        border: "none",
+                        color: "white",
+                        marginRight: "5px",
+                      }}
+                    >
+                      Regret
+                    </button>
+                    <button
+                      onClick={() => handleAdd(item)}
+                      style={{
+                        background: "blue",
+                        border: "none",
+                        color: "white",
+                      }}
+                    >
+                      Next
+                    </button>
+                  </>
+                )}
+                {item.AssignmentStatus === "Completed" && (
+                  <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
+                )}
+                {item.AssignmentStatus === "Reject" && (
+                   <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
+                )}
+                {item.AssignmentStatus === "Regret" && (
+                  <span>{item.AssignmentStatus}</span>
+                )} */}
 
-              <TableCell
-                className="vertical-border"
-                sx={{ padding: "10px 16px", cursor: "pointer" , display:"flex"}}
-                
-              >
-                <button onClick={() => handleFeedbackClick(item)} >reject</button>
-                <button>accept</button>
+
+                <Action StatusData={item}/>
+
+
+
               </TableCell>
 
               <TableCell
@@ -358,8 +418,10 @@ const TableComponent = ({ data }) => {
                       ? "blue"
                       : item.AssignmentStatus === "Progress"
                       ? "orange"
-                      : item.AssignmentStatus === "Regret"
+                      : item.AssignmentStatus === "Reject"
                       ? "red"
+                      : item.AssignmentStatus === "Regret"
+                      ? "brown"
                       : "green",
                   padding: "10px 16px",
                 }}
@@ -393,42 +455,6 @@ const TableComponent = ({ data }) => {
           <Button onClick={handleCloseDescription}>Close</Button>
         </Box>
       </Modal>
-
-      {/* <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography variant="h6">Send Feedback</Typography>
-          <TextField
-            label="Feedback"
-            multiline
-            rows={4}
-            fullWidth
-            // value={selectedFeedback}
-            onChange={handleFeedbackInputChange}
-            sx={{ mt: 2 }}
-          />
-          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-            <Button onClick={handleCloseFeedback}>Cancel</Button>
-            <Button
-              onClick={handleSubmitFeedback}
-              variant="contained"
-              color="primary"
-            >
-              Submit
-            </Button>
-          </Box>
-        </Box>
-      </Modal> */}
 
       <StatusDialog
         open={isFeedbackModalOpen}
