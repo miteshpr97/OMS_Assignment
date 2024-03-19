@@ -12,7 +12,7 @@ import "./Assignment.css";
 const AssignmentCard = ({ countAssignmentData }) => {
   const statuses = [
     {
-      status: "Pending",
+      status: "Assigned",
       gradient: "linear-gradient(to right, red, hsla(0, 68%, 26%, 0.705))",
       color: "#dc3545",
       emoji: <PendingActionsIcon sx={{ fontSize: "2rem" }} />,

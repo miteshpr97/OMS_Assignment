@@ -23,6 +23,7 @@ import TaskDialog from "./Task";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 
 import StatusDialog from "./StatusDialog";
+import Action from "./Action";
 
 const ViewAssignment = () => {
   const [assignmentData, setAssignmentData] = useState([]);
@@ -287,7 +288,7 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              Reject/Accept
+              Action
             </TableCell>
             <TableCell
               className="vertical-border"
@@ -343,7 +344,7 @@ const TableComponent = ({ data }) => {
                 className="vertical-border"
                 sx={{ padding: "10px 16px" }}
               >
-                {item.AssignmentStatus === "Assigned" && (
+                {/* {item.AssignmentStatus === "Assigned" && (
                   <>
                     <button
                       onClick={() => handleFeedbackClick(item)}
@@ -351,7 +352,7 @@ const TableComponent = ({ data }) => {
                         background: "red",
                         border: "none",
                         color: "white",
-                        marginRight:"5px"
+                        marginRight: "5px",
                       }}
                     >
                       Reject
@@ -370,23 +371,27 @@ const TableComponent = ({ data }) => {
                 )}
                 {item.AssignmentStatus === "Progress" && (
                   <>
-                    <button onClick={() => handleFeedbackClick(item)} 
-                     style={{
+                    <button
+                      onClick={() => handleFeedbackClick(item)}
+                      style={{
                         background: "brown",
                         border: "none",
                         color: "white",
-                        marginRight:"5px"
-                      }}>
+                        marginRight: "5px",
+                      }}
+                    >
                       Regret
                     </button>
-                    <button onClick={() => handleAdd(item)}
-                     style={{
-                      background: "blue",
-                      border: "none",
-                      color: "white",
-                      
-                    }}
-                    >Next</button>
+                    <button
+                      onClick={() => handleAdd(item)}
+                      style={{
+                        background: "blue",
+                        border: "none",
+                        color: "white",
+                      }}
+                    >
+                      Next
+                    </button>
                   </>
                 )}
                 {item.AssignmentStatus === "Completed" && (
@@ -396,8 +401,14 @@ const TableComponent = ({ data }) => {
                    <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
                 )}
                 {item.AssignmentStatus === "Regret" && (
-                  <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
-                )}
+                  <span>{item.AssignmentStatus}</span>
+                )} */}
+
+
+                <Action StatusData={item}/>
+
+
+
               </TableCell>
 
               <TableCell
