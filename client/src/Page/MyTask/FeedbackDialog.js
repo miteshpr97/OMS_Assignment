@@ -10,13 +10,15 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
   });
 
   const handleFeedbackInputChange = (event) => {
-    setFeedbackInput(event.target.value);
+    setFeedbackInput({
+      ...feedbackInput,
+      feedback: event.target.value,
+    });
   };
 
   const handleSubmitFeedback = () => {
     // Handle submission of feedback here
     console.log(feedbackInput);
-
     onClose();
   };
 
@@ -25,6 +27,7 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
       const apiUrl = `http://localhost:3306/api/assignmentDetails/${AssignmentID}/${
         AssignmentStatus === "Assigned" ? "Progress" : "Completed"
       }`;
+
       const response = await fetch(apiUrl, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -34,7 +37,7 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
       if (response.ok) {
         alert(
           `Data moved to ${
-            AssignmentStatus === "Pending" ? "Progress" : "Completed"
+            AssignmentStatus === "Assigned" ? "Progress" : "Completed"
           }`
         );
         window.location.reload();
@@ -71,40 +74,69 @@ const FeedbackDialog = ({ open, onClose, statusData }) => {
           }}
         >
           <CloseIcon />
-        </IconButton>{" "}
+        </IconButton>
         {statusData.AssignmentStatus === "Completed" ? (
           <CheckCircleIcon sx={{ color: "green", fontSize: "1.4rem" }} />
         ) : (
-          <AddBoxIcon
-            sx={{
-              color: "#055f85",
-              cursor: "pointer",
-              fontSize: "1.5rem",
-            }}
-            onClick={() =>
-              handleAdd(statusData.AssignmentID, statusData.AssignmentStatus)
-            }
-          />
+          statusData.AssignmentStatus !== "Regret" && (
+            <>
+              <span>Add To Progress</span>
+              <AddBoxIcon
+                sx={{
+                  color: "#055f85",
+                  cursor: "pointer",
+                  fontSize: "1.5rem",
+                }}
+                onClick={() =>
+                  handleAdd(
+                    statusData.AssignmentID,
+                    statusData.AssignmentStatus
+                  )
+                }
+              />
+            </>
+          )
         )}
-        <TextField
-          label="Feedback"
-          multiline
-          rows={4}
-          fullWidth
-          value={feedbackInput.feedback}
-          onChange={handleFeedbackInputChange}
-          sx={{ mt: 2 }}
-          required
-        />
-        <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-          <Button
-            onClick={handleSubmitFeedback}
-            variant="contained"
-            color="primary"
-          >
-            cancel Assignment
-          </Button>
-        </Box>
+
+        {statusData.AssignmentStatus !== "Completed" &&
+          statusData.AssignmentStatus !== "Regret" && (
+            <>
+              <TextField
+                label="Feedback"
+                multiline
+                rows={4}
+                fullWidth
+                value={feedbackInput.feedback}
+                onChange={handleFeedbackInputChange}
+                sx={{ mt: 2 }}
+                required
+              />
+
+              <Box
+                sx={{
+                  mt: 2,
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Button
+                  onClick={handleSubmitFeedback}
+                  variant="contained"
+                  color="primary"
+                >
+                  Cancel Assignment
+                </Button>
+              </Box>
+            </>
+          )}
+
+        {statusData.AssignmentStatus === "Completed" && (
+          <span>Assignment is completed</span>
+        )}
+
+        {statusData.AssignmentStatus === "Regret" && (
+          <span>Cancel Assignment</span>
+        )}
       </Box>
     </Modal>
   );

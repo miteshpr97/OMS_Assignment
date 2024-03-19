@@ -58,8 +58,8 @@ const authorizeUser = (req, res, next) => {
   }
 };
 
-function generateToken(email, Password_resetUsed) {
-  return jwt.sign({ email, Password_resetUsed }, process.env.SECRET_KEY, {
+function generateToken(userName, Password_resetUsed) {
+  return jwt.sign({ userName, Password_resetUsed }, process.env.SECRET_KEY, {
     expiresIn: "15h",
   });
 }

@@ -234,22 +234,22 @@ exports.logoutUser = async (req, res) => {
 // forget password
 
 exports.forgetPassword = async (req, res) => {
-  const email = req.body.email;
+  const userName = req.body.Username;
 
   const checkEmailQuery =
-    "SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;";
+    "SELECT Username, Password_resetUsed FROM tb_userdetails WHERE Username = ?;";
 
   try {
-    const results = await queryAsync(checkEmailQuery, [email]);
+    const results = await queryAsync(checkEmailQuery, [userName]);
 
     if (results.length === 0) {
-      return res.status(404).json({ message: "Email not found" });
+      return res.status(404).json({ message: "Username not found" });
     }
 
     const Password_resetUsed = results[0].Password_resetUsed;
-    const token = generateToken(email, Password_resetUsed);
+    const token = generateToken(userName, Password_resetUsed);
 
-    sendEmail(email, token)
+    sendEmail(userName, token)
       .then(() => res.json({ message: "Token sent to email" }))
       .catch((error) => {
         console.error(error);
@@ -275,9 +275,9 @@ exports.resetPassword = async (req, res) => {
     const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
 
     const checkEmailQuery =
-      "SELECT tb_employee.*, tb_userdetails.Password_resetUsed FROM tb_employee JOIN tb_userdetails ON tb_employee.EmployeeID = tb_userdetails.EmployeeID WHERE tb_employee.email = ?;";
+      "SELECT Username, Password_resetUsed FROM tb_userdetails WHERE Username = ?;";
 
-    const results = await queryAsync(checkEmailQuery, [verifyUser.email]);
+    const results = await queryAsync(checkEmailQuery, [verifyUser.userName]);
 
     // Check if the token has a valid version
     if (verifyUser.Password_resetUsed !== results[0].Password_resetUsed) {
@@ -287,14 +287,14 @@ exports.resetPassword = async (req, res) => {
     }
 
     const updatePasswordQuery =
-      "UPDATE tb_userdetails JOIN tb_employee ON tb_userdetails.EmployeeID = tb_employee.EmployeeID SET tb_userdetails.Password = ?,tb_userdetails.Password_resetUsed = tb_userdetails.Password_resetUsed + 1 WHERE tb_employee.email = ?";
+      "UPDATE tb_userdetails SET Password = ?,Password_resetUsed = Password_resetUsed + 1 WHERE Username = ?";
 
     const updateResults = await queryAsync(updatePasswordQuery, [
       updatedPassword,
-      verifyUser.email,
+      verifyUser.userName,
     ]);
 
-    res.json({ message: "Password reset successfully" });
+    res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     console.error(error);
 
