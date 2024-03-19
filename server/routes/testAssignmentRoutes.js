@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const testAssignmentController = require("../controllers/testAssignmentController");
 
-// // get all Assignment
-// router.get("/", assignmentController.getAllAssignments); 
+// get all Assignment
+router.get("/", testAssignmentController.getAllAssignments); 
 
 // // all assignment show with their names (Mitesh)
 // router.get('/allData', assignmentController.getAssignmentEmployeesData);
