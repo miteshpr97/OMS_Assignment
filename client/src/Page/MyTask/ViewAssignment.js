@@ -216,7 +216,7 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              A-Description
+              Assignment Description
             </TableCell>
             <TableCell
               className="vertical-border"
