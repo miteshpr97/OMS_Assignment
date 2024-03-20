@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -28,7 +26,6 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
-import CloseIcon from '@mui/icons-material/Close';
 
 const AssignmentTable = ({
   userData,
@@ -55,7 +52,7 @@ const AssignmentTable = ({
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
-    setCurrentPage(1); // Reset current page when switching tabs
+    setCurrentPage(1); 
   };
 
   const filterDataByTab = () => {
@@ -151,19 +148,19 @@ const TableComponent = ({
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
-  const [selectedAssignmentID, setSelectedAssignmentID] = useState(null);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
     setSelectedAssignmentData(data);
   };
 
-  const handleFeedbackClick = (assignmentID) => {
-    setSelectedAssignmentID(assignmentID);
+  const handleFeedback = () => {
+    setIsFeedbackModalOpen(true);
   };
 
   const handleCloseFeedback = () => {
-    setSelectedAssignmentID(null);
+    setIsFeedbackModalOpen(false);
   };
 
   return (
@@ -171,7 +168,7 @@ const TableComponent = ({
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead className="customTableHead">
-          <TableRow>
+            <TableRow>
               <TableCell
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
@@ -232,7 +229,12 @@ const TableComponent = ({
               >
                 Status
               </TableCell>
-            
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                feedback
+              </TableCell>
               <TableCell
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
@@ -250,8 +252,7 @@ const TableComponent = ({
           </TableHead>
           <TableBody>
             {data.map((item, index) => (
-            
-                 <TableRow key={index} className="custom-row">
+              <TableRow key={index} className="custom-row">
                 <TableCell className="vertical-border">
                   {item.AssignmentID}
                 </TableCell>
@@ -293,8 +294,9 @@ const TableComponent = ({
                       {format(new Date(item.RejectTimestamp), "dd/MM/yyyy")}{" "}
                       {format(new Date(item.RejectTimestamp), "HH:mm:ss")}
                       <FeedbackIcon
-                    onClick={() => handleFeedbackClick(item.AssignmentID)}
-                  />
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleFeedback}
+                      />
                     </>
                   )}
                 </TableCell>
@@ -306,8 +308,9 @@ const TableComponent = ({
                       {format(new Date(item.RegretTimestamp), "dd/MM/yyyy")}{" "}
                       {format(new Date(item.RegretTimestamp), "HH:mm:ss")}
                       <FeedbackIcon
-                    onClick={() => handleFeedbackClick(item.AssignmentID)}
-                  />
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleFeedback}
+                      />
                     </>
                   )}
                 </TableCell>
@@ -330,7 +333,9 @@ const TableComponent = ({
                     {item.AssignmentStatus}
                   </span>
                 </TableCell>
-                
+                <TableCell className="vertical-border">
+                  {item.Feedback}
+                </TableCell>
                 <TableCell className="vertical-border">
                   {item.AssignmentPriority}
                 </TableCell>
@@ -353,70 +358,39 @@ const TableComponent = ({
                   </IconButton>
                 </TableCell>
               </TableRow>
-              
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
       <AssignmentEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         assignmentData={selectedAssignmentData}
       />
 
-      <FeedbackModal
-        isOpen={selectedAssignmentID !== null}
-        onClose={handleCloseFeedback}
-        assignmentID={selectedAssignmentID}
-        assignmentDatas={data}
-      />
+      <Modal open={isFeedbackModalOpen} onClose={handleCloseFeedback}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+        {console.log(data.Feedback, "sjjsjsj")}
+          <Typography variant="h6">{data.Feedback}</Typography>
+
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
+            <Button onClick={handleCloseFeedback}>Cancel</Button>
+          </Box>
+        </Box>
+      </Modal>
     </div>
   );
-};
-
-const FeedbackModal = ({ isOpen, onClose, assignmentID, assignmentDatas }) => {
-  const [feedback, setFeedback] = useState("");
-
-  useEffect(() => {
-    // Load feedback for the selected assignment ID
-    const selectedAssignment = assignmentDatas.find(
-      (item) => item.AssignmentID === assignmentID
-    );
-    if (selectedAssignment) {
-      setFeedback(selectedAssignment.Feedback);
-    }
-  }, [assignmentID, assignmentDatas]);
-
-  return (
-    <Modal open={isOpen} onClose={onClose}>
-       <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 400,
-          bgcolor: "background.paper",
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <IconButton
-          onClick={onClose}
-          sx={{ position: "absolute", top: 0, right: 0 }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <Typography variant="h6">Feedback:</Typography>
-        <Typography variant="body1" sx={{ padding: "5px", border: "1px solid #dddddd", marginTop:"10px" }}>
-          {feedback}
-        </Typography>
-      
-      </Box>
-    </Modal>
- 
- );
 };
 
 const getStatusColor = (status) => {
@@ -428,8 +402,6 @@ const getStatusColor = (status) => {
     case "Completed":
       return "green";
     case "Regret":
-      return "brown";
-      case "Reject":
       return "red";
     default:
       return "inherit";

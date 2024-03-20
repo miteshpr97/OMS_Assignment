@@ -41,7 +41,6 @@ export default function NewAssignment() {
   const error = useSelector(selectAssignmentError);
 
   useEffect(() => {
-    // Fetch assignment data when the component mounts
     dispatch(fetchAssignmentData());
     dispatch(fetchAssignmentCounts());
   }, [dispatch]);
