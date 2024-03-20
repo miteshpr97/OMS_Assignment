@@ -297,6 +297,8 @@ console.log(data, "kadn");
                      {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
                      <FeedbackIcon
                     onClick={() => handleFeedbackClick(item.AssignmentID)}
+                    sx={{color:"#055f85"}}
+                    
                   />
                    </>
                  )}
@@ -310,6 +312,7 @@ console.log(data, "kadn");
                      {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
                      <FeedbackIcon
                     onClick={() => handleFeedbackClick(item.AssignmentID)}
+                    sx={{color:"#055f85"}}
                   />
                    </>
                  )}

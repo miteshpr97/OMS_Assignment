@@ -24,14 +24,27 @@ const AssignmentCard = ({ countAssignmentData }) => {
       emoji: <HourglassTopIcon sx={{ fontSize: "2rem" }} />,
     },
     {
-      status: "Complete",
+      status: "Closed",
+      gradient: "linear-gradient(to right, green, rgba(0, 29, 0, 0.705))",
+      color: "#28a745",
+      emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
+    },
+    {
+      status: "Reject",
+      gradient: "linear-gradient(to right, green, rgba(0, 29, 0, 0.705))",
+      color: "#28a745",
+      emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
+    },
+    {
+      status: "Regret",
       gradient: "linear-gradient(to right, green, rgba(0, 29, 0, 0.705))",
       color: "#28a745",
       emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
     },
   ];
 
- 
+  console.log(countAssignmentData, "card");
+
   return (
     <div className="Assignmentcard-container">
       <Typography variant="h5" style={{ fontWeight: "500" }}>
@@ -44,8 +57,8 @@ const AssignmentCard = ({ countAssignmentData }) => {
             sx={{
               backgroundImage: gradient, // Applying linear gradient
               color: "white",
-              width: "auto",
-              height: "auto",
+              width: "240px",
+              height: "150px",
               marginBottom: "16px",
               display: "flex",
               alignItems: "center",
@@ -54,16 +67,27 @@ const AssignmentCard = ({ countAssignmentData }) => {
             }}
           >
             {/* <CardHeader title={status} sx={{textAlign:"center"}}/> */}
-            <CardContent>
+            <CardContent sx={{padding:"0px"}}>
               <Typography
-                style={{ textAlign: "center", fontSize: "2rem" }}
+                style={{ textAlign: "center", fontSize: "2rem"}}
                 variant="body2"
               >
                 {countAssignmentData
-                  ? countAssignmentData[`${status.toLowerCase()}_assignments`]
+                  ? status === "Assigned"
+                    ? countAssignmentData.Assigned_assignments
+                    : status === "Closed"
+                    ? countAssignmentData.Completed_assignments
+                    : status === "Progress"
+                    ? countAssignmentData.Progress_assignments
+                    : status === "Regret"
+                    ? countAssignmentData.Regret_assignments
+                    : status === "Reject"
+                    ? countAssignmentData.Rejected_assignments
+                    : "Unknown Status"
                   : "Loading..."}
               </Typography>
-              <Typography variant="h6" component="div">
+
+              <Typography variant="h7" component="div">
                 Total {status}
               </Typography>
             </CardContent>
