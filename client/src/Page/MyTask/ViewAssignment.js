@@ -204,7 +204,7 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              Assignment ID
+              A-ID
             </TableCell>
             <TableCell
               className="vertical-border"
@@ -216,7 +216,7 @@ const TableComponent = ({ data }) => {
               className="vertical-border"
               sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
             >
-              Assignment Description
+              A-Description
             </TableCell>
             <TableCell
               className="vertical-border"

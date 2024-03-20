@@ -176,7 +176,7 @@ const TableComponent = ({
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
-                Assignment ID
+                A-ID
               </TableCell>
               <TableCell
                 className="vertical-border"
@@ -224,7 +224,7 @@ const TableComponent = ({
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
-                Compelete Time
+                Close Time
               </TableCell>
               <TableCell
                 className="vertical-border"
@@ -232,7 +232,12 @@ const TableComponent = ({
               >
                 Status
               </TableCell>
-            
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Feedback
+              </TableCell>
               <TableCell
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
@@ -330,7 +335,9 @@ const TableComponent = ({
                     {item.AssignmentStatus}
                   </span>
                 </TableCell>
-                
+                <TableCell className="vertical-border" >
+                  {item.Feedback}
+                </TableCell>
                 <TableCell className="vertical-border">
                   {item.AssignmentPriority}
                 </TableCell>
