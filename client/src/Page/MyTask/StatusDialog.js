@@ -21,10 +21,10 @@ const StatusDialog = ({ open, onClose, statusData }) => {
       let actionVerb;
 
       if (statusData.AssignmentStatus === "Progress") {
-        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/regret`;
+        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/regret`;
         actionVerb = "regreted";
       } else if (statusData.AssignmentStatus === "Assigned") {
-        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/reject`;
+        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/reject`;
         actionVerb = "rejected";
       } else {
         // Handle other cases or throw an error
