@@ -4,7 +4,7 @@ const { queryAsync } = require("../db");
 
 exports.getAllAssignments = async (req, res) => {
   try {
-    const query = "SELECT * FROM tb_assignment_test";
+    const query = "SELECT * FROM tb_assignment";
     const results = await queryAsync(query);
     res.status(200).json(results);
   } catch (error) {
@@ -47,7 +47,7 @@ exports.addAssignment = async (req, res) => {
 
   try {
     const maxIDQuery =
-      "SELECT MAX(SUBSTRING(AssignmentID,3)) AS maxID FROM tb_assignment_test";
+      "SELECT MAX(SUBSTRING(AssignmentID,3)) AS maxID FROM tb_assignment";
     const results = await queryAsync(maxIDQuery);
     let nextID = 1;
     if (results && results[0].maxID !== null) {
@@ -55,7 +55,7 @@ exports.addAssignment = async (req, res) => {
     }
     const formattedID = `AS${nextID.toString().padStart(3, "0")}`;
     newAssignment.AssignmentID = formattedID;
-    const insertQuery = "INSERT INTO tb_assignment_test SET ?";
+    const insertQuery = "INSERT INTO tb_assignment SET ?";
     await queryAsync(insertQuery, newAssignment);
     res.status(201).json({ message: "Assignment added successfully" });
   } catch (error) {
@@ -76,7 +76,7 @@ exports.getAssignmentEmployeesData = async (req, res) => {
           e2.FirstName AS Assignee_FirstName,
           e2.LastName AS Assignee_LastName
         FROM 
-          tb_assignment_test AS w
+          tb_assignment AS w
           INNER JOIN 
           tb_employee AS e1 ON w.EmployeeID = e1.EmployeeID
           INNER JOIN
@@ -97,7 +97,7 @@ exports.reassignAssignment = async (req, res) => {
   try {
     const query = `
         SELECT * 
-        FROM tb_assignment_test 
+        FROM tb_assignment 
         WHERE 
             AssignmentID = ? 
             AND EmployeeID = ? 
@@ -141,7 +141,7 @@ exports.reassignAssignment = async (req, res) => {
       };
 
       // Insert the new assignment entry
-      await queryAsync("INSERT INTO tb_assignment_test SET ?", reassignData);
+      await queryAsync("INSERT INTO tb_assignment SET ?", reassignData);
       res.status(200).json({ message: "Assignment reassigned successfully" });
     } else {
       res
@@ -160,7 +160,7 @@ exports.updateAssignment = async (req, res) => {
   const { AssignmentID, EmployeeID, EmployeeID_AssignTo } = req.params;
   const updatedAssignment = req.body;
   const updateQuery = `
-        UPDATE tb_assignment_test
+        UPDATE tb_assignment
         SET ? 
         WHERE 
             AssignmentID = ? 
@@ -200,7 +200,7 @@ exports.updateAssignmentStatusToReject = async (req, res) => {
   }
 
   const updateQuery = `
-        UPDATE tb_assignment_test
+        UPDATE tb_assignment
         SET
             AssignmentStatus = 'Reject',
             Feedback = ?,
@@ -243,7 +243,7 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
   const acceptTimestamp = new Date();
 
   const updateQuery = `
-        UPDATE tb_assignment_test 
+        UPDATE tb_assignment 
         SET 
             AssignmentStatus = 'Progress',
             AcceptTimestamp = ? 
@@ -288,7 +288,7 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
   }
 
   const updateQuery = `
-        UPDATE tb_assignment_test 
+        UPDATE tb_assignment 
         SET 
             AssignmentStatus = 'Regret', 
             Feedback = ?,
@@ -331,7 +331,7 @@ exports.updateAssignmentStatusToCompleted = async (req, res) => {
   const completionTimestamp = new Date();
 
   const updateQuery = `
-        UPDATE tb_assignment_test 
+        UPDATE tb_assignment 
         SET 
             AssignmentStatus = 'Completed',
             CompletionTimestamp = ? 
@@ -382,7 +382,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
           SUM(CASE WHEN AssignmentStatus = 'Progress' THEN 1 ELSE 0 END) AS num_progress_assignments,
           SUM(CASE WHEN AssignmentStatus = 'Regret' THEN 1 ELSE 0 END) AS num_regret_assignments,
           SUM(CASE WHEN AssignmentStatus = 'Completed' THEN 1 ELSE 0 END) AS num_completed_assignments
-        FROM tb_assignment_test
+        FROM tb_assignment
         WHERE EmployeeID_AssignTo = ?;
       `;
 
@@ -409,7 +409,7 @@ exports.deleteAssignment = async (req, res) => {
   const { AssignmentID, EmployeeID, EmployeeID_AssignTo } = req.params;
   const deleteQuery = `
         DELETE FROM 
-            tb_assignment_test 
+            tb_assignment 
         WHERE 
             AssignmentID = ? 
             AND EmployeeID = ? 
