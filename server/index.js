@@ -9,7 +9,7 @@ const workGroup = require("./routes/workGroupRoutes");
 const designationDetails = require("./routes/designationRoutes");
 const departmentDetails = require("./routes/departmentRoutes");
 const userDetails = require("./routes/userDetailsRoutes");
-const assignmentDetails = require("./routes/assignmentRoutes");
+const assignmentDetails = require("./routes/Old_AssignmentRoutes");
 const assignmentTesting = require("./routes/testAssignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
 
