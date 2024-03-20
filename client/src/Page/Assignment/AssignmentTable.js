@@ -27,7 +27,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
 
-
 const AssignmentTable = ({
   userData,
   assignmentDatas,
@@ -104,6 +103,7 @@ const AssignmentTable = ({
           <Tab label="Assigned" value="Assigned" />
           <Tab label="Progress" value="Progress" />
           <Tab label="Completed" value="Completed" />
+          <Tab label="Reject" value="Reject" />
           <Tab label="Regret" value="Regret" />
         </Tabs>
 
@@ -150,14 +150,13 @@ const TableComponent = ({
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
 
- 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
     setSelectedAssignmentData(data);
   };
 
   const handleFeedback = () => {
-    setIsFeedbackModalOpen(true); 
+    setIsFeedbackModalOpen(true);
   };
 
   const handleCloseFeedback = () => {
@@ -210,7 +209,13 @@ const TableComponent = ({
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
-                Cancel Time
+                Reject Time
+              </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Regret Time
               </TableCell>
               <TableCell
                 className="vertical-border"
@@ -282,12 +287,26 @@ const TableComponent = ({
                 </TableCell>
 
                 <TableCell className="vertical-border">
-                  {item.CancelTimestamp == null ? (
+                  {item.RejectTimestamp == null ? (
                     <span>Loading</span>
                   ) : (
                     <>
-                      {format(new Date(item.CancelTimestamp), "dd/MM/yyyy")}{" "}
-                      {format(new Date(item.CancelTimestamp), "HH:mm:ss")}
+                      {format(new Date(item.RejectTimestamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.RejectTimestamp), "HH:mm:ss")}
+                      <FeedbackIcon
+                        sx={{ cursor: "pointer" }}
+                        onClick={handleFeedback}
+                      />
+                    </>
+                  )}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.RegretTimestamp == null ? (
+                    <span>Loading</span>
+                  ) : (
+                    <>
+                      {format(new Date(item.RegretTimestamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.RegretTimestamp), "HH:mm:ss")}
                       <FeedbackIcon
                         sx={{ cursor: "pointer" }}
                         onClick={handleFeedback}
@@ -362,8 +381,7 @@ const TableComponent = ({
             p: 4,
           }}
         >
-
-
+        {console.log(data.Feedback, "sjjsjsj")}
           <Typography variant="h6">{data.Feedback}</Typography>
 
           <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>

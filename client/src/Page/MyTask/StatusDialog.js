@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Box, TextField, Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import CloseIcon from "@mui/icons-material/Close";
 
 const StatusDialog = ({ open, onClose, statusData }) => {
@@ -15,13 +14,12 @@ const StatusDialog = ({ open, onClose, statusData }) => {
       Feedback: event.target.value,
     });
   };
-  
 
   const handleSubmitFeedback = async () => {
     try {
       let apiUrl;
       let actionVerb;
-      
+
       if (statusData.AssignmentStatus === "Progress") {
         apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/regret`;
         actionVerb = "regreted";
@@ -32,22 +30,23 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         // Handle other cases or throw an error
         return;
       }
-  
-      const confirmed = window.confirm(`Are you sure you want to ${actionVerb} this assignment?`);
-  
+
+      const confirmed = window.confirm(
+        `Are you sure you want to ${actionVerb} this assignment?`
+      );
+
       if (!confirmed) {
         return; // User cancelled, do nothing
       }
-  
+
       const response = await fetch(apiUrl, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(feedbackInput),
       });
-  
+
       if (response.ok) {
-        
         onClose();
         window.location.reload(); // Reload the page
       } else {
@@ -57,9 +56,6 @@ const StatusDialog = ({ open, onClose, statusData }) => {
       console.error("Error updating assignment:", error);
     }
   };
-  
-
- 
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -87,11 +83,10 @@ const StatusDialog = ({ open, onClose, statusData }) => {
         >
           <CloseIcon />
         </IconButton>
-    
 
         {statusData.AssignmentStatus !== "Completed" &&
-          statusData.AssignmentStatus !== "Regret" && 
-            statusData.AssignmentStatus !== "Reject" && (
+          statusData.AssignmentStatus !== "Regret" &&
+          statusData.AssignmentStatus !== "Reject" && (
             <>
               <TextField
                 label="Feedback"
@@ -123,7 +118,9 @@ const StatusDialog = ({ open, onClose, statusData }) => {
           )}
 
         {statusData.AssignmentStatus === "Completed" && (
-          <span><CheckCircleIcon sx={{color:"green"}}/> Assignment is completed</span>
+          <span>
+            <CheckCircleIcon sx={{ color: "green" }} /> Assignment is completed
+          </span>
         )}
         {statusData.AssignmentStatus === "Reject" && (
           <span>Assignment has been rejected</span>
