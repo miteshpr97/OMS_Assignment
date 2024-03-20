@@ -9,8 +9,8 @@ const workGroup = require("./routes/workGroupRoutes");
 const designationDetails = require("./routes/designationRoutes");
 const departmentDetails = require("./routes/departmentRoutes");
 const userDetails = require("./routes/userDetailsRoutes");
-const assignmentDetails = require("./routes/Old_AssignmentRoutes");
-const assignmentTesting = require("./routes/testAssignmentRoutes");
+// const assignmentDetails = require("./routes/Old_AssignmentRoutes");
+const assignmentDetails = require("./routes/assignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
 
 const { authenticateUser } = require("./midderware/auth");
@@ -36,7 +36,7 @@ app.use("/api/designation", designationDetails);
 app.use("/api/department", departmentDetails);
 app.use("/api/userDetails", userDetails);
 app.use("/api/assignmentDetails", assignmentDetails);
-app.use("/api/assignmentTesting", assignmentTesting);
+// app.use("/api/assignmentTesting", assignmentTesting);
 app.use("/api/taskDetails", taskDetails);
 
 app.listen(port, () => {

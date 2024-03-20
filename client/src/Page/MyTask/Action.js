@@ -44,7 +44,7 @@ function Action({ StatusData }) {
       const confirmed = window.confirm(`Move data to ${newStatus}?`);
   
       if (confirmed) {
-        const apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${newStatus}`;
+        const apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/${newStatus}`;
   
         const response = await fetch(apiUrl, {
           method: "PATCH",
