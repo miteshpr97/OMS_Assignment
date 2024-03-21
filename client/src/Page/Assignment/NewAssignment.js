@@ -136,7 +136,7 @@ export default function NewAssignment() {
   const handleDeleteAssignment = async (DepartmentID) => {
     try {
       const confirmed = window.confirm(
-        "Are you sure you want to delete this Department?"
+        "Are you sure you want to delete this Assignment?"
       );
       if (!confirmed) {
         return; // Exit function if user cancels deletion

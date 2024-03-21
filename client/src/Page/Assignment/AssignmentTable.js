@@ -106,7 +106,7 @@ const AssignmentTable = ({
           <Tab label="All" value="All" />
           <Tab label="Assigned" value="Assigned" />
           <Tab label="Progress" value="Progress" />
-          <Tab label="Completed" value="Completed" />
+          <Tab label="Closed" value="Closed" />
           <Tab label="Reject" value="Reject" />
           <Tab label="Regret" value="Regret" />
         </Tabs>
