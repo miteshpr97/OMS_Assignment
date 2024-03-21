@@ -26,6 +26,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
+import ReassignModal from "./ReassignModal";
 
 const AssignmentTable = ({
   userData,
@@ -82,6 +83,9 @@ const AssignmentTable = ({
   const handleCloseDialog = () => {
     setSelectedDescription(null);
   };
+
+
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
@@ -149,8 +153,11 @@ const TableComponent = ({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
   const [selectedAssignmentID, setSelectedAssignmentID] = useState(null);
+  const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
+  const [reassignmentData, setReassignmentData] = useState("");
 
-console.log(data, "kadn");
+
+
 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
@@ -163,14 +170,20 @@ console.log(data, "kadn");
 
   const handleCloseFeedback = () => {
     setSelectedAssignmentID(null);
+    
   };
 
+
+  const handleReassignClick = (reAssignData) => {
+    setIsReassignModalOpen(true);
+    setReassignmentData(reAssignData)
+  }
   return (
     <div>
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead className="customTableHead">
-          <TableRow>
+            <TableRow>
               <TableCell
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
@@ -250,120 +263,143 @@ console.log(data, "kadn");
               >
                 Action
               </TableCell>
+              <TableCell
+                className="vertical-border"
+                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
+              >
+                Re-Assign
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((item, index) => (
-               <TableRow key={index} className="custom-row">
-               <TableCell className="vertical-border">
-                 {item.AssignmentID}
-               </TableCell>
-               <TableCell className="vertical-border">
-                 {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
-               </TableCell>
-               <TableCell
-                 className="vertical-border"
-                 onClick={() =>
-                   handleDescriptionClick(item.Assignment_Description)
-                 }
-                 style={{ cursor: "pointer", maxWidth: "60px" }}
-               >
-                 {item.Assignment_Description}
-               </TableCell>
-               <TableCell className="vertical-border">
-                 {format(new Date(item.AssignDate), "dd/MM/yyyy")}
-               </TableCell>
-               <TableCell className="vertical-border">
-                 {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
-               </TableCell>
+              <TableRow key={index} className="custom-row">
+                <TableCell className="vertical-border">
+                  {item.AssignmentID}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+                </TableCell>
+                <TableCell
+                  className="vertical-border"
+                  onClick={() =>
+                    handleDescriptionClick(item.Assignment_Description)
+                  }
+                  style={{ cursor: "pointer", maxWidth: "60px" }}
+                >
+                  {item.Assignment_Description}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {format(new Date(item.AssignDate), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
+                </TableCell>
 
-               <TableCell className="vertical-border">
-                 {item.AcceptTimestamp == null ? (
-                   <span>Not Accept</span>
-                 ) : (
-                   <>
-                     {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}{" "}
-                     {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
-                   </>
-                 )}
-               </TableCell>
+                <TableCell className="vertical-border">
+                  {item.AcceptTimestamp == null ? (
+                    <span>Not Accept</span>
+                  ) : (
+                    <>
+                      {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
+                    </>
+                  )}
+                </TableCell>
 
-               <TableCell className="vertical-border">
-                 {item.RejectTimeStamp == null ? (
-                   <span>Loading</span>
-                 ) : (
-                   <>
-                     {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}{" "}
-                     {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
-                     <FeedbackIcon
-                    onClick={() => handleFeedbackClick(item.AssignmentID)}
-                    sx={{color:"#055f85"}}
-                    
-                  />
-                   </>
-                 )}
-               </TableCell>
-               <TableCell className="vertical-border">
-                 {item.RegretTimeStamp == null ? (
-                   <span>Loading</span>
-                 ) : (
-                   <>
-                     {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}{" "}
-                     {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
-                     <FeedbackIcon
-                    onClick={() => handleFeedbackClick(item.AssignmentID)}
-                    sx={{color:"#055f85"}}
-                  />
-                   </>
-                 )}
-               </TableCell>
+                <TableCell className="vertical-border">
+                  {item.RejectTimeStamp == null ? (
+                    <span>Loading</span>
+                  ) : (
+                    <>
+                      {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
+                      <FeedbackIcon
+                        onClick={() => handleFeedbackClick(item.AssignmentID)}
+                        sx={{ color: "#055f85" }}
 
-               <TableCell className="vertical-border">
-                 {item.CompletionTimestamp == null ? (
-                   <span>Progress</span>
-                 ) : (
-                   <>
-                     {format(new Date(item.CompletionTimestamp), "dd/MM/yyyy")}{" "}
-                     {format(new Date(item.CompletionTimestamp), "HH:mm:ss")}
-                   </>
-                 )}
-               </TableCell>
+                      />
+                    </>
+                  )}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.RegretTimeStamp == null ? (
+                    <span>Loading</span>
+                  ) : (
+                    <>
+                      {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
+                      <FeedbackIcon
+                        onClick={() => handleFeedbackClick(item.AssignmentID)}
+                        sx={{ color: "#055f85" }}
+                      />
+                    </>
+                  )}
+                </TableCell>
 
-               <TableCell className="vertical-border">
-                 <span
-                   style={{ color: getStatusColor(item.AssignmentStatus) }}
-                 >
-                   {item.AssignmentStatus}
-                 </span>
-               </TableCell>
-               <TableCell className="vertical-border" >
-                 {item.Feedback}
-               </TableCell>
-               <TableCell className="vertical-border">
-                 {item.AssignmentPriority}
-               </TableCell>
+                <TableCell className="vertical-border">
+                  {item.CompletionTimestamp == null ? (
+                    <span>Progress</span>
+                  ) : (
+                    <>
+                      {format(new Date(item.CompletionTimestamp), "dd/MM/yyyy")}{" "}
+                      {format(new Date(item.CompletionTimestamp), "HH:mm:ss")}
+                    </>
+                  )}
+                </TableCell>
 
-               <TableCell className="vertical-border">
-                 <IconButton
-                   sx={{
-                     color: "#055f85",
-                   }}
-                   onClick={() => handleEditClick(item)}
-                 >
-                   <EditNoteIcon />
-                 </IconButton>
+                <TableCell className="vertical-border">
+                  <span
+                    style={{ color: getStatusColor(item.AssignmentStatus) }}
+                  >
+                    {item.AssignmentStatus}
+                  </span>
+                </TableCell>
+                <TableCell className="vertical-border" >
+                  {item.Feedback}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.AssignmentPriority}
+                </TableCell>
 
-                 <IconButton
-                   sx={{ color: "red" }}
-                   onClick={() => handleDeleteAssignment(item.AssignmentID)}
-                 >
-                   <DeleteIcon sx={{ fontSize: "1.3rem" }} />
-                 </IconButton>
-               </TableCell>
-             </TableRow>
-            
-              
-              
+                <TableCell className="vertical-border">
+                  <IconButton
+                    sx={{
+                      color: "#055f85",
+                    }}
+                    onClick={() => handleEditClick(item)}
+                  >
+                    <EditNoteIcon />
+                  </IconButton>
+
+                  <IconButton
+                    sx={{ color: "red" }}
+                    onClick={() => handleDeleteAssignment(item.AssignmentID)}
+                  >
+                    <DeleteIcon sx={{ fontSize: "1.3rem" }} />
+                  </IconButton>
+                </TableCell>
+
+
+                <TableCell>
+                  {(item.AssignmentStatus === "Reject" || item.AssignmentStatus === "Regret") && (
+                    <Button
+                      onClick={() => handleReassignClick(item)}
+                      color="secondary"
+                    >
+                      Reassign
+                    </Button>
+                  )}
+                </TableCell>
+
+
+
+
+
+              </TableRow>
+
+
+
             ))}
           </TableBody>
         </Table>
@@ -381,6 +417,14 @@ console.log(data, "kadn");
         assignmentID={selectedAssignmentID}
         assignmentDatas={data}
       />
+
+      <ReassignModal
+        open={isReassignModalOpen}
+        reassignmentData = {reassignmentData}
+        onClose={() => setIsReassignModalOpen(false)}
+      />
+
+
     </div>
   );
 };
@@ -419,14 +463,14 @@ const FeedbackModal = ({ isOpen, onClose, assignmentID, assignmentDatas }) => {
         </Box>
       </Box>
     </Modal>
- 
- );
- };
- 
- 
+
+  );
+};
 
 
- const getStatusColor = (status) => {
+
+
+const getStatusColor = (status) => {
   switch (status) {
     case "Assigned":
       return "blue";
@@ -436,7 +480,7 @@ const FeedbackModal = ({ isOpen, onClose, assignmentID, assignmentDatas }) => {
       return "green";
     case "Regret":
       return "brown";
-      case "Reject":
+    case "Reject":
       return "red";
     default:
       return "inherit";
@@ -448,3 +492,22 @@ const FeedbackModal = ({ isOpen, onClose, assignmentID, assignmentDatas }) => {
 
 
 export default AssignmentTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
