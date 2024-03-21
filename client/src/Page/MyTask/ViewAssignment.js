@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Modal, Button, TextField } from "@mui/material";
+import { Box, Typography, Modal, Button,  } from "@mui/material";
 import { format } from "date-fns";
 import SideBar from "../../Component/SideBar";
 import TaskTable from "./TaskTable";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 import {
   Table,
   TableHead,
@@ -20,9 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
-import FeedbackIcon from "@mui/icons-material/Feedback";
 
-import StatusDialog from "./StatusDialog";
+
+
 import Action from "./Action";
 
 const ViewAssignment = () => {

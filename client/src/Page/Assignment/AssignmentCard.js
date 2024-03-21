@@ -45,7 +45,6 @@ const AssignmentCard = ({ countAssignmentData }) => {
     },
   ];
 
-  console.log(countAssignmentData, "card");
 
   return (
     <div className="Assignmentcard-container">

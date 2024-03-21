@@ -120,20 +120,62 @@ http://localhost:3306/api/assignmentDetails
 // update assignment
 http://localhost:3306/api/assignmentDetails/update/:AssignmentID
 
+// update assignment status from assigned to reject
+http://localhost:3306/api/assignmentDetails/:AssignmentID/reject
+
 // update assignment status from assigned to progress
 http://localhost:3306/api/assignmentDetails/:AssignmentID/progress
 
-// update assignment status from either assigned or progress to regret
+// update assignment status from progress to regret
 http://localhost:3306/api/assignmentDetails/:AssignmentID/regret
 
 // update assignment status from progress to completed
 http://localhost:3306/api/assignmentDetails/:AssignmentID/completed
 
-// number of pending , progress , regret and completed assignments of a particular employee
+// number of pending , progress , regret , reject and completed assignments of a particular employee
 http://localhost:3306/api/assignmentDetails/:EmployeeID_AssignTo/assignmentCounts
 
 // delete assignment
 http://localhost:3306/api/assignmentDetails/delete/:AssignmentID
+
+
+tb_assignment_test's Api
+
+// get all Assignment
+http://localhost:3306/api/assignmentTesting
+
+// add Assignment with auto generated id
+http://localhost:3306/api/assignmentTesting
+
+// all assignment show with their names (Mitesh)
+http://localhost:3306/api/assignmentTesting/allData
+
+// get particular Assignment by id
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo
+
+// update assignment
+http://localhost:3306/api/assignmentTesting/update/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo
+
+// update assignment status from assigned to reject
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/reject
+
+// update assignment status from assigned to progress
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/progress
+
+// update assignment status from progress to regret
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/regret
+
+// Reassigning the assignment to another employee
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/reassign
+
+// update assignment status from progress to completed
+http://localhost:3306/api/assignmentTesting/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/completed
+
+// number of pending , progress , regret , reject and completed assignments of a particular employee
+http://localhost:3306/api/assignmentTesting/:EmployeeID_AssignTo/assignmentCounts
+
+// delete assignment
+http://localhost:3306/api/assignmentTesting/delete/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo
 
 
 tb_task's Api
