@@ -31,17 +31,18 @@ const AssignmentCard = ({ countAssignmentData }) => {
       color: "#28a745",
       emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
     },
-    {
-      status: "Reject",
-      gradient: "linear-gradient(to right, red, hsla(0, 68%, 26%, 0.705))",
-      color: "#28a745",
-      emoji: <CancelIcon sx={{ fontSize: "2.1rem" }} />,
-    },
+   
     {
       status: "Regret",
       gradient: "linear-gradient(to right, brown, #440000ad)",
       color: "#28a745",
       emoji: <ThumbDownIcon sx={{ fontSize: "2rem" }} />,
+    },
+    {
+      status: "Reject",
+      gradient: "linear-gradient(to right, red, hsla(0, 68%, 26%, 0.705))",
+      color: "#28a745",
+      emoji: <CancelIcon sx={{ fontSize: "2.1rem" }} />,
     },
   ];
 
@@ -80,10 +81,10 @@ const AssignmentCard = ({ countAssignmentData }) => {
                     ? countAssignmentData.Completed_assignments
                     : status === "Progress"
                     ? countAssignmentData.Progress_assignments
-                    : status === "Regret"
-                    ? countAssignmentData.Regret_assignments
                     : status === "Reject"
                     ? countAssignmentData.Rejected_assignments
+                    : status === "Regret"
+                    ? countAssignmentData.Regret_assignments
                     : "Unknown Status"
                   : "Loading..."}
               </Typography>
