@@ -111,12 +111,12 @@ exports.progressTaskStatus = async (req, res) => {
   }
 };
 
-// Completed Task Status
+// Closed Task Status
 
-exports.completedTaskStatus = async (req, res) => {
+exports.closedTaskStatus = async (req, res) => {
   const taskId = req.params.TaskID;
   const query =
-    "UPDATE tb_task SET TaskStatus = 'Completed' WHERE TaskID = ? AND TaskStatus = 'Progress';";
+    "UPDATE tb_task SET TaskStatus = 'Closed' WHERE TaskID = ? AND TaskStatus = 'Progress';";
 
   try {
     const results = await queryAsync(query, [taskId]);
@@ -144,7 +144,7 @@ exports.numberOfTasksByStatus = async (req, res) => {
     SELECT
       COUNT(CASE WHEN TaskStatus = 'Pending' THEN 1 END) AS num_pending_tasks,
       COUNT(CASE WHEN TaskStatus = 'Progress' THEN 1 END) AS num_progress_tasks,
-      COUNT(CASE WHEN TaskStatus = 'Completed' THEN 1 END) AS num_completed_tasks
+      COUNT(CASE WHEN TaskStatus = 'Closed' THEN 1 END) AS num_closed_tasks
     FROM tb_task
     WHERE EmployeeID = ?;
   `;
@@ -154,7 +154,7 @@ exports.numberOfTasksByStatus = async (req, res) => {
     const taskCounts = {
       pending_tasks: results[0].num_pending_tasks,
       progress_tasks: results[0].num_progress_tasks,
-      complete_tasks: results[0].num_completed_tasks,
+      closed_tasks: results[0].num_closed_tasks,
     };
 
     res.status(200).json(taskCounts);

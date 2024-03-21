@@ -15,7 +15,7 @@ router.post("/withID", taskController.addTaskWithId);
 router.patch("/:TaskID/progress", taskController.progressTaskStatus);
 
 // update task status to completed
-router.patch("/:TaskID/completed", taskController.completedTaskStatus);
+router.patch("/:TaskID/closed", taskController.closedTaskStatus);
 
 // update task details
 router.patch("/update/:TaskID", taskController.updateTask);
