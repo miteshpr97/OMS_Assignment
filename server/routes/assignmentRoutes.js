@@ -49,8 +49,8 @@ router.patch(
 
 // update assignment status to completed
 router.patch(
-  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/completed",
-  assignmentController.updateAssignmentStatusToCompleted
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/closed",
+  assignmentController.updateAssignmentStatusToClosed
 );
 
 // number of pending,progress,reject,regret and completed assignments of a particular employee

@@ -324,16 +324,16 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
   }
 };
 
-// update Assignment Status To Completed
+// update Assignment Status To Closed
 
-exports.updateAssignmentStatusToCompleted = async (req, res) => {
+exports.updateAssignmentStatusToClosed = async (req, res) => {
   const { AssignmentID, EmployeeID, EmployeeID_AssignTo } = req.params;
   const completionTimestamp = new Date();
 
   const updateQuery = `
         UPDATE tb_assignment 
         SET 
-            AssignmentStatus = 'Completed',
+            AssignmentStatus = 'Closed',
             CompletionTimestamp = ? 
         WHERE
             AssignmentID = ? 
@@ -381,7 +381,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
           SUM(CASE WHEN AssignmentStatus = 'Reject' THEN 1 ELSE 0 END) AS num_reject_assignments,
           SUM(CASE WHEN AssignmentStatus = 'Progress' THEN 1 ELSE 0 END) AS num_progress_assignments,
           SUM(CASE WHEN AssignmentStatus = 'Regret' THEN 1 ELSE 0 END) AS num_regret_assignments,
-          SUM(CASE WHEN AssignmentStatus = 'Completed' THEN 1 ELSE 0 END) AS num_completed_assignments
+          SUM(CASE WHEN AssignmentStatus = 'Closed' THEN 1 ELSE 0 END) AS num_closed_assignments
         FROM tb_assignment
         WHERE EmployeeID_AssignTo = ?;
       `;
@@ -393,7 +393,7 @@ exports.numberOfAssignmentsByStatus = async (req, res) => {
       Rejected_assignments: results[0].num_reject_assignments,
       Progress_assignments: results[0].num_progress_assignments,
       Regret_assignments: results[0].num_regret_assignments,
-      Completed_assignments: results[0].num_completed_assignments,
+      Closed_assignments: results[0].num_closed_assignments,
     };
 
     res.status(200).json(assignmentCounts);
