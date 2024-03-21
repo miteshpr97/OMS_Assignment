@@ -124,7 +124,7 @@ const EmployeeEditModal = ({ isOpen, onClose, employeeData }) => {
               label="Join Date"
               type="date"
               name="JoinDate"
-              value={JoinDate}
+              value={formatDate(DateOfBirth)}
               fullWidth
               onChange={handleChange}
             />
@@ -190,11 +190,12 @@ const EmployeeEditModal = ({ isOpen, onClose, employeeData }) => {
         <div
           style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
         >
-          <Button onClick={handleSave} variant="contained" color="primary">
-            Save
-          </Button>
-          <Button onClick={handleClose} variant="contained" color="secondary">
+        
+          <Button onClick={handleClose} variant="contained" sx={{background:"grey"}}>
             Cancel
+          </Button>
+          <Button onClick={handleSave} variant="contained" sx={{background:"#055f85"}}>
+            Save
           </Button>
         </div>
       </DialogContent>

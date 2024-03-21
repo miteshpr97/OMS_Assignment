@@ -1,43 +1,55 @@
 const express = require("express");
 const router = express.Router();
-const assignmentController = require("../controllers/assignmentControllers");
+const assignmentController = require("../controllers/assignmentController");
 
 // get all Assignment
 router.get("/", assignmentController.getAllAssignments);
+
+// add Assignment with auto generated id
+router.post("/", assignmentController.addAssignment);
 
 // all assignment show with their names (Mitesh)
 router.get("/allData", assignmentController.getAssignmentEmployeesData);
 
 // get particular Assignment by their id
-router.get("/:AssignmentID", assignmentController.getAssignmentById);
-
-// add Assignment with auto generated id
-router.post("/", assignmentController.addAssignment);
+router.get(
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo",
+  assignmentController.getAssignmentById
+);
 
 // update assignment
-router.patch("/update/:AssignmentID", assignmentController.updateAssignment);
+router.patch(
+  "/update/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo",
+  assignmentController.updateAssignment
+);
 
 // update assignment status to Reject
 router.patch(
-  "/:AssignmentID/reject",
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/reject",
   assignmentController.updateAssignmentStatusToReject
 );
 
 // update assignment status to progress
 router.patch(
-  "/:AssignmentID/progress",
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/progress",
   assignmentController.updateAssignmentStatusToProgress
 );
 
 // update assignment status to Regret
 router.patch(
-  "/:AssignmentID/regret",
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/regret",
   assignmentController.updateAssignmentStatusToRegret
+);
+
+// Reassigning the assignment to another employee
+router.patch(
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/reassign",
+  assignmentController.reassignAssignment
 );
 
 // update assignment status to completed
 router.patch(
-  "/:AssignmentID/completed",
+  "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/completed",
   assignmentController.updateAssignmentStatusToCompleted
 );
 
@@ -48,6 +60,9 @@ router.get(
 );
 
 // delete assignment
-router.delete("/delete/:AssignmentID", assignmentController.deleteAssignment);
+router.delete(
+  "/delete/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo",
+  assignmentController.deleteAssignment
+);
 
 module.exports = router;

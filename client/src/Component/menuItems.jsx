@@ -19,7 +19,7 @@ export const menuItems = [
   { text: "Team", icon: <GroupAddIcon/>, path: "/team" },
   { text: "My Team", icon: <GroupsIcon/>, path: "/myteam" },
   { text: "Assignment", icon: <AssignmentIcon />, path: "/assignment" },
-  { text: "MY Task", icon: <AssignmentTurnedInIcon/> , path: "/view-assignment" },
+  { text: "My Task", icon: <AssignmentTurnedInIcon/> , path: "/view-assignment" },
   { text: "Team Task", icon: <AssignmentTurnedInIcon/> , path: "/teamTask" },
   { text: "Report", icon: <ReportIcon  />, path: "/report" },
 ];

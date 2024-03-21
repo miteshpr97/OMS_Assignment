@@ -331,6 +331,7 @@ function NewRegistration({ addEmployee }) {
                   </Grid>
 
                   <Grid item xs={12} md={4}>
+                    
                     <TextField
                       variant="outlined"
                       name="Employee_Profile"
@@ -339,6 +340,10 @@ function NewRegistration({ addEmployee }) {
                       onChange={handleInputChange}
                       fullWidth
                       size="medium"
+                      label="Profile Image"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                       required
                     />
                   </Grid>
