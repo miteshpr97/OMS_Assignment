@@ -78,7 +78,7 @@ const AssignmentCard = ({ countAssignmentData }) => {
                   ? status === "Assigned"
                     ? countAssignmentData.Assigned_assignments
                     : status === "Closed"
-                    ? countAssignmentData.Completed_assignments
+                    ? countAssignmentData.Closed_assignments
                     : status === "Progress"
                     ? countAssignmentData.Progress_assignments
                     : status === "Reject"

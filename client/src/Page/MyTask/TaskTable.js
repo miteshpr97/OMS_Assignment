@@ -109,7 +109,7 @@ const TaskTable = () => {
   const handleAdd = async (TaskID, TaskStatus) => {
     try {
       const apiUrl = `http://localhost:3306/api/taskDetails/${TaskID}/${
-        TaskStatus === "Pending" ? "Progress" : "Completed"
+        TaskStatus === "Pending" ? "Progress" : "Closed"
       }`;
       const response = await fetch(apiUrl, {
         method: "PATCH",
@@ -120,7 +120,7 @@ const TaskTable = () => {
       if (response.ok) {
         alert(
           `Data moved to ${
-          TaskStatus === "Pending" ? "Progress" : "Completed"
+          TaskStatus === "Pending" ? "Progress" : "Closed"
           }`
         );
         window.location.reload();
@@ -151,7 +151,7 @@ const TaskTable = () => {
         <Tab label="All" value="All" />
         <Tab label="Pending" value="pending" />
         <Tab label="Progress" value="progress" />
-        <Tab label="Completed" value="completed" />
+        <Tab label="Closed" value="Closed" />
       </Tabs>
 
       <TableContainer

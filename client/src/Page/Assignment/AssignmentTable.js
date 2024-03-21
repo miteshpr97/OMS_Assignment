@@ -476,7 +476,7 @@ const getStatusColor = (status) => {
       return "blue";
     case "Progress":
       return "orange";
-    case "Completed":
+    case "Closed":
       return "green";
     case "Regret":
       return "brown";
