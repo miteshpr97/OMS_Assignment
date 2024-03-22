@@ -27,6 +27,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
 import ReassignModal from "./ReassignModal";
+import {useDispatch } from "react-redux";
+import { deleteAssignmentData } from "../../features/assignment/assignmentAction";
+
+
 
 const AssignmentTable = ({
   userData,
@@ -34,12 +38,17 @@ const AssignmentTable = ({
   loading,
   error,
   handleDeleteAssignment,
+  assignedEmployees
 }) => {
   const [tableData, setTableData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
+
+ 
+
+
 
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
@@ -112,6 +121,7 @@ const AssignmentTable = ({
           data={currentItems}
           handleDescriptionClick={handleDescriptionClick}
           handleDeleteAssignment={handleDeleteAssignment}
+          assignedEmployees={assignedEmployees}
         />
 
         <Pagination
@@ -145,13 +155,23 @@ const AssignmentTable = ({
 const TableComponent = ({
   data,
   handleDescriptionClick,
-  handleDeleteAssignment,
+  assignedEmployees
+ 
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
   const [selectedAssignmentID, setSelectedAssignmentID] = useState(null);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
-  const [reassignmentData, setReassignmentData] = useState("");
+  const [assignmentData, setassignmentData] = useState("");
+
+  const dispatch = useDispatch();
+
+
+  const handleDeleteAssignment  = (AssignmentID)=>{
+    dispatch(deleteAssignmentData(AssignmentID))
+
+  }
+
 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
@@ -168,8 +188,11 @@ const TableComponent = ({
 
   const handleReassignClick = (reAssignData) => {
     setIsReassignModalOpen(true);
-    setReassignmentData(reAssignData);
-  };
+    setassignmentData(reAssignData)
+  }
+
+
+
   return (
    
     <div style={{ overflowX: "auto", width: "100%"}}>
@@ -464,8 +487,9 @@ const TableComponent = ({
 
       <ReassignModal
         open={isReassignModalOpen}
-        reassignmentData={reassignmentData}
+        assignmentData={assignmentData}
         onClose={() => setIsReassignModalOpen(false)}
+        assignedEmployees={assignedEmployees}
       />
     </div>
   

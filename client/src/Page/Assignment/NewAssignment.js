@@ -12,7 +12,6 @@ import {
   fetchAssignmentData,
   createAssignment,
   fetchAssignmentCounts,
-  deleteAssignmentData,
 } from "../../features/assignment/assignmentAction";
 import {
   selectAssignment,
@@ -25,7 +24,6 @@ import "./Assignment.css";
 export default function NewAssignment() {
   const [validated, setValidated] = useState(false);
   const [assignmentData, setAssignmentData] = useState({
-    // AssignmentID: "",
     EmployeeID: "",
     EmployeeID_AssignTo: "",
     AssignDate: new Date().toISOString().split("T")[0],
@@ -39,6 +37,7 @@ export default function NewAssignment() {
   const countAssignmentData = useSelector(selectAssignmentCounts);
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
+
 
   useEffect(() => {
     dispatch(fetchAssignmentData());
@@ -133,23 +132,6 @@ export default function NewAssignment() {
     }
   };
 
-  const handleDeleteAssignment = async (DepartmentID) => {
-    try {
-      const confirmed = window.confirm(
-        "Are you sure you want to delete this Assignment?"
-      );
-      if (!confirmed) {
-        return; // Exit function if user cancels deletion
-      }
-
-      await dispatch(deleteAssignmentData(DepartmentID));
-      // console.log(DepartmentID);
-
-      dispatch(fetchAssignmentData());
-    } catch (error) {
-      console.error("Error deleting department:", error);
-    }
-  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -282,9 +264,9 @@ export default function NewAssignment() {
           <AssignmentTable
             userData={userData}
             assignmentDatas={assignmentDatas}
+            assignedEmployees={assignedEmployees}
             loading={loading}
             error={error}
-            handleDeleteAssignment={handleDeleteAssignment}
           />
         </div>
       </Box>
