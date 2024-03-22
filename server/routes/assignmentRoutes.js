@@ -8,6 +8,9 @@ router.get("/", assignmentController.getAllAssignments);
 // add Assignment with auto generated id
 router.post("/", assignmentController.addAssignment);
 
+// add Assignment for multiple employees
+router.post("/multiple", assignmentController.addAssignmentForMultipleEmployee);
+
 // all assignment show with their names (Mitesh)
 router.get("/allData", assignmentController.getAssignmentEmployeesData);
 
