@@ -64,6 +64,56 @@ exports.addAssignment = async (req, res) => {
   }
 };
 
+// Add assignment for multiple employees
+
+exports.addAssignmentForMultipleEmployee = async (req, res) => {
+  const newAssignment = req.body;
+  newAssignment.AssignmentStatus = newAssignment.AssignmentStatus || 'Assigned';
+  newAssignment.Type = newAssignment.Type || 'A';
+  newAssignment.Course = newAssignment.Course || 1;
+
+  try {
+    const EmployeeID_AssignTo = req.body.EmployeeID_AssignTo; // Assuming req.body.EmployeeID_AssignTo is an array of employee IDs
+
+    // Generate assignment ID
+    const maxIDQuery = 'SELECT MAX(SUBSTRING(AssignmentID, 3)) AS maxID FROM tb_assignment';
+    const results = await queryAsync(maxIDQuery);
+    let nextID = 1;
+    if (results && results[0].maxID !== null) {
+      nextID = parseInt(results[0].maxID, 10) + 1;
+    }
+    const formattedID = `AS${nextID.toString().padStart(3, '0')}`;
+    newAssignment.AssignmentID = formattedID;
+
+    // Insert assignment for each employee
+    const insertQuery = 'INSERT INTO tb_assignment (AssignmentID, EmployeeID, EmployeeID_AssignTo, Assignment_Description, AssignDate, DeadlineDate, AcceptTimestamp, CompletionTimestamp, AssignmentStatus, AssignmentPriority, Type, Feedback, Course, ReassignDate, RejectTimeStamp, RegretTimeStamp) VALUES ?';
+    const values = EmployeeID_AssignTo.map(employeeID => [
+      newAssignment.AssignmentID,
+      newAssignment.EmployeeID,
+      employeeID,
+      newAssignment.Assignment_Description,
+      newAssignment.AssignDate,
+      newAssignment.DeadlineDate,
+      newAssignment.AcceptTimestamp,
+      newAssignment.CompletionTimestamp,
+      newAssignment.AssignmentStatus,
+      newAssignment.AssignmentPriority,
+      newAssignment.Type,
+      newAssignment.Feedback,
+      newAssignment.Course,
+      newAssignment.ReassignDate,
+      newAssignment.RejectTimeStamp,
+      newAssignment.RegretTimeStamp
+    ]);
+    await queryAsync(insertQuery, [values]);
+
+    res.status(201).json({ message: 'Assignments added successfully' });
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 // Get Assignment with Employees Data
 
 exports.getAssignmentEmployeesData = async (req, res) => {
@@ -106,7 +156,7 @@ exports.reassignAssignment = async (req, res) => {
     const results = await queryAsync(query, [
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.length === 0) {
@@ -126,7 +176,7 @@ exports.reassignAssignment = async (req, res) => {
         EmployeeID_AssignTo: req.body.EmployeeID_AssignTo,
         Assignment_Description: originalAssignment.Assignment_Description,
         AssignDate: originalAssignment.AssignDate,
-        DeadlineDate: originalAssignment.DeadlineDate || req.body.DeadlineDate,
+        DeadlineDate: req.body.DeadlineDate || originalAssignment.DeadlineDate,
         AcceptTimestamp: null,
         RejectTimeStamp: null,
         RegretTimeStamp: null,
@@ -172,7 +222,7 @@ exports.updateAssignment = async (req, res) => {
       updatedAssignment,
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {
@@ -218,7 +268,7 @@ exports.updateAssignmentStatusToReject = async (req, res) => {
       rejectTimestamp,
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {
@@ -258,7 +308,7 @@ exports.updateAssignmentStatusToProgress = async (req, res) => {
       acceptTimestamp,
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {
@@ -306,7 +356,7 @@ exports.updateAssignmentStatusToRegret = async (req, res) => {
       regretTimestamp,
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {
@@ -346,7 +396,7 @@ exports.updateAssignmentStatusToClosed = async (req, res) => {
       completionTimestamp,
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {
@@ -419,7 +469,7 @@ exports.deleteAssignment = async (req, res) => {
     const results = await queryAsync(deleteQuery, [
       AssignmentID,
       EmployeeID,
-      EmployeeID_AssignTo,
+      EmployeeID_AssignTo
     ]);
 
     if (results.affectedRows === 0) {

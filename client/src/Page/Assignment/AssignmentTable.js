@@ -45,13 +45,21 @@ const AssignmentTable = ({
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+>>>>>>> 77c6320dd346183881e96b2520663c9244526b58
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
       const assigned = assignmentDatas.filter(
         (employee) => userData.EmployeeID === employee.EmployeeID
       );
-      const reversedData = assigned.reverse();
-      setTableData(reversedData);
+
+      setTableData(assigned);
     }
   }, [assignmentDatas, userData, loading, error, handleDeleteAssignment]);
 
@@ -75,6 +83,8 @@ const AssignmentTable = ({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+
+  console.log(currentItems, "fffff")
   // Change page
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
