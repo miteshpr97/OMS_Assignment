@@ -275,6 +275,18 @@
 // }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
@@ -397,13 +409,27 @@ export default function NewAssignment() {
     return <div>Loading...</div>;
   }
 
-  const handleEmployeeSelect = (event) => {
-    const selectedEmployeeIds = event.target.value;
-    setAssignmentData((prevState) => ({
-      ...prevState,
-      EmployeeID_AssignTo: selectedEmployeeIds,
-    }));
+  // const handleEmployeeSelect = (event) => {
+  //   const selectedEmployeeIds = event.target.value;
+  //   setAssignmentData((prevState) => ({
+  //     ...prevState,
+  //     EmployeeID_AssignTo: selectedEmployeeIds,
+  //   }));
+  // };
+
+  const handleEmployeeSelect = async (event) => {
+    const selectedEmployeeId = event.target.value;
+    const selectedEmployee = assignedEmployees.find(
+      (employee) => employee.EmployeeID_AssignTo === selectedEmployeeId
+    );
+    try {
+      // Dispatch the thunk action creator to fetch assignment counts
+      dispatch(fetchAssignmentCounts(selectedEmployee.EmployeeID_AssignTo));
+    } catch (error) {
+      console.error("Error fetching assignment counts:", error);
+    }
   };
+
 
 
 
@@ -437,8 +463,11 @@ export default function NewAssignment() {
                     fullWidth
                     id="EmployeeID_AssignTo"
                     name="EmployeeID_AssignTo"
-                    value={assignmentData.EmployeeID_AssignTo || []} 
-                    onChange={handleEmployeeSelect}
+                    value={assignmentData.EmployeeID_AssignTo || []}
+                    onChange={(event) => {
+                      handleInputChange(event);
+                      handleEmployeeSelect(event);
+                    }}
                     renderValue={(selected) => selected.join(", ")}
                     required
                   >
