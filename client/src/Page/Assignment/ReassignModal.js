@@ -100,7 +100,7 @@
 //               />
 //             </Grid>
 
-        
+
 //           <Grid item md={4}>
 //             <TextField
 //               type="date"
@@ -179,13 +179,14 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { fetchAssignmentData } from "../../features/assignment/assignmentAction";
 
 const ReassignModal = ({
   open,
   onClose,
   assignmentData,
   assignedEmployees,
-  onSubmit,
 }) => {
   const [reassignmentData, setReAssignmentData] = useState({
     EmployeeID_AssignTo: "",
@@ -194,6 +195,9 @@ const ReassignModal = ({
     AssignmentPriority: "",
     Assignment_Description: "",
   });
+  const dispatch = useDispatch();
+
+
 
   useEffect(() => {
     setReAssignmentData({
@@ -213,27 +217,22 @@ const ReassignModal = ({
     });
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   console.log("Form Data:", assignmentData);
-  //   if (onSubmit) {
-  //     onSubmit(assignmentData);
-  //   }
-  // };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("Form Data:", reassignmentData);
-  
+
     try {
       const response = await axios.patch(`http://localhost:3306/api/assignmentDetails/${assignmentData.AssignmentID}/${assignmentData.EmployeeID}/${assignmentData.EmployeeID_AssignTo}/reassign`, reassignmentData);
-      
       console.log("Update response:", response.data);
-      // Call any necessary callback or handle success logic here
-  
+      dispatch(fetchAssignmentData(reassignmentData));
+
+      onClose();
+
     } catch (error) {
       console.error("Error updating assignment:", error);
-      // Handle error logic here
+
     }
   };
 

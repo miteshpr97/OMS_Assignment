@@ -46,7 +46,8 @@ const AssignmentTable = ({
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
- 
+
+
 
 
 
@@ -55,8 +56,8 @@ const AssignmentTable = ({
       const assigned = assignmentDatas.filter(
         (employee) => userData.EmployeeID === employee.EmployeeID
       );
-      const reversedData = assigned.reverse();
-      setTableData(reversedData);
+
+      setTableData(assigned);
     }
   }, [assignmentDatas, userData, loading, error, handleDeleteAssignment]);
 
@@ -80,6 +81,8 @@ const AssignmentTable = ({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+
+  console.log(currentItems, "fffff")
   // Change page
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
