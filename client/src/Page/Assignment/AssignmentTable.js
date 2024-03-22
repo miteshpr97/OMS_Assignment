@@ -162,7 +162,7 @@ const TableComponent = ({
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
   const [selectedAssignmentID, setSelectedAssignmentID] = useState(null);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
-  const [reassignmentData, setReassignmentData] = useState("");
+  const [assignmentData, setassignmentData] = useState("");
 
   const dispatch = useDispatch();
 
@@ -190,7 +190,7 @@ const TableComponent = ({
 
   const handleReassignClick = (reAssignData) => {
     setIsReassignModalOpen(true);
-    setReassignmentData(reAssignData)
+    setassignmentData(reAssignData)
   }
 
 
@@ -437,7 +437,7 @@ const TableComponent = ({
 
       <ReassignModal
         open={isReassignModalOpen}
-        reassignmentData={reassignmentData}
+        assignmentData={assignmentData}
         onClose={() => setIsReassignModalOpen(false)}
         assignedEmployees={assignedEmployees}
       />

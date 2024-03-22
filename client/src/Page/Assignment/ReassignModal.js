@@ -14,7 +14,7 @@
 // const ReassignModal = ({
 //   open,
 //   onClose,
-//   reassignmentData,
+//   assignmentData,
 //   assignedEmployees,
 // }) => {
 //   const [assignmentData, setAssignmentData] = useState({
@@ -46,7 +46,7 @@
 
 //   // Filter out employees who already have assignments
 //   const availableEmployees = assignedEmployees.filter(
-//     (employee) => employee.EmployeeID_AssignTo !== reassignmentData.EmployeeID_AssignTo
+//     (employee) => employee.EmployeeID_AssignTo !== assignmentData.EmployeeID_AssignTo
 //   );
 
 //   return (
@@ -61,7 +61,7 @@
 //                 id="EmployeeID"
 //                 label="Employee ID"
 //                 placeholder="Employee ID"
-//                 value={reassignmentData.EmployeeID}
+//                 value={assignmentData.EmployeeID}
 //                 InputProps={{
 //                   readOnly: true,
 //                 }}
@@ -93,7 +93,7 @@
 //                 fullWidth
 //                 id="AssignDate"
 //                 label="Assign Date"
-//                 value={reassignmentData.AssignDate ? format(new Date(reassignmentData.AssignDate), "MM/dd/yyyy") : "Invalid Date"}
+//                 value={assignmentData.AssignDate ? format(new Date(assignmentData.AssignDate), "MM/dd/yyyy") : "Invalid Date"}
 //                 InputProps={{
 //                   readOnly: true,
 //                 }}
@@ -141,7 +141,7 @@
 //               label="Assignment Description"
 //               placeholder="Give Assignment...."
 //               name="Assignment_Description"
-//               value={reassignmentData.Assignment_Description}
+//               value={assignmentData.Assignment_Description}
 //               onChange={handleInputChange}
 //             />
 //           </Grid>
@@ -183,11 +183,11 @@ import axios from "axios";
 const ReassignModal = ({
   open,
   onClose,
-  reassignmentData,
+  assignmentData,
   assignedEmployees,
   onSubmit,
 }) => {
-  const [assignmentData, setAssignmentData] = useState({
+  const [assignmentDataT, setAssignmentDataT] = useState({
     EmployeeID_AssignTo: "",
     AssignDate: "",
     DeadlineDate: "",
@@ -196,19 +196,19 @@ const ReassignModal = ({
   });
 
   useEffect(() => {
-    setAssignmentData({
-      EmployeeID_AssignTo: reassignmentData.EmployeeID_AssignTo || "",
-      AssignDate: reassignmentData.AssignDate || "",
-      DeadlineDate: reassignmentData.DeadlineDate || "",
-      AssignmentPriority: reassignmentData.AssignmentPriority || "",
-      Assignment_Description: reassignmentData.Assignment_Description || "",
+    setAssignmentDataT({
+      EmployeeID_AssignTo: assignmentData.EmployeeID_AssignTo || "",
+      AssignDate: assignmentData.AssignDate || "",
+      DeadlineDate: assignmentData.DeadlineDate || "",
+      AssignmentPriority: assignmentData.AssignmentPriority || "",
+      Assignment_Description: assignmentData.Assignment_Description || "",
     });
-  }, [reassignmentData]);
+  }, [assignmentData]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setAssignmentData({
-      ...assignmentData,
+    setAssignmentDataT({
+      ...assignmentDataT,
       [name]: value,
     });
   };
@@ -223,10 +223,10 @@ const ReassignModal = ({
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Data:", assignmentData);
+    console.log("Form Data:", assignmentDataT);
   
     try {
-      const response = await axios.patch(`http://localhost:3306/api/assignmentDetails/${reassignmentData.AssignmentID}/${reassignmentData.EmployeeID}/${assignmentData.EmployeeID_AssignTo}/reassign`, assignmentData);
+      const response = await axios.patch(`http://localhost:3306/api/assignmentDetails/${assignmentData.AssignmentID}/${assignmentData.EmployeeID}/${assignmentData.EmployeeID_AssignTo}/reassign`, assignmentDataT);
       
       console.log("Update response:", response.data);
       // Call any necessary callback or handle success logic here
@@ -242,7 +242,7 @@ const ReassignModal = ({
   };
 
   const availableEmployees = assignedEmployees.filter(
-    (employee) => employee.EmployeeID_AssignTo !== reassignmentData.EmployeeID_AssignTo
+    (employee) => employee.EmployeeID_AssignTo !== assignmentData.EmployeeID_AssignTo
   );
 
   return (
@@ -257,7 +257,7 @@ const ReassignModal = ({
                 id="EmployeeID"
                 label="Employee ID"
                 placeholder="Employee ID"
-                value={reassignmentData.EmployeeID}
+                value={assignmentData.EmployeeID}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -269,7 +269,7 @@ const ReassignModal = ({
                 id="EmployeeID_AssignTo"
                 label="Employee Assign To"
                 name="EmployeeID_AssignTo"
-                value={assignmentData.EmployeeID_AssignTo}
+                value={assignmentDataT.EmployeeID_AssignTo}
                 onChange={handleInputChange}
                 required
                 select
@@ -288,7 +288,7 @@ const ReassignModal = ({
                 fullWidth
                 id="AssignDate"
                 label="Assign Date"
-                value={reassignmentData.AssignDate ? format(new Date(reassignmentData.AssignDate), "MM/dd/yyyy") : "Invalid Date"}
+                value={assignmentData.AssignDate ? format(new Date(assignmentData.AssignDate), "MM/dd/yyyy") : "Invalid Date"}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -302,7 +302,7 @@ const ReassignModal = ({
                 label="Deadline Date"
                 required
                 name="DeadlineDate"
-                value={assignmentData.DeadlineDate}
+                value={assignmentDataT.DeadlineDate}
                 onChange={handleInputChange}
                 InputLabelProps={{
                   shrink: true,
@@ -317,7 +317,7 @@ const ReassignModal = ({
                 label="Priority"
                 required
                 name="AssignmentPriority"
-                value={assignmentData.AssignmentPriority}
+                value={assignmentDataT.AssignmentPriority}
                 onChange={handleInputChange}
               >
                 <MenuItem value="">Select priority</MenuItem>
@@ -334,7 +334,7 @@ const ReassignModal = ({
                 label="Assignment Description"
                 placeholder="Give Assignment...."
                 name="Assignment_Description"
-                value={assignmentData.Assignment_Description}
+                value={assignmentDataT.Assignment_Description}
                 onChange={handleInputChange}
               />
             </Grid>
