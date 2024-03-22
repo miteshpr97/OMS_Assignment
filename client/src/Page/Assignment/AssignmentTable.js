@@ -27,10 +27,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
 import ReassignModal from "./ReassignModal";
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deleteAssignmentData } from "../../features/assignment/assignmentAction";
-
-
+import AssignmentReturnIcon from "@mui/icons-material/AssignmentReturn";
 
 const AssignmentTable = ({
   userData,
@@ -38,7 +37,7 @@ const AssignmentTable = ({
   loading,
   error,
   handleDeleteAssignment,
-  assignedEmployees
+  assignedEmployees,
 }) => {
   const [tableData, setTableData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
@@ -46,11 +45,14 @@ const AssignmentTable = ({
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
+<<<<<<< HEAD
+=======
 
 
 
 
 
+>>>>>>> 77c6320dd346183881e96b2520663c9244526b58
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
       const assigned = assignmentDatas.filter(
@@ -101,11 +103,11 @@ const AssignmentTable = ({
 
   return (
     <div className="assignment-table">
-      <Typography variant="h5" style={{ fontWeight: "500"}} >
+      <Typography variant="h5" style={{ fontWeight: "500" }}>
         Given Assignment Data
       </Typography>
 
-      <div className="p-2" >
+      <div className="p-2">
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
@@ -158,8 +160,7 @@ const AssignmentTable = ({
 const TableComponent = ({
   data,
   handleDescriptionClick,
-  assignedEmployees
- 
+  assignedEmployees,
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
@@ -169,12 +170,9 @@ const TableComponent = ({
 
   const dispatch = useDispatch();
 
-
-  const handleDeleteAssignment  = (AssignmentID)=>{
-    dispatch(deleteAssignmentData(AssignmentID))
-
-  }
-
+  const handleDeleteAssignment = (AssignmentID) => {
+    dispatch(deleteAssignmentData(AssignmentID));
+  };
 
   const handleEditClick = (data) => {
     setIsEditModalOpen(true);
@@ -191,17 +189,14 @@ const TableComponent = ({
 
   const handleReassignClick = (reAssignData) => {
     setIsReassignModalOpen(true);
-    setassignmentData(reAssignData)
-  }
-
-
+    setassignmentData(reAssignData);
+  };
 
   return (
-   
-    <div style={{ overflowX: "auto", width: "100%"}}>
+    <div style={{ overflowX: "auto", width: "100%" }}>
       <div style={{ width: "150%" }}>
         <TableContainer component={Paper}>
-          <Table size="large" >
+          <Table size="small">
             <TableHead className="customTableHead">
               <TableRow>
                 <TableCell
@@ -335,16 +330,6 @@ const TableComponent = ({
                 >
                   Action
                 </TableCell>
-                <TableCell
-                  className="vertical-border"
-                  sx={{
-                    color: "white",
-                    padding: "10px 16px",
-                    fontSize: "15px",
-                  }}
-                >
-                  Re-Assign
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -377,8 +362,16 @@ const TableComponent = ({
                       <span>Not Accept</span>
                     ) : (
                       <>
-                        {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}{" "}
-                        {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
+                        <span>
+                          {" "}
+                          {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}
+                        </span>
+                        <br />
+                        <span>
+                          {" "}
+                          {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
+                        </span>
+                        <br />
                       </>
                     )}
                   </TableCell>
@@ -388,8 +381,15 @@ const TableComponent = ({
                       <span>Loading</span>
                     ) : (
                       <>
-                        {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}{" "}
-                        {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
+                        <span>
+                          {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}
+                        </span>
+                        <br />
+                        <span>
+                          {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
+                        </span>
+                        <br />
+
                         <FeedbackIcon
                           onClick={() => handleFeedbackClick(item.AssignmentID)}
                           sx={{ color: "#055f85" }}
@@ -402,8 +402,14 @@ const TableComponent = ({
                       <span>Loading</span>
                     ) : (
                       <>
-                        {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}{" "}
-                        {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
+                        <span>
+                          {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}
+                        </span>
+                        <br />
+                        <span>
+                          {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
+                        </span>
+                        <br />
                         <FeedbackIcon
                           onClick={() => handleFeedbackClick(item.AssignmentID)}
                           sx={{ color: "#055f85" }}
@@ -456,18 +462,14 @@ const TableComponent = ({
                     >
                       <DeleteIcon sx={{ fontSize: "1.3rem" }} />
                     </IconButton>
-                  </TableCell>
-
-                  <TableCell>
-                    {(item.AssignmentStatus === "Reject" ||
-                      item.AssignmentStatus === "Regret") && (
-                      <Button
-                        onClick={() => handleReassignClick(item)}
-                        color="secondary"
-                      >
-                        Reassign
-                      </Button>
-                    )}
+                    <IconButton>
+                      {(item.AssignmentStatus === "Reject" ||
+                        item.AssignmentStatus === "Regret") && (
+                        <AssignmentReturnIcon
+                          onClick={() => handleReassignClick(item)}
+                        />
+                      )}
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -495,7 +497,6 @@ const TableComponent = ({
         assignedEmployees={assignedEmployees}
       />
     </div>
-  
   );
 };
 
