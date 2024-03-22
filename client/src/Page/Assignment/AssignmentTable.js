@@ -45,14 +45,11 @@ const AssignmentTable = ({
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
-<<<<<<< HEAD
-=======
 
 
 
 
 
->>>>>>> 77c6320dd346183881e96b2520663c9244526b58
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
       const assigned = assignmentDatas.filter(

@@ -38,7 +38,6 @@
 //   const loading = useSelector(selectAssignmentLoading);
 //   const error = useSelector(selectAssignmentError);
 
-
 //   useEffect(() => {
 //     dispatch(fetchAssignmentData());
 //     dispatch(fetchAssignmentCounts());
@@ -131,7 +130,6 @@
 //       console.error("Error fetching assignment counts:", error);
 //     }
 //   };
-
 
 //   return (
 //     <Box sx={{ display: "flex" }}>
@@ -274,7 +272,6 @@
 //   );
 // }
 
-
 import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
@@ -297,7 +294,7 @@ import {
   selectAssignmentError,
 } from "../../features/assignment/assignmentSlice";
 import "./Assignment.css";
-import { Checkbox, ListItemText, Select } from '@mui/material';
+import { Checkbox, ListItemText, Select } from "@mui/material";
 
 export default function NewAssignment() {
   const [validated, setValidated] = useState(false);
@@ -315,7 +312,6 @@ export default function NewAssignment() {
   const countAssignmentData = useSelector(selectAssignmentCounts);
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
-
 
   useEffect(() => {
     dispatch(fetchAssignmentData());
@@ -403,9 +399,12 @@ export default function NewAssignment() {
       ...prevState,
       EmployeeID_AssignTo: selectedEmployeeIds,
     }));
+
+    // Dispatch action to fetch assignment counts based on selected employees
+    dispatch(fetchAssignmentCounts(selectedEmployeeIds));
   };
 
-
+  console.log(countAssignmentData, "count");
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -437,15 +436,24 @@ export default function NewAssignment() {
                     fullWidth
                     id="EmployeeID_AssignTo"
                     name="EmployeeID_AssignTo"
-                    value={assignmentData.EmployeeID_AssignTo || []} 
+                    value={assignmentData.EmployeeID_AssignTo || []}
                     onChange={handleEmployeeSelect}
                     renderValue={(selected) => selected.join(", ")}
                     required
                   >
                     {assignedEmployees.map((employee) => (
-                      <MenuItem key={employee.EmployeeID_AssignTo} value={employee.EmployeeID_AssignTo}>
-                        <Checkbox checked={assignmentData.EmployeeID_AssignTo.includes(employee.EmployeeID_AssignTo)} />
-                        <ListItemText primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`} />
+                      <MenuItem
+                        key={employee.EmployeeID_AssignTo}
+                        value={employee.EmployeeID_AssignTo}
+                      >
+                        <Checkbox
+                          checked={assignmentData.EmployeeID_AssignTo.includes(
+                            employee.EmployeeID_AssignTo
+                          )}
+                        />
+                        <ListItemText
+                          primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`}
+                        />
                       </MenuItem>
                     ))}
                   </Select>
@@ -541,5 +549,3 @@ export default function NewAssignment() {
     </Box>
   );
 }
-
-
