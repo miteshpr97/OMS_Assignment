@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Modal, Button,  } from "@mui/material";
+import { Box, Typography, Modal, Button, } from "@mui/material";
 import { format } from "date-fns";
 import SideBar from "../../Component/SideBar";
 import TaskTable from "./TaskTable";
@@ -25,7 +25,6 @@ import TaskDialog from "./Task";
 import Action from "./Action";
 
 const ViewAssignment = () => {
-  const [assignmentData, setAssignmentData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [userData, setUserData] = useState(null);
@@ -36,6 +35,7 @@ const ViewAssignment = () => {
   const dispatch = useDispatch();
   const assignment = useSelector(selectAssignment);
 
+
   useEffect(() => {
     dispatch(fetchAssignmentData());
   }, [dispatch]);
@@ -45,30 +45,15 @@ const ViewAssignment = () => {
     setUserData(userDataFromSession);
   }, []);
 
-  useEffect(() => {
-    const fetchAssignedEmployees = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3306/api/assignmentDetails/allData"
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        const assigned = data.filter(
-          (employee) => userData.EmployeeID === employee.EmployeeID_AssignTo
-        );
 
-        setAssignmentData(assigned);
-      } catch (error) {
-        console.error("Error fetching assigned employees:", error);
-      }
-    };
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
-    if (userData) {
-      fetchAssignedEmployees();
-    }
-  }, [userData]);
+  const assignmentData = assignment.filter(item => {
+    return item.EmployeeID_AssignTo === userData.EmployeeID;
+  });
+
 
   const handleTabChangeA = (event, newValue) => {
     setActiveTabData(newValue);
@@ -106,9 +91,7 @@ const ViewAssignment = () => {
   };
 
   const handleCreateTask = (taskName) => {
-    // Implement your logic for creating a task
-
-    handleTaskDialogClose(); // Close the dialog after task creation
+    handleTaskDialogClose();
   };
 
   return (
@@ -191,8 +174,8 @@ const TableComponent = ({ data }) => {
     setSelectedDescription(description);
   const handleCloseDescription = () => setSelectedDescription(null);
 
- 
- 
+
+
 
   return (
     <div className="table-container">
@@ -297,71 +280,7 @@ const TableComponent = ({ data }) => {
                 className="vertical-border"
                 sx={{ padding: "10px 16px" }}
               >
-                {/* {item.AssignmentStatus === "Assigned" && (
-                  <>
-                    <button
-                      onClick={() => handleFeedbackClick(item)}
-                      style={{
-                        background: "red",
-                        border: "none",
-                        color: "white",
-                        marginRight: "5px",
-                      }}
-                    >
-                      Reject
-                    </button>
-                    <button
-                      onClick={() => handleAdd(item)}
-                      style={{
-                        background: "green",
-                        border: "none",
-                        color: "white",
-                      }}
-                    >
-                      Accept
-                    </button>
-                  </>
-                )}
-                {item.AssignmentStatus === "Progress" && (
-                  <>
-                    <button
-                      onClick={() => handleFeedbackClick(item)}
-                      style={{
-                        background: "brown",
-                        border: "none",
-                        color: "white",
-                        marginRight: "5px",
-                      }}
-                    >
-                      Regret
-                    </button>
-                    <button
-                      onClick={() => handleAdd(item)}
-                      style={{
-                        background: "blue",
-                        border: "none",
-                        color: "white",
-                      }}
-                    >
-                      Next
-                    </button>
-                  </>
-                )}
-                {item.AssignmentStatus === "Completed" && (
-                  <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
-                )}
-                {item.AssignmentStatus === "Reject" && (
-                   <span onClick={() => handleFeedbackClick(item)} style={{cursor:"pointer"}}>{item.AssignmentStatus}</span>
-                )}
-                {item.AssignmentStatus === "Regret" && (
-                  <span>{item.AssignmentStatus}</span>
-                )} */}
-
-
-                <Action StatusData={item}/>
-
-
-
+                <Action StatusData={item} />
               </TableCell>
 
               <TableCell
@@ -370,12 +289,12 @@ const TableComponent = ({ data }) => {
                     item.AssignmentStatus === "Assigned"
                       ? "blue"
                       : item.AssignmentStatus === "Progress"
-                      ? "orange"
-                      : item.AssignmentStatus === "Reject"
-                      ? "red"
-                      : item.AssignmentStatus === "Regret"
-                      ? "brown"
-                      : "green",
+                        ? "orange"
+                        : item.AssignmentStatus === "Reject"
+                          ? "red"
+                          : item.AssignmentStatus === "Regret"
+                            ? "brown"
+                            : "green",
                   padding: "10px 16px",
                 }}
                 className="vertical-border"
@@ -409,7 +328,7 @@ const TableComponent = ({ data }) => {
         </Box>
       </Modal>
 
-     
+
     </div>
   );
 };
