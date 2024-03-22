@@ -416,6 +416,7 @@ export default function Header({ open, handleDrawerOpen }) {
               sx={{
                 width: 40,
                 height: 40,
+                cursor:"pointer"
               }}
               aria-describedby={isOpen ? "popover" : undefined}
               onClick={handleClick}
@@ -441,6 +442,7 @@ export default function Header({ open, handleDrawerOpen }) {
                 border: "none",
                 p: 1,
                 bgcolor: "#dddddd", // Transparent blue color with alpha value 0.5
+                
               }}
             >
               <List>
@@ -458,7 +460,7 @@ export default function Header({ open, handleDrawerOpen }) {
                   <ListItem disablePadding>
                     <ListItemButton>
                       <ListItemText
-                        primary="please Sign-in..."
+                        primary="Please Sign-In"
                         sx={{ color: "#055f85" }}
                       />
                     </ListItemButton>

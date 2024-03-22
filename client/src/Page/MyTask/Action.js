@@ -35,7 +35,7 @@ function Action({ StatusData }) {
       if (statusData.AssignmentStatus === "Assigned") {
         newStatus = "Progress";
       } else if (statusData.AssignmentStatus === "Progress") {
-        newStatus = "Completed";
+        newStatus = "Closed";
       } else {
        
         return;
@@ -87,25 +87,25 @@ function Action({ StatusData }) {
                 <MenuItem value="CANCEL" onClick={() => handleFeedbackClick(StatusData)}>Reject</MenuItem>
                 <MenuItem disabled>Progress</MenuItem>
                 <MenuItem disabled>Regret</MenuItem>
-                <MenuItem disabled>Close</MenuItem>
+                <MenuItem disabled>Complete</MenuItem>
               </>
             )}
             {StatusData.AssignmentStatus === "Progress" && (
               <>
-                <MenuItem value="COMPLETED" onClick={() => handleAdd(StatusData)}>Close</MenuItem>
+                <MenuItem value="Closed" onClick={() => handleAdd(StatusData)}>Complete</MenuItem>
                 <MenuItem value="REGRET" onClick={() => handleFeedbackClick(StatusData)}>Regret</MenuItem>
                 <MenuItem disabled>Accept</MenuItem>
                 <MenuItem disabled>Reject</MenuItem>
                 <MenuItem disabled>Progress</MenuItem>
               </>
             )}
-            {StatusData.AssignmentStatus === "Completed" && (
+            {StatusData.AssignmentStatus === "Closed" && (
               <>
                 <MenuItem disabled>Accept</MenuItem>
                 <MenuItem disabled>Reject</MenuItem>
                 <MenuItem disabled>Progress</MenuItem>
                 <MenuItem disabled>Regret</MenuItem>
-                <MenuItem disabled>Close</MenuItem>
+                <MenuItem disabled>Complete</MenuItem>
               </>
             )}
             {StatusData.AssignmentStatus === "Regret" && (
@@ -114,7 +114,7 @@ function Action({ StatusData }) {
                 <MenuItem disabled>Reject</MenuItem>
                 <MenuItem disabled>Progress</MenuItem>
                 <MenuItem disabled>Regret</MenuItem>
-                <MenuItem disabled>Close</MenuItem>
+                <MenuItem disabled>Complete</MenuItem>
               </>
             )}
             {StatusData.AssignmentStatus === "Reject" && (
@@ -123,7 +123,7 @@ function Action({ StatusData }) {
                 <MenuItem disabled>Reject</MenuItem>
                 <MenuItem disabled>Progress</MenuItem>
                 <MenuItem disabled>Regret</MenuItem>
-                <MenuItem disabled>Close</MenuItem>
+                <MenuItem disabled>Complete</MenuItem>
               </>
             )}
           </Select>

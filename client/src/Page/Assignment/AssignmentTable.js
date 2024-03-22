@@ -27,6 +27,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import AssignmentEditModal from "./AssignmentEditModal";
 import ReassignModal from "./ReassignModal";
+import {useDispatch } from "react-redux";
+import { deleteAssignmentData } from "../../features/assignment/assignmentAction";
+
+
 
 const AssignmentTable = ({
   userData,
@@ -34,6 +38,7 @@ const AssignmentTable = ({
   loading,
   error,
   handleDeleteAssignment,
+  assignedEmployees
 }) => {
   const [tableData, setTableData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
@@ -41,13 +46,18 @@ const AssignmentTable = ({
   const itemsPerPage = 20;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
+
+
+
+
+
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
       const assigned = assignmentDatas.filter(
         (employee) => userData.EmployeeID === employee.EmployeeID
       );
-      const reversedData = assigned.reverse();
-      setTableData(reversedData);
+
+      setTableData(assigned);
     }
   }, [assignmentDatas, userData, loading, error, handleDeleteAssignment]);
 
@@ -71,6 +81,8 @@ const AssignmentTable = ({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
+
+  console.log(currentItems, "fffff")
   // Change page
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -84,19 +96,16 @@ const AssignmentTable = ({
     setSelectedDescription(null);
   };
 
-
-
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="assignment-table">
-      <Typography variant="h5" style={{ fontWeight: "500" }}>
+      <Typography variant="h5" style={{ fontWeight: "500"}} >
         Given Assignment Data
       </Typography>
 
-      <div className="p-2">
+      <div className="p-2" >
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
@@ -106,7 +115,7 @@ const AssignmentTable = ({
           <Tab label="All" value="All" />
           <Tab label="Assigned" value="Assigned" />
           <Tab label="Progress" value="Progress" />
-          <Tab label="Completed" value="Completed" />
+          <Tab label="Closed" value="Closed" />
           <Tab label="Reject" value="Reject" />
           <Tab label="Regret" value="Regret" />
         </Tabs>
@@ -115,6 +124,7 @@ const AssignmentTable = ({
           data={currentItems}
           handleDescriptionClick={handleDescriptionClick}
           handleDeleteAssignment={handleDeleteAssignment}
+          assignedEmployees={assignedEmployees}
         />
 
         <Pagination
@@ -148,15 +158,22 @@ const AssignmentTable = ({
 const TableComponent = ({
   data,
   handleDescriptionClick,
-  handleDeleteAssignment,
+  assignedEmployees
+ 
 }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedAssignmentData, setSelectedAssignmentData] = useState(null);
   const [selectedAssignmentID, setSelectedAssignmentID] = useState(null);
   const [isReassignModalOpen, setIsReassignModalOpen] = useState(false);
-  const [reassignmentData, setReassignmentData] = useState("");
+  const [assignmentData, setassignmentData] = useState("");
+
+  const dispatch = useDispatch();
 
 
+  const handleDeleteAssignment  = (AssignmentID)=>{
+    dispatch(deleteAssignmentData(AssignmentID))
+
+  }
 
 
   const handleEditClick = (data) => {
@@ -170,241 +187,294 @@ const TableComponent = ({
 
   const handleCloseFeedback = () => {
     setSelectedAssignmentID(null);
-    
   };
-
 
   const handleReassignClick = (reAssignData) => {
     setIsReassignModalOpen(true);
-    setReassignmentData(reAssignData)
+    setassignmentData(reAssignData)
   }
-  return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead className="customTableHead">
-            <TableRow>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                A-ID
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                AssignTo
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Assignment Description
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Assign Date
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Deadline Date
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Accept Time
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Reject Time
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Regret Time
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Close Time
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Status
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Feedback
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Priority
-              </TableCell>
 
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Action
-              </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Re-Assign
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((item, index) => (
-              <TableRow key={index} className="custom-row">
-                <TableCell className="vertical-border">
-                  {item.AssignmentID}
-                </TableCell>
-                <TableCell className="vertical-border">
-                  {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+
+
+  return (
+   
+    <div style={{ overflowX: "auto", width: "100%"}}>
+      <div style={{ width: "150%" }}>
+        <TableContainer component={Paper}>
+          <Table size="large" >
+            <TableHead className="customTableHead">
+              <TableRow>
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  A-ID
                 </TableCell>
                 <TableCell
                   className="vertical-border"
-                  onClick={() =>
-                    handleDescriptionClick(item.Assignment_Description)
-                  }
-                  style={{ cursor: "pointer", maxWidth: "60px" }}
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
                 >
-                  {item.Assignment_Description}
+                  AssignTo
                 </TableCell>
-                <TableCell className="vertical-border">
-                  {format(new Date(item.AssignDate), "dd/MM/yyyy")}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Assignment Description
                 </TableCell>
-                <TableCell className="vertical-border">
-                  {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Assign Date
                 </TableCell>
-
-                <TableCell className="vertical-border">
-                  {item.AcceptTimestamp == null ? (
-                    <span>Not Accept</span>
-                  ) : (
-                    <>
-                      {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}{" "}
-                      {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
-                    </>
-                  )}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Deadline Date
                 </TableCell>
-
-                <TableCell className="vertical-border">
-                  {item.RejectTimeStamp == null ? (
-                    <span>Loading</span>
-                  ) : (
-                    <>
-                      {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}{" "}
-                      {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
-                      <FeedbackIcon
-                        onClick={() => handleFeedbackClick(item.AssignmentID)}
-                        sx={{ color: "#055f85" }}
-
-                      />
-                    </>
-                  )}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Accept Time
                 </TableCell>
-                <TableCell className="vertical-border">
-                  {item.RegretTimeStamp == null ? (
-                    <span>Loading</span>
-                  ) : (
-                    <>
-                      {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}{" "}
-                      {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
-                      <FeedbackIcon
-                        onClick={() => handleFeedbackClick(item.AssignmentID)}
-                        sx={{ color: "#055f85" }}
-                      />
-                    </>
-                  )}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Reject Time
                 </TableCell>
-
-                <TableCell className="vertical-border">
-                  {item.CompletionTimestamp == null ? (
-                    <span>Progress</span>
-                  ) : (
-                    <>
-                      {format(new Date(item.CompletionTimestamp), "dd/MM/yyyy")}{" "}
-                      {format(new Date(item.CompletionTimestamp), "HH:mm:ss")}
-                    </>
-                  )}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Regret Time
                 </TableCell>
-
-                <TableCell className="vertical-border">
-                  <span
-                    style={{ color: getStatusColor(item.AssignmentStatus) }}
-                  >
-                    {item.AssignmentStatus}
-                  </span>
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Close Time
                 </TableCell>
-                <TableCell className="vertical-border" >
-                  {item.Feedback}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Status
                 </TableCell>
-                <TableCell className="vertical-border">
-                  {item.AssignmentPriority}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Feedback
                 </TableCell>
-
-                <TableCell className="vertical-border">
-                  <IconButton
-                    sx={{
-                      color: "#055f85",
-                    }}
-                    onClick={() => handleEditClick(item)}
-                  >
-                    <EditNoteIcon />
-                  </IconButton>
-
-                  <IconButton
-                    sx={{ color: "red" }}
-                    onClick={() => handleDeleteAssignment(item.AssignmentID)}
-                  >
-                    <DeleteIcon sx={{ fontSize: "1.3rem" }} />
-                  </IconButton>
-                </TableCell>
-
-
-                <TableCell>
-                  {(item.AssignmentStatus === "Reject" || item.AssignmentStatus === "Regret") && (
-                    <Button
-                      onClick={() => handleReassignClick(item)}
-                      color="secondary"
-                    >
-                      Reassign
-                    </Button>
-                  )}
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Priority
                 </TableCell>
 
-
-
-
-
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Action
+                </TableCell>
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Re-Assign
+                </TableCell>
               </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((item, index) => (
+                <TableRow key={index} className="custom-row">
+                  <TableCell className="vertical-border">
+                    {item.AssignmentID}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
+                  </TableCell>
+                  <TableCell
+                    className="vertical-border"
+                    onClick={() =>
+                      handleDescriptionClick(item.Assignment_Description)
+                    }
+                    style={{ cursor: "pointer", maxWidth: "60px" }}
+                  >
+                    {item.Assignment_Description}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {format(new Date(item.AssignDate), "dd/MM/yyyy")}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {format(new Date(item.DeadlineDate), "dd/MM/yyyy")}
+                  </TableCell>
 
+                  <TableCell className="vertical-border">
+                    {item.AcceptTimestamp == null ? (
+                      <span>Not Accept</span>
+                    ) : (
+                      <>
+                        {format(new Date(item.AcceptTimestamp), "dd/MM/yyyy")}{" "}
+                        {format(new Date(item.AcceptTimestamp), "HH:mm:ss")}
+                      </>
+                    )}
+                  </TableCell>
 
+                  <TableCell className="vertical-border">
+                    {item.RejectTimeStamp == null ? (
+                      <span>Loading</span>
+                    ) : (
+                      <>
+                        {format(new Date(item.RejectTimeStamp), "dd/MM/yyyy")}{" "}
+                        {format(new Date(item.RejectTimeStamp), "HH:mm:ss")}
+                        <FeedbackIcon
+                          onClick={() => handleFeedbackClick(item.AssignmentID)}
+                          sx={{ color: "#055f85" }}
+                        />
+                      </>
+                    )}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.RegretTimeStamp == null ? (
+                      <span>Loading</span>
+                    ) : (
+                      <>
+                        {format(new Date(item.RegretTimeStamp), "dd/MM/yyyy")}{" "}
+                        {format(new Date(item.RegretTimeStamp), "HH:mm:ss")}
+                        <FeedbackIcon
+                          onClick={() => handleFeedbackClick(item.AssignmentID)}
+                          sx={{ color: "#055f85" }}
+                        />
+                      </>
+                    )}
+                  </TableCell>
 
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <TableCell className="vertical-border">
+                    {item.CompletionTimestamp == null ? (
+                      <span>Progress</span>
+                    ) : (
+                      <>
+                        {format(
+                          new Date(item.CompletionTimestamp),
+                          "dd/MM/yyyy"
+                        )}{" "}
+                        {format(new Date(item.CompletionTimestamp), "HH:mm:ss")}
+                      </>
+                    )}
+                  </TableCell>
 
+                  <TableCell className="vertical-border">
+                    <span
+                      style={{ color: getStatusColor(item.AssignmentStatus) }}
+                    >
+                      {item.AssignmentStatus}
+                    </span>
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.Feedback}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.AssignmentPriority}
+                  </TableCell>
+
+                  <TableCell className="vertical-border">
+                    <IconButton
+                      sx={{
+                        color: "#055f85",
+                      }}
+                      onClick={() => handleEditClick(item)}
+                    >
+                      <EditNoteIcon />
+                    </IconButton>
+
+                    <IconButton
+                      sx={{ color: "red" }}
+                      onClick={() => handleDeleteAssignment(item.AssignmentID)}
+                    >
+                      <DeleteIcon sx={{ fontSize: "1.3rem" }} />
+                    </IconButton>
+                  </TableCell>
+
+                  <TableCell>
+                    {(item.AssignmentStatus === "Reject" ||
+                      item.AssignmentStatus === "Regret") && (
+                      <Button
+                        onClick={() => handleReassignClick(item)}
+                        color="secondary"
+                      >
+                        Reassign
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
       <AssignmentEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
@@ -420,12 +490,12 @@ const TableComponent = ({
 
       <ReassignModal
         open={isReassignModalOpen}
-        reassignmentData = {reassignmentData}
+        assignmentData={assignmentData}
         onClose={() => setIsReassignModalOpen(false)}
+        assignedEmployees={assignedEmployees}
       />
-
-
     </div>
+  
   );
 };
 
@@ -463,12 +533,8 @@ const FeedbackModal = ({ isOpen, onClose, assignmentID, assignmentDatas }) => {
         </Box>
       </Box>
     </Modal>
-
   );
 };
-
-
-
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -476,7 +542,7 @@ const getStatusColor = (status) => {
       return "blue";
     case "Progress":
       return "orange";
-    case "Completed":
+    case "Closed":
       return "green";
     case "Regret":
       return "brown";
@@ -487,27 +553,4 @@ const getStatusColor = (status) => {
   }
 };
 
-
-
-
-
 export default AssignmentTable;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

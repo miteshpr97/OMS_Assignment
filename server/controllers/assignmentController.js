@@ -163,7 +163,6 @@ exports.reassignAssignment = async (req, res) => {
       return res.status(404).json({ error: "Assignment not found" });
     }
     const originalAssignment = results[0];
-    console.log(originalAssignment.AssignmentStatus);
 
     // Check if the assignment status is Reject or Regret
     if (

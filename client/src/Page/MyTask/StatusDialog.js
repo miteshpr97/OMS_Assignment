@@ -84,7 +84,7 @@ const StatusDialog = ({ open, onClose, statusData }) => {
           <CloseIcon />
         </IconButton>
 
-        {statusData.AssignmentStatus !== "Completed" &&
+        {statusData.AssignmentStatus !== "Closed" &&
           statusData.AssignmentStatus !== "Regret" &&
           statusData.AssignmentStatus !== "Reject" && (
             <>
@@ -117,9 +117,9 @@ const StatusDialog = ({ open, onClose, statusData }) => {
             </>
           )}
 
-        {statusData.AssignmentStatus === "Completed" && (
+        {statusData.AssignmentStatus === "Closed" && (
           <span>
-            <CheckCircleIcon sx={{ color: "green" }} /> Assignment is completed
+            <CheckCircleIcon sx={{ color: "green" }} /> Assignment is Closed
           </span>
         )}
         {statusData.AssignmentStatus === "Reject" && (

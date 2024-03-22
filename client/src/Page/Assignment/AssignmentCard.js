@@ -7,13 +7,15 @@ import { Typography } from "@mui/material";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import CancelIcon from '@mui/icons-material/Cancel';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import "./Assignment.css";
 
 const AssignmentCard = ({ countAssignmentData }) => {
   const statuses = [
     {
       status: "Assigned",
-      gradient: "linear-gradient(to right, red, hsla(0, 68%, 26%, 0.705))",
+      gradient: "linear-gradient(to right, #007baf, #054f6e)",
       color: "#dc3545",
       emoji: <PendingActionsIcon sx={{ fontSize: "2rem" }} />,
     },
@@ -29,17 +31,18 @@ const AssignmentCard = ({ countAssignmentData }) => {
       color: "#28a745",
       emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
     },
-    {
-      status: "Reject",
-      gradient: "linear-gradient(to right, green, rgba(0, 29, 0, 0.705))",
-      color: "#28a745",
-      emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
-    },
+   
     {
       status: "Regret",
-      gradient: "linear-gradient(to right, green, rgba(0, 29, 0, 0.705))",
+      gradient: "linear-gradient(to right, brown, #440000ad)",
       color: "#28a745",
-      emoji: <AssignmentTurnedInIcon sx={{ fontSize: "2rem" }} />,
+      emoji: <ThumbDownIcon sx={{ fontSize: "2rem" }} />,
+    },
+    {
+      status: "Reject",
+      gradient: "linear-gradient(to right, red, hsla(0, 68%, 26%, 0.705))",
+      color: "#28a745",
+      emoji: <CancelIcon sx={{ fontSize: "2.1rem" }} />,
     },
   ];
 
@@ -56,7 +59,7 @@ const AssignmentCard = ({ countAssignmentData }) => {
             sx={{
               backgroundImage: gradient, // Applying linear gradient
               color: "white",
-              width: "240px",
+              width: "230px",
               height: "150px",
               marginBottom: "16px",
               display: "flex",
@@ -71,17 +74,17 @@ const AssignmentCard = ({ countAssignmentData }) => {
                 style={{ textAlign: "center", fontSize: "2rem"}}
                 variant="body2"
               >
-                {countAssignmentData
+                {countAssignmentData 
                   ? status === "Assigned"
                     ? countAssignmentData.Assigned_assignments
                     : status === "Closed"
-                    ? countAssignmentData.Completed_assignments
+                    ? countAssignmentData.Closed_assignments
                     : status === "Progress"
                     ? countAssignmentData.Progress_assignments
-                    : status === "Regret"
-                    ? countAssignmentData.Regret_assignments
                     : status === "Reject"
                     ? countAssignmentData.Rejected_assignments
+                    : status === "Regret"
+                    ? countAssignmentData.Regret_assignments
                     : "Unknown Status"
                   : "Loading..."}
               </Typography>
@@ -90,8 +93,8 @@ const AssignmentCard = ({ countAssignmentData }) => {
                 Total {status}
               </Typography>
             </CardContent>
-            <CardContent>
-              <Typography>{emoji}</Typography>
+            <CardContent sx={{padding:"5px"}}>
+              <Typography sx={{padding:"5px"}}>{emoji}</Typography>
             </CardContent>
           </Card>
         ))}

@@ -97,7 +97,7 @@ useEffect(() => {
         <Tab label="All" value="All" />
         <Tab label="Pending" value="pending" />
         <Tab label="Progress" value="progress" />
-        <Tab label="Completed" value="completed" />
+        <Tab label="Closed" value="Closed" />
       </Tabs>
 
       <TableContainer

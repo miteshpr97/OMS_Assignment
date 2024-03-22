@@ -57,9 +57,9 @@ export const fetchAssignmentCounts = createAsyncThunk(
 //  deleting assignment data
 export const deleteAssignmentData = createAsyncThunk(
   "assignment/deleteAssignmentData",
-  async (AssignmentID) => {
+  async (AssignmentID,EmployeeID, EmployeeID_AssignTo) => {
     try {
-      const url = `http://localhost:3306/api/assignmentDetails/delete/${AssignmentID}`;
+      const url = `http://localhost:3306/api/assignmentDetails/delete/${AssignmentID}/${EmployeeID}/${EmployeeID_AssignTo}`;
       const response = await axios.delete(url);
       return response.data;
     } catch (error) {
@@ -73,9 +73,9 @@ export const deleteAssignmentData = createAsyncThunk(
 // update department data
 export const updateAssignmentData = createAsyncThunk(
   "assignment/updateAssignmentData", 
-  async ({ AssignmentID, formData }) => {
+  async ({ AssignmentID,EmployeeID,EmployeeID_AssignTo, formData }) => {
     try {
-      const url = `http://localhost:3306/api/assignmentDetails/update/${AssignmentID}`;
+      const url = `http://localhost:3306/api/assignmentDetails/update/${AssignmentID}/${EmployeeID}/${EmployeeID_AssignTo}`;
       const response = await axios.patch(url, formData); 
       return response.data;
     } catch (error) {
@@ -83,5 +83,8 @@ export const updateAssignmentData = createAsyncThunk(
     }
   }
 );
+
+
+
 
 
