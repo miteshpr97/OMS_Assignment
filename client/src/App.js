@@ -15,6 +15,7 @@ import Report from "./Page/Report/Report";
 
 
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
+import CreateAlert from "./Page/Alert/CreateAlert";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/assignment" element={<NewAssignment />}></Route>
           <Route path="/view-assignment" element={<MyTask />}></Route>
           <Route path="teamTask" element={<TeamTask/>}></Route>
+          <Route path="CreateAlert" element={<CreateAlert/>}></Route>
           <Route path="/report" element={<Report />}></Route>
          
         </Route>
