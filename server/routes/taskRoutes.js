@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const taskController = require("../controllers/taskControllers");
+const taskController = require("../controllers/taskController");
 
 // get all task details
 router.get("/", taskController.getAllTasks);

@@ -12,6 +12,7 @@ const userDetails = require("./routes/userDetailsRoutes");
 // const assignmentDetails = require("./routes/Old_AssignmentRoutes");
 const assignmentDetails = require("./routes/assignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
+const alertDetails = require("./routes/alertRoutes");
 
 const { authenticateUser } = require("./midderware/auth");
 
@@ -38,6 +39,7 @@ app.use("/api/userDetails", userDetails);
 app.use("/api/assignmentDetails", assignmentDetails);
 // app.use("/api/assignmentTesting", assignmentTesting);
 app.use("/api/taskDetails", taskDetails);
+app.use("/api/alertDetails",alertDetails);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
