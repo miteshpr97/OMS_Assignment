@@ -8,6 +8,7 @@ import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ReportIcon from '@mui/icons-material/Report';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 
 
 
@@ -21,6 +22,7 @@ export const menuItems = [
   { text: "Assignment", icon: <AssignmentIcon />, path: "/assignment" },
   { text: "My Task", icon: <AssignmentTurnedInIcon/> , path: "/view-assignment" },
   { text: "Team Task", icon: <AssignmentTurnedInIcon/> , path: "/teamTask" },
+  { text: "Alert", icon: <AddAlertIcon /> , path: "/CreateAlert" },
   { text: "Report", icon: <ReportIcon  />, path: "/report" },
 ];
 

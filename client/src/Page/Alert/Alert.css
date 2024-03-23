@@ -1,0 +1,19 @@
+.small-table {
+    font-size: 0.9rem; /* Adjust the font size as needed */
+  }
+  
+  
+  .customTableHead {
+    background: #055f85;
+    color: white;
+  }
+  
+  .vertical-border {
+    border: 1px solid #dddddd; /* Adjust border color and width as needed */
+  
+  }
+  
+  
+  .custom-row:nth-of-type(odd) {
+    background-color: white;
+  }
