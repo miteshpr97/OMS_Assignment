@@ -38,7 +38,6 @@
 //   const loading = useSelector(selectAssignmentLoading);
 //   const error = useSelector(selectAssignmentError);
 
-
 //   useEffect(() => {
 //     dispatch(fetchAssignmentData());
 //     dispatch(fetchAssignmentCounts());
@@ -131,7 +130,6 @@
 //       console.error("Error fetching assignment counts:", error);
 //     }
 //   };
-
 
 //   return (
 //     <Box sx={{ display: "flex" }}>
@@ -274,19 +272,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
@@ -309,7 +294,7 @@ import {
   selectAssignmentError,
 } from "../../features/assignment/assignmentSlice";
 import "./Assignment.css";
-import { Checkbox, ListItemText, Select } from '@mui/material';
+import { Checkbox, ListItemText, Select } from "@mui/material";
 
 export default function NewAssignment() {
   const [validated, setValidated] = useState(false);
@@ -327,7 +312,6 @@ export default function NewAssignment() {
   const countAssignmentData = useSelector(selectAssignmentCounts);
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
-
 
   useEffect(() => {
     dispatch(fetchAssignmentData());
@@ -409,28 +393,18 @@ export default function NewAssignment() {
     return <div>Loading...</div>;
   }
 
-  // const handleEmployeeSelect = (event) => {
-  //   const selectedEmployeeIds = event.target.value;
-  //   setAssignmentData((prevState) => ({
-  //     ...prevState,
-  //     EmployeeID_AssignTo: selectedEmployeeIds,
-  //   }));
-  // };
+  const handleEmployeeSelect = (event) => {
+    const selectedEmployeeIds = event.target.value;
+    setAssignmentData((prevState) => ({
+      ...prevState,
+      EmployeeID_AssignTo: selectedEmployeeIds,
+    }));
 
-  const handleEmployeeSelect = async (event) => {
-    const selectedEmployeeId = event.target.value;
-    const selectedEmployee = assignedEmployees.find(
-      (employee) => employee.EmployeeID_AssignTo === selectedEmployeeId
-    );
-    try {
-      // Dispatch the thunk action creator to fetch assignment counts
-      dispatch(fetchAssignmentCounts(selectedEmployee.EmployeeID_AssignTo));
-    } catch (error) {
-      console.error("Error fetching assignment counts:", error);
-    }
+    // Dispatch action to fetch assignment counts based on selected employees
+    dispatch(fetchAssignmentCounts(selectedEmployeeIds));
   };
 
-
+  console.log(countAssignmentData, "count");
 
 
   return (
@@ -464,17 +438,23 @@ export default function NewAssignment() {
                     id="EmployeeID_AssignTo"
                     name="EmployeeID_AssignTo"
                     value={assignmentData.EmployeeID_AssignTo || []}
-                    onChange={(event) => {
-                      handleInputChange(event);
-                      handleEmployeeSelect(event);
-                    }}
+                    onChange={handleEmployeeSelect}
                     renderValue={(selected) => selected.join(", ")}
                     required
                   >
                     {assignedEmployees.map((employee) => (
-                      <MenuItem key={employee.EmployeeID_AssignTo} value={employee.EmployeeID_AssignTo}>
-                        <Checkbox checked={assignmentData.EmployeeID_AssignTo.includes(employee.EmployeeID_AssignTo)} />
-                        <ListItemText primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`} />
+                      <MenuItem
+                        key={employee.EmployeeID_AssignTo}
+                        value={employee.EmployeeID_AssignTo}
+                      >
+                        <Checkbox
+                          checked={assignmentData.EmployeeID_AssignTo.includes(
+                            employee.EmployeeID_AssignTo
+                          )}
+                        />
+                        <ListItemText
+                          primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`}
+                        />
                       </MenuItem>
                     ))}
                   </Select>
@@ -570,5 +550,3 @@ export default function NewAssignment() {
     </Box>
   );
 }
-
-
