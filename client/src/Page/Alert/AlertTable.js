@@ -1,5 +1,5 @@
 // ViewDepartmentData.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { format } from "date-fns";
 
 import "./Alert.css";
 
@@ -21,7 +22,7 @@ const AlertTable = ({ departments, handleDeleteDepartment}) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
-
+  const [data, setData] = useState([]);
 
   departments = Array.isArray(departments) ? departments : [];
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -33,6 +34,25 @@ const AlertTable = ({ departments, handleDeleteDepartment}) => {
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const apiUrl = "http://localhost:3306/api/alertDetails";
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    })();
+  }, []);
 
   
   return (
@@ -56,30 +76,35 @@ const AlertTable = ({ departments, handleDeleteDepartment}) => {
               <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
                 Reminder
               </TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
-                Reminder Type
-              </TableCell>
-              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Edit</TableCell>
+             
+              {/* <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Edit</TableCell> */}
               <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentItems.map((item) => (
+            {data.map((item) => (
               <TableRow key={item.DepartmentID} className="custom-row">
                 <TableCell className="vertical-border">
-                  {item.DepartmentID}
+                  {item.AlertID}
                 </TableCell>
                 <TableCell className="vertical-border">
-                  {item.DepartmentName}
+                  {item.EmployeeID_AssignTo}
                 </TableCell>
                 <TableCell className="vertical-border">
+                  {item.Alert_Note}
+                </TableCell>
+                <TableCell className="vertical-border">
+                 {format(new Date(item.ReminderDay), "dd/MM/yyyy")}
+                </TableCell>
+             
+                {/* <TableCell className="vertical-border">
                   <IconButton >
                     <EditNoteIcon
                     sx={{color:"#055f85"}}
                      
                     />
                   </IconButton>
-                </TableCell>
+                </TableCell> */}
                 <TableCell className="vertical-border" >
                   <IconButton
                     sx={{color:"red" }}
