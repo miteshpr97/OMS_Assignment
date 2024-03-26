@@ -103,7 +103,7 @@ const CreateAlert = () => {
       event.stopPropagation();
       return;
     }
-
+  
     try {
       setIsLoading(true);
       // Include EmployeeID in formData
@@ -115,7 +115,7 @@ const CreateAlert = () => {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formDataWithEmployeeID), // Use formDataWithEmployeeID here
+        body: JSON.stringify(formDataWithEmployeeID),
       });
       if (response.ok) {
         setSuccessMessage("Registration successful!");
@@ -133,6 +133,12 @@ const CreateAlert = () => {
           Is_Sms: "",
         });
         form.reset();
+        // Close the modal dialog
+        handleClose();
+        // Automatically hide the success message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage("");
+        }, 3000);
       } else {
         setError("Registration failed:" + response.statusText);
       }
@@ -143,6 +149,7 @@ const CreateAlert = () => {
       setIsLoading(false);
     }
   };
+  
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -246,12 +253,13 @@ const CreateAlert = () => {
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <FormControl fullWidth variant="outlined">
-                      <InputLabel>Select Employee</InputLabel>
+                      <InputLabel>Select Employee AssignTo</InputLabel>
                       <Select
                         multiple
                         fullWidth
                         id="EmployeeID_AssignTo"
                         name="EmployeeID_AssignTo"
+                        label="Select Employee AssignTo"
                         value={formData.EmployeeID_AssignTo || []}
                         onChange={handleInputChange}
                         renderValue={(selected) => selected.join(", ")}
