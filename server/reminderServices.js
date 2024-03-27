@@ -3,6 +3,8 @@
 const cron = require("node-cron");
 const { sendReminder } = require("./emailServices");
 const { queryAsync } = require("./db");
+const { sendPopup } = require("./popupServices");
+const { sendSMS, sendWhatsApp } = require("./notificationServices");
 
 async function scheduleReminders() {
   cron.schedule("* * * * *", async () => {
@@ -25,18 +27,26 @@ async function sendReminders() {
         RemindBeforeEventDay,
         ReminderCounts,
         Email,
+        ContactNumber,
         Alert_Note,
+        Is_Sms,
+        Is_Whatsapp
       } = row;
+      console.log(row);
       const today = new Date();
+      console.log(today);
       const eventDate = new Date(
         today.getFullYear(),
         today.getMonth(),
         ReminderDay.getDate()
       );
+      console.log(eventDate);
 
       const daysDifference = eventDate.getDate() - today.getDate();
+      console.log(daysDifference);
 
       if (daysDifference <= RemindBeforeEventDay && daysDifference >= 0){
+        console.log("hi");
         for (let i = 1; i <= ReminderCounts; i++) {
           // Parse reminderTime as hours and minutes
           const reminderTimeParts = row[`ReminderTime${i}`].split(":");
@@ -54,6 +64,13 @@ async function sendReminders() {
             currentMinute === reminderMinute
           ) {
             await sendReminder(Email, Alert_Note);
+            sendPopup(Alert_Note);
+            if (Is_Sms === 1){
+              await sendSMS(ContactNumber, Alert_Note);
+            } 
+            if (Is_Whatsapp === 1){
+              await sendWhatsApp(ContactNumber, Alert_Note); 
+            }
           }
         }
       }
