@@ -1,6 +1,4 @@
 const { queryAsync } = require("../db");
-const path = require('path');
-const fs = require('fs').promises;
 
 exports.getEmployeeWithNoUserCredential = async (req, res) => {
   try {
