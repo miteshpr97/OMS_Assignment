@@ -2,8 +2,8 @@ const { queryAsync } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../midderware/auth");
-const sendEmail = require("../emailServices");
-const nodemailer = require("nodemailer");
+const { sendEmailForPasswordChange , sendEmailForUserCredentials } = require("../emailServices");
+// const nodemailer = require("nodemailer");
 
 // inserting user details
 
@@ -51,33 +51,35 @@ exports.addUserDetails = async (req, res) => {
       hashedPassword,
     ]);
 
+    await sendEmailForUserCredentials(Username,EmployeeID,Password);
+
     console.log("User registered successfully");
+    res.status(201).json({ message: "User registered successfully" });
 
     // Sending email to the user email to his EmployeeID and Password
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "miteshpradhan97@gmail.com",
-        pass: "yliu enkl droc zmdz",
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: "miteshpradhan97@gmail.com",
+    //     pass: "yliu enkl droc zmdz",
+    //   },
+    // });
 
-    const mailOptions = {
-      from: "miteshpradhan97@gmail.com",
-      to: Username,
-      subject: "Registration Successful",
-      text: `Dear ${Username},\n\nThank you for registering with us.\n\nYour Employee ID: ${EmployeeID}\nYour Password: ${Password}\n\nBest regards,\nYour OWM Logistics`,
-    };
+    // const mailOptions = {
+    //   from: "miteshpradhan97@gmail.com",
+    //   to: Username,
+    //   subject: "Registration Successful",
+    //   text: `Dear ${Username},\n\nThank you for registering with us.\n\nYour Employee ID: ${EmployeeID}\nYour Password: ${Password}\n\nBest regards,\nYour OWM Logistics`,
+    // };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.error("Error sending email:", error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    // transporter.sendMail(mailOptions, function (error, info) {
+    //   if (error) {
+    //     console.error("Error sending email:", error);
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //   }
+    // });
 
-    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error("Error hashing password:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -249,7 +251,7 @@ exports.forgetPassword = async (req, res) => {
     const Password_resetUsed = results[0].Password_resetUsed;
     const token = generateToken(userName, Password_resetUsed);
 
-    sendEmail(userName, token)
+    sendEmailForPasswordChange(userName, token)
       .then(() => res.json({ message: "Token sent to email" }))
       .catch((error) => {
         console.error(error);
