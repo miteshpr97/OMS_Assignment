@@ -81,8 +81,7 @@ const AssignmentTable = ({
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
 
-  console.log(currentItems, "fffff")
-  // Change page
+  
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };

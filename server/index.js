@@ -13,11 +13,14 @@ const userDetails = require("./routes/userDetailsRoutes");
 const assignmentDetails = require("./routes/assignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
 const alertDetails = require("./routes/alertRoutes");
+const { scheduleReminders } = require("./reminderServices");
 
 const { authenticateUser } = require("./midderware/auth");
 
 const app = express();
 const port = process.env.PORT || 3306;
+
+scheduleReminders();
 
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));

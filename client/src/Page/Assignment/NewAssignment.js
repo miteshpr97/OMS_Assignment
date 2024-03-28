@@ -277,7 +277,7 @@ import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Grid, MenuItem } from "@mui/material";
+import { FormControl, Grid, InputLabel, MenuItem } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import AssignmentCard from "./AssignmentCard";
 import AssignmentTable from "./AssignmentTable";
@@ -432,9 +432,12 @@ export default function NewAssignment() {
                   />
                 </Grid>
                 <Grid item md={6}>
+                <FormControl fullWidth variant="outlined">
+                      <InputLabel>Select Employee AssignTo</InputLabel>
                   <Select
                     multiple
                     fullWidth
+                    label="Select Employee AssignTo"
                     id="EmployeeID_AssignTo"
                     name="EmployeeID_AssignTo"
                     value={assignmentData.EmployeeID_AssignTo || []}
@@ -458,6 +461,7 @@ export default function NewAssignment() {
                       </MenuItem>
                     ))}
                   </Select>
+                  </FormControl>
                 </Grid>
               </Grid>
               <Grid container spacing={3} className="mb-3">
