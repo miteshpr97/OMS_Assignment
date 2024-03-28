@@ -843,7 +843,7 @@ const CreateAlert = () => {
                   </Grid>
                   <Grid item xs={12} md={4}>
                     <TextField
-                      label="Reminder before"
+                      label="Remind DayBefore"
                       variant="outlined"
                       type="number"
                       name="RemindBeforeEventDay"
