@@ -13,7 +13,6 @@ import MyTask from "./Page/MyTask/ViewAssignment";
 import TeamTask from "./Page/TeamTask/TeamTask";
 import Report from "./Page/Report/Report";
 
-
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import CreateAlert from "./Page/Alert/CreateAlert";
 
@@ -23,7 +22,6 @@ export default function App() {
       <Routes>
         <Route path="/loginpage" element={<Login />}></Route>
         <Route path="/signuppage" element={<Signup />}></Route>
-
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<Home />}></Route>
           <Route path="/registeration" element={<RegisterPage />}></Route>
@@ -34,10 +32,9 @@ export default function App() {
           {/* <Route path="/myteam" element={<MyTeam />}></Route> */}
           <Route path="/assignment" element={<NewAssignment />}></Route>
           <Route path="/view-assignment" element={<MyTask />}></Route>
-          <Route path="teamTask" element={<TeamTask/>}></Route>
-          <Route path="CreateAlert" element={<CreateAlert/>}></Route>
+          <Route path="teamTask" element={<TeamTask />}></Route>
+          <Route path="CreateAlert" element={<CreateAlert />}></Route>
           <Route path="/report" element={<Report />}></Route>
-         
         </Route>
       </Routes>
     </>
