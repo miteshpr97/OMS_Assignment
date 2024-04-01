@@ -9,11 +9,11 @@ const workGroup = require("./routes/workGroupRoutes");
 const designationDetails = require("./routes/designationRoutes");
 const departmentDetails = require("./routes/departmentRoutes");
 const userDetails = require("./routes/userDetailsRoutes");
-// const assignmentDetails = require("./routes/Old_AssignmentRoutes");
 const assignmentDetails = require("./routes/assignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
 const alertDetails = require("./routes/alertRoutes");
-const { scheduleReminders } = require("./reminderServices");
+const { scheduleReminders } = require("./utils/reminderServices");
+const { scheduleDueUpdation } = require("./utils/dueUpdation");
 
 const { authenticateUser } = require("./midderware/auth");
 
@@ -21,6 +21,7 @@ const app = express();
 const port = process.env.PORT || 3306;
 
 scheduleReminders();
+scheduleDueUpdation();
 
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
@@ -40,7 +41,6 @@ app.use("/api/designation", designationDetails);
 app.use("/api/department", departmentDetails);
 app.use("/api/userDetails", userDetails);
 app.use("/api/assignmentDetails", assignmentDetails);
-// app.use("/api/assignmentTesting", assignmentTesting);
 app.use("/api/taskDetails", taskDetails);
 app.use("/api/alertDetails",alertDetails);
 

@@ -2,7 +2,7 @@ const { queryAsync } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { generateToken } = require("../midderware/auth");
-const { sendEmailForPasswordChange , sendEmailForUserCredentials } = require("../emailServices");
+const { sendEmailForPasswordChange , sendEmailForUserCredentials } = require("../utils/emailServices");
 // const nodemailer = require("nodemailer");
 
 // inserting user details
