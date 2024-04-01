@@ -37,7 +37,7 @@ function calculateDaysLeft(assignment) {
   }
 
   if (assignment.AssignmentStatus === "Assigned" ) {
-    return calculateDateDifference(assignDate, deadlineDate);
+    return calculateDateDifference(deadlineDate, assignDate);
   }
 
   // Check if the assignment is still in progress
