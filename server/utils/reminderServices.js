@@ -2,7 +2,7 @@
 
 const cron = require("node-cron");
 const { sendReminder } = require("./emailServices");
-const { queryAsync } = require("./db");
+const { queryAsync } = require("../db");
 const { sendPopup } = require("./popupServices");
 const { sendSMS, sendWhatsApp } = require("./notificationServices");
 

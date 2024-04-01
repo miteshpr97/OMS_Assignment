@@ -12,7 +12,7 @@ import {
   Pagination,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+// import EditNoteIcon from "@mui/icons-material/EditNote";
 import { format } from "date-fns";
 
 import "./Alert.css";
