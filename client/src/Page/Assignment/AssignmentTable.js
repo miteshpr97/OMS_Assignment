@@ -42,7 +42,7 @@ const AssignmentTable = ({
   const [tableData, setTableData] = useState([]);
   const [activeTab, setActiveTab] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 50;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
 
@@ -188,6 +188,8 @@ const TableComponent = ({
     setassignmentData(reAssignData);
   };
 
+
+  console.log(data, "tabledata");
   return (
     <div style={{ overflowX: "auto", width: "100%" }}>
       <div style={{ width: "150%" }}>
@@ -284,6 +286,16 @@ const TableComponent = ({
                   }}
                 >
                   Close Time
+                </TableCell>
+                <TableCell
+                  className="vertical-border"
+                  sx={{
+                    color: "white",
+                    padding: "10px 16px",
+                    fontSize: "15px",
+                  }}
+                >
+                  Due Day
                 </TableCell>
                 <TableCell
                   className="vertical-border"
@@ -426,6 +438,9 @@ const TableComponent = ({
                         {format(new Date(item.CompletionTimestamp), "HH:mm:ss")}
                       </>
                     )}
+                  </TableCell>
+                  <TableCell className="vertical-border">
+                    {item.Due}
                   </TableCell>
 
                   <TableCell className="vertical-border">
