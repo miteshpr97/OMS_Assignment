@@ -12,9 +12,7 @@ async function updateDueForAssignments() {
     const results = await queryAsync("SELECT * FROM tb_assignment");
 
     for (const assignment of results) {
-        console.log(assignment);
       const due = calculateDaysLeft(assignment);
-      console.log(due);
       const updateQuery = `UPDATE tb_assignment SET due = ? WHERE AssignmentID = ?`;
 
       await queryAsync(updateQuery, [due, assignment.AssignmentID]);
@@ -29,16 +27,17 @@ async function updateDueForAssignments() {
 
 function calculateDaysLeft(assignment) {
   const assignDate = new Date(assignment.AssignDate);
-  console.log(assignDate);
   const deadlineDate = new Date(assignment.DeadlineDate);
-  console.log(deadlineDate);
   const now = new Date();
 
   // Function to calculate the difference in days between two dates
   function calculateDateDifference(date1, date2) {
     const millisecondsPerDay = 1000 * 60 * 60 * 24;
-    console.log((date1-date2));
     return Math.floor((date1 - date2) / millisecondsPerDay);
+  }
+
+  if (assignment.AssignmentStatus === "Assigned" ) {
+    return calculateDateDifference(deadlineDate, assignDate);
   }
 
   // Check if the assignment is still in progress

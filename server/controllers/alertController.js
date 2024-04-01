@@ -57,11 +57,44 @@ exports.addAlert = async (req, res) => {
 
 exports.getAllAlert = async (req, res) => {
   try {
-    const query = "SELECT * FROM tb_alert";
+    const query = `
+        SELECT 
+          a.*, 
+          e1.FirstName AS Assigner_FirstName, 
+          e2.FirstName AS Assignee_FirstName
+        FROM 
+          tb_alert AS a
+          INNER JOIN 
+          tb_employee AS e1 ON a.EmployeeID = e1.EmployeeID
+          INNER JOIN
+          tb_employee AS e2 ON a.EmployeeID_AssignTo = e2.EmployeeID
+      `;
     const results = await queryAsync(query);
     res.status(200).json(results);
   } catch (error) {
     console.error("Error fetching all alerts:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Delete alert details
+
+exports.deleteAlertDetails = async (req, res) => {
+  const alertId = req.params.AlertID;
+  const deleteQuery = "DELETE FROM tb_alert WHERE AlertID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [alertId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Alert not found" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Alert's data deleted successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

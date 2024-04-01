@@ -90,7 +90,14 @@ exports.addUserDetails = async (req, res) => {
 
 exports.getAllUserDetails = async (req, res) => {
   try {
-    const query = "SELECT * FROM tb_userdetails";
+    const query = `
+            SELECT
+              u.Username,u.Role,u.Password_resetUsed,e.*
+            FROM
+              tb_userdetails as u 
+            INNER JOIN
+              tb_employee as e ON u.EmployeeID = e.EmployeeID`;
+
     const results = await queryAsync(query);
     res.status(200).json(results);
   } catch (error) {
