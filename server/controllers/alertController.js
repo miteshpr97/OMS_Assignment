@@ -57,7 +57,18 @@ exports.addAlert = async (req, res) => {
 
 exports.getAllAlert = async (req, res) => {
   try {
-    const query = "SELECT * FROM tb_alert";
+    const query = `
+        SELECT 
+          a.*, 
+          e1.FirstName AS Assigner_FirstName, 
+          e2.FirstName AS Assignee_FirstName
+        FROM 
+          tb_alert AS a
+          INNER JOIN 
+          tb_employee AS e1 ON a.EmployeeID = e1.EmployeeID
+          INNER JOIN
+          tb_employee AS e2 ON a.EmployeeID_AssignTo = e2.EmployeeID
+      `;
     const results = await queryAsync(query);
     res.status(200).json(results);
   } catch (error) {
