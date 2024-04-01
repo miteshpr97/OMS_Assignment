@@ -68,7 +68,10 @@ const AlertTable = ({ departments, handleDeleteDepartment}) => {
                 Alert ID
               </TableCell>
               <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
-                Employee ID
+                Assigner ID
+              </TableCell>
+              <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
+                AssignTo ID
               </TableCell>
               <TableCell className="vertical-border" sx={{color:"white", padding:"10px 16px", fontSize:"15px"}}>
                 Alert Note
@@ -86,6 +89,9 @@ const AlertTable = ({ departments, handleDeleteDepartment}) => {
               <TableRow key={item.DepartmentID} className="custom-row">
                 <TableCell className="vertical-border">
                   {item.AlertID}
+                </TableCell>
+                <TableCell className="vertical-border">
+                  {item.EmployeeID}
                 </TableCell>
                 <TableCell className="vertical-border">
                   {item.EmployeeID_AssignTo}

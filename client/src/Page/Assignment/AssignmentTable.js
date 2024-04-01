@@ -560,6 +560,8 @@ const getStatusColor = (status) => {
       return "brown";
     case "Reject":
       return "red";
+      case "Completed":
+      return "green";
     default:
       return "inherit";
   }
