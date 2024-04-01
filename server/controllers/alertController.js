@@ -65,3 +65,25 @@ exports.getAllAlert = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// Delete alert details
+
+exports.deleteAlertDetails = async (req, res) => {
+  const alertId = req.params.AlertID;
+  const deleteQuery = "DELETE FROM tb_alert WHERE AlertID = ?";
+
+  try {
+    const results = await queryAsync(deleteQuery, [alertId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ error: "Alert not found" });
+    } else {
+      res
+        .status(200)
+        .json({ message: "Alert's data deleted successfully" });
+    }
+  } catch (error) {
+    console.error("Error executing query:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
