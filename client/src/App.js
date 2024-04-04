@@ -15,6 +15,8 @@ import Report from "./Page/Report/Report";
 
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import CreateAlert from "./Page/Alert/CreateAlert";
+import ForgotPassword from "./Component/forgotPassword/ForgotPassword";
+import ResetPassword from "./Component/forgotPassword/ResetPassword";
 
 export default function App() {
   return (
@@ -22,6 +24,8 @@ export default function App() {
       <Routes>
         <Route path="/loginpage" element={<Login />}></Route>
         <Route path="/signuppage" element={<Signup />}></Route>
+        <Route path="/forgetPassword" element={<ForgotPassword/>}></Route>
+        <Route path="/ResetPassword/:token" element={<ResetPassword/>}></Route>
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<Home />}></Route>
           <Route path="/registeration" element={<RegisterPage />}></Route>

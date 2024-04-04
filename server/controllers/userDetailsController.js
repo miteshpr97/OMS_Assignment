@@ -268,18 +268,22 @@ exports.forgetPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   try {
     const token = req.params.token;
+    console.log(token);
     const newPassword = req.body.newPassword;
+    console.log(newPassword);
 
     // Hash the new password
     const updatedPassword = await bcrypt.hash(newPassword, 10);
 
     // Verify the user using the token
     const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(verifyUser);
 
     const checkEmailQuery =
       "SELECT Username, Password_resetUsed FROM tb_userdetails WHERE Username = ?;";
 
     const results = await queryAsync(checkEmailQuery, [verifyUser.userName]);
+    console.log(results);
 
     // Check if the token has a valid version
     if (verifyUser.Password_resetUsed !== results[0].Password_resetUsed) {
@@ -296,7 +300,10 @@ exports.resetPassword = async (req, res) => {
       verifyUser.userName,
     ]);
 
-    res.status(200).json({ message: "Password reset successfully" });
+
+    console.log(updateResults);
+
+    res.status(200).json({message: "Password reset successfully" });
   } catch (error) {
     console.error(error);
 

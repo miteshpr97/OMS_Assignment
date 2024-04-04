@@ -3,21 +3,19 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import HeaderSignIn from "./HeaderSignIn";
-import { useNavigate } from "react-router-dom";
+import LockResetIcon from "@mui/icons-material/LockReset";
+import { useParams } from "react-router-dom";
+
 import { useState } from "react";
-import axios from "axios";
+
+import HeaderForgotPassword from "./HeaderForgotPassword";
+import { Grid } from "@mui/material";
 
 const customTheme = createTheme({
   palette: {
@@ -27,14 +25,13 @@ const customTheme = createTheme({
   },
 });
 
-export default function Login() {
+export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const {token} = useParams();
 
   const [formData, setFormData] = useState({
-    EmployeeID: "",
-    Password: "",
+    newPassword: "",
   });
 
   const handleInputChange = (e) => {
@@ -42,49 +39,43 @@ export default function Login() {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     try {
-      setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3306/api/userDetails/login",
-        {
-          EmployeeID: formData.EmployeeID,
-          Password: formData.Password,
+      const apiUrl = `http://localhost:3306/api/userDetails/resetPassword/${token}`;
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+        body: JSON.stringify(formData),
+      });
 
-      const data = response.data;
-      if (response.status === 200 && data.user) {
-        sessionStorage.setItem("userData", JSON.stringify(data.user));
-        localStorage.setItem("token", JSON.stringify(data.token));
-        navigate("/");
+      if (response.ok) {
+        console.log("Form data submitted successfully");
+        // Reset form inputs
+        setFormData({
+            newPassword: "",
+        });
       } else {
-        setError("Invalid Employee ID or Password");
+        console.error("Failed to submit form data:", response.statusText);
+        // Optionally, you can handle error response here
       }
     } catch (error) {
-      setError("An error occurred while logging in");
-      console.error(error);
-    } finally {
-      setLoading(false);
+      console.error("Error submitting form data:", error.message);
+      // Optionally, you can handle other errors here
     }
   };
 
   return (
     <ThemeProvider theme={customTheme}>
-      <HeaderSignIn />
-      <Container component="main" maxWidth="xs">
+      <HeaderForgotPassword />
+      <Container component="main" maxWidth="lg">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 16,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -93,8 +84,8 @@ export default function Login() {
           <Card>
             <CardContent>
               <span style={{ display: "flex", justifyContent: "center" }}>
-                <Avatar sx={{ m: 1, bgcolor: "#055f85", color:"white" }}>
-                  <LockOutlinedIcon />
+                <Avatar sx={{ m: 1, bgcolor: "#055f85", color: "white" }}>
+                  <LockResetIcon />
                 </Avatar>
               </span>
               <Typography
@@ -102,7 +93,7 @@ export default function Login() {
                 component="h1"
                 variant="h5"
               >
-                Sign in
+                Reset Password
               </Typography>
               <Box
                 component="form"
@@ -111,50 +102,39 @@ export default function Login() {
                 sx={{ mt: 1 }}
               >
                 <TextField
-                  margin="normal"
                   required
                   fullWidth
-                  id="EmployeeID"
-                  label="EmployeeID"
-                  name="EmployeeID"
-                  autoComplete="EmployeeID"
-                  value={formData.EmployeeID}
-                  onChange={handleInputChange}
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="Password"
+                  name="newPassword"
                   label="Password"
                   type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  value={formData.Password}
+                  id="newPassword"
+                  autoComplete="new-password"
+                  value={formData.newPassword}
                   onChange={handleInputChange}
                 />
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
+{/* 
+                <TextField
+                  required
+                  fullWidth
+                  name="confirm_password"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirm_password"
+                  autoComplete="new-password"
+                  value={formData.confirm_password}
+                  onChange={handleInputChange}
+                /> */}
+
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, bgcolor:"#055f85" }}
+                  sx={{ mt: 3, mb: 2, bgcolor: "#055f85" }}
                   disabled={loading}
                 >
-                  {loading ? "Signing in..." : "Sign In"}
+                  {loading ? "Reset in..." : "Reset my Password"}
                 </Button>
 
-                <Grid container>
-                  <Grid item xs>
-                    <Link href="/forgetPassword" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid>
-                </Grid>
                 {error && (
                   <Typography color="error" align="center" sx={{ mt: 2 }}>
                     {error}

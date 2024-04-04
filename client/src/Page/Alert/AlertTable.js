@@ -172,11 +172,11 @@ const AlertTable = () => {
                 <TableCell className="vertical-border">
                   {item.AlertID}
                 </TableCell>
-                <TableCell className="vertical-border">
-                  {item.EmployeeID}
+                <TableCell className="vertical-border" sx={{}}>
+                  {item.EmployeeID} - {item.Assigner_FirstName}
                 </TableCell>
                 <TableCell className="vertical-border">
-                  {item.EmployeeID_AssignTo}
+                  {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
                 </TableCell>
                 <TableCell className="vertical-border">
                   {item.Alert_Note}

@@ -45,11 +45,6 @@ const AssignmentTable = ({
   const itemsPerPage = 50;
   const [selectedDescription, setSelectedDescription] = useState(null);
 
-
-
-
-
-
   useEffect(() => {
     if (!loading && !error && assignmentDatas && assignmentDatas.length > 0) {
       const assigned = assignmentDatas.filter(
@@ -80,8 +75,6 @@ const AssignmentTable = ({
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
 
-
-  
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
   };
@@ -187,7 +180,6 @@ const TableComponent = ({
     setIsReassignModalOpen(true);
     setassignmentData(reAssignData);
   };
-
 
   console.log(data, "tabledata");
   return (
@@ -349,15 +341,23 @@ const TableComponent = ({
                   <TableCell className="vertical-border">
                     {item.EmployeeID_AssignTo} - {item.Assignee_FirstName}
                   </TableCell>
-                  <TableCell
-                    className="vertical-border"
-                    onClick={() =>
-                      handleDescriptionClick(item.Assignment_Description)
-                    }
-                    style={{ cursor: "pointer", maxWidth: "60px" }}
-                  >
-                    {item.Assignment_Description}
+                  <TableCell className="vertical-border" sx={{width:"300px", padding:"6px", cursor: "pointer"}}>
+                    <div
+                      style={{
+                        maxWidth:"100%",
+                    
+                        maxHeight: "100px", // Set your maximum height here
+                        overflowY: "auto", // Enable vertical scrolling
+                    
+                      }}
+                      onClick={() =>
+                        handleDescriptionClick(item.Assignment_Description)
+                      }
+                    >
+                      {item.Assignment_Description}
+                    </div>
                   </TableCell>
+
                   <TableCell className="vertical-border">
                     {format(new Date(item.AssignDate), "dd/MM/yyyy")}
                   </TableCell>
@@ -439,9 +439,7 @@ const TableComponent = ({
                       </>
                     )}
                   </TableCell>
-                  <TableCell className="vertical-border">
-                    {item.Due}
-                  </TableCell>
+                  <TableCell className="vertical-border">{item.Due}</TableCell>
 
                   <TableCell className="vertical-border">
                     <span
@@ -560,7 +558,7 @@ const getStatusColor = (status) => {
       return "brown";
     case "Reject":
       return "red";
-      case "Completed":
+    case "Completed":
       return "green";
     default:
       return "inherit";
