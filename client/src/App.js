@@ -54,6 +54,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Component/loginPage/Login";
 import Signup from "./Component/signup/Signup";
+import ForgotPassword from "./Component/forgotPassword/ForgotPassword";
+import ResetPassword from "./Component/forgotPassword/ResetPassword";
 import Home from "./Page/Home/Home";
 import RegisterPage from "./Page/NewEmployee/RegisterPage";
 import Master from "./Page/Master/Master";
@@ -77,7 +79,9 @@ export default function App() {
     <>
       <Routes>
         <Route path="/loginpage" element={<Login />}></Route>
-        <Route path="/signuppage" element={<Signup />}></Route>
+        <Route path="/signuppage" element={<Signup />}></Route>       
+          <Route path="/forgetPassword" element={<ForgotPassword/>}></Route>
+       <Route path="/ResetPassword/:token" element={<ResetPassword/>}></Route>
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<Home />}></Route>
           {userRole && (
