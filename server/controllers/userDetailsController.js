@@ -170,7 +170,7 @@ exports.loginUser = async (req, res) => {
           process.env.SECRET_KEY || SECRET_KEY,
           { expiresIn: "1h" }
         );
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token);
 
         // Avoid logging sensitive information
         console.log("User authenticated successfully");

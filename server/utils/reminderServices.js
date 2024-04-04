@@ -7,7 +7,7 @@ const { sendPopup } = require("./popupServices");
 const { sendSMS, sendWhatsApp } = require("./notificationServices");
 
 async function scheduleReminders() {
-  cron.schedule("* * * * *", async () => {
+  cron.schedule("0 0 * * *", async () => {
     await sendReminders();
   });
 }
