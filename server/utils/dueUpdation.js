@@ -13,9 +13,21 @@ async function updateDueForAssignments() {
 
     for (const assignment of results) {
       const due = calculateDaysLeft(assignment);
-      const updateQuery = `UPDATE tb_assignment SET due = ? WHERE AssignmentID = ?`;
+      const updateQuery = `
+                  UPDATE tb_assignment 
+                  SET Due = ? 
+                  WHERE 
+                    AssignmentID = ? 
+                    AND EmployeeID = ? 
+                    AND EmployeeID_AssignTo = ?;
+`;
 
-      await queryAsync(updateQuery, [due, assignment.AssignmentID]);
+      await queryAsync(updateQuery, [
+        due,
+        assignment.AssignmentID,
+        assignment.EmployeeID,
+        assignment.EmployeeID_AssignTo,
+      ]);
       console.log(`Due updated for AssignmentID ${assignment.AssignmentID}`);
     }
 
@@ -36,21 +48,13 @@ function calculateDaysLeft(assignment) {
     return Math.floor((date1 - date2) / millisecondsPerDay);
   }
 
-  if (assignment.AssignmentStatus === "Assigned" ) {
-    return calculateDateDifference(assignDate, deadlineDate);
+  if (assignment.AssignmentStatus === "Assigned") {
+    return calculateDateDifference(deadlineDate, assignDate);
   }
 
   // Check if the assignment is still in progress
   if (assignment.AssignmentStatus === "Progress") {
-    // If it's before the deadlineDate
-    if (now < deadlineDate) {
-      return calculateDateDifference(deadlineDate, now);
-    } else if (now > deadlineDate) {
-      // If it's after the deadlineDate
-      return calculateDateDifference(deadlineDate, now);
-    } else {
-      return 0;
-    }
+    return calculateDateDifference(deadlineDate, now);
   }
 
   // Calculate days before or after deadlineDate when status is changed
@@ -64,7 +68,7 @@ function calculateDaysLeft(assignment) {
     const rejectDate = new Date(assignment.RejectTimeStamp);
     return calculateDateDifference(rejectDate, assignDate);
   } else if (
-    assignment.AssignmentStatus === "Completed" &&
+    assignment.AssignmentStatus === "Closed" &&
     assignment.CompletionTimestamp
   ) {
     const completionDate = new Date(assignment.CompletionTimestamp);

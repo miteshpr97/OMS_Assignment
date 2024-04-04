@@ -18,6 +18,7 @@ import CreateAlert from "./Page/Alert/CreateAlert";
 import ForgotPassword from "./Component/forgotPassword/ForgotPassword";
 import ResetPassword from "./Component/forgotPassword/ResetPassword";
 
+
 export default function App() {
   return (
     <>
@@ -39,6 +40,8 @@ export default function App() {
           <Route path="teamTask" element={<TeamTask />}></Route>
           <Route path="CreateAlert" element={<CreateAlert />}></Route>
           <Route path="/report" element={<Report />}></Route>
+        
+
         </Route>
       </Routes>
     </>

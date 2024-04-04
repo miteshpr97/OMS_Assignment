@@ -7,32 +7,6 @@ const { sendEmailForPasswordChange , sendEmailForUserCredentials } = require("..
 
 // inserting user details
 
-// exports.addUserDetails = async (req, res) => {
-//   const { EmployeeID, Role, Username, Password, confirm_password } = req.body;
-
-//   if (Password !== confirm_password) {
-//     return res.status(400).json({ error: "Passwords do not match" });
-//   }
-
-//   try {
-//     const hashedPassword = await bcrypt.hash(Password, 10);
-//     const query =
-//       "INSERT INTO tb_userdetails (EmployeeID, Role, Username, Password) VALUES (?, ?, ?, ?)";
-//     const results = await queryAsync(query, [
-//       EmployeeID,
-//       Role,
-//       Username,
-//       hashedPassword,
-//     ]);
-
-//     console.log("User registered successfully");
-//     res.status(201).json({ message: "User registered successfully" });
-//   } catch (error) {
-//     console.error("Error hashing password:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// };
-
 exports.addUserDetails = async (req, res) => {
   const { EmployeeID, Role, Username, Password, confirm_password } = req.body;
 
@@ -51,56 +25,64 @@ exports.addUserDetails = async (req, res) => {
       hashedPassword,
     ]);
 
-    await sendEmailForUserCredentials(Username,EmployeeID,Password);
-
     console.log("User registered successfully");
     res.status(201).json({ message: "User registered successfully" });
-
-    // Sending email to the user email to his EmployeeID and Password
-    // const transporter = nodemailer.createTransport({
-    //   service: "gmail",
-    //   auth: {
-    //     user: "miteshpradhan97@gmail.com",
-    //     pass: "yliu enkl droc zmdz",
-    //   },
-    // });
-
-    // const mailOptions = {
-    //   from: "miteshpradhan97@gmail.com",
-    //   to: Username,
-    //   subject: "Registration Successful",
-    //   text: `Dear ${Username},\n\nThank you for registering with us.\n\nYour Employee ID: ${EmployeeID}\nYour Password: ${Password}\n\nBest regards,\nYour OWM Logistics`,
-    // };
-
-    // transporter.sendMail(mailOptions, function (error, info) {
-    //   if (error) {
-    //     console.error("Error sending email:", error);
-    //   } else {
-    //     console.log("Email sent: " + info.response);
-    //   }
-    // });
-
   } catch (error) {
     console.error("Error hashing password:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-// getting all user details
+
+
+ // getting all user details
+// exports.getAllUserDetails = async (req, res) => {
+//   try {
+//     const query = `
+//             SELECT
+//               u.Username,u.Role,u.Password_resetUsed,e.*
+//             FROM
+//               tb_userdetails as u 
+//             INNER JOIN
+//               tb_employee as e ON u.EmployeeID = e.EmployeeID`;
+
+//     const results = await queryAsync(query);
+//     res.status(200).json(results);
+//   } catch (error) {
+//     console.error("Error executing query:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
 
 exports.getAllUserDetails = async (req, res) => {
   try {
-    const query = "SELECT * FROM tb_userdetails";
-    const results = await queryAsync(query);
-    res.status(200).json(results);
+    const employeeId = req.user.EmployeeID; // Extract authenticated user's EmployeeID from the decoded token
+    const query = `
+      SELECT
+        u.Username, u.Role, u.Password_resetUsed, e.*
+      FROM
+        tb_userdetails AS u 
+      INNER JOIN
+        tb_employee AS e ON u.EmployeeID = e.EmployeeID
+      WHERE
+        u.EmployeeID = ?
+    `;
+    const results = await queryAsync(query, [employeeId]);
+    
+    if (results.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(results[0]); // Return the first (and only) user found
   } catch (error) {
     console.error("Error executing query:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// updating user details
 
+//updating user details
 exports.updateUserDetails = async (req, res) => {
   const employeeId = req.params.EmployeeID;
   const updatedUserDetails = req.body;
@@ -188,7 +170,7 @@ exports.loginUser = async (req, res) => {
           process.env.SECRET_KEY || SECRET_KEY,
           { expiresIn: "1h" }
         );
-        res.cookie("token", token, { httpOnly: true });
+        res.cookie("token", token);
 
         // Avoid logging sensitive information
         console.log("User authenticated successfully");

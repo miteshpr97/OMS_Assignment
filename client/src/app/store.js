@@ -6,6 +6,7 @@ import workgroupReducer from "../features/workGroup/workGroupSlice";
 import assignmentReducer from "../features/assignment/assignmentSlice";
 import designationReducer from "../features/designation/designationSlice"; // Import the designation reducer
 import taskReducer from "../features/Task/TaskSlice";
+import authReducer from   "../features/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,5 +16,6 @@ export const store = configureStore({
     workgroup: workgroupReducer,
     assignment: assignmentReducer,
     task: taskReducer,
+    user: authReducer,
   },
 });

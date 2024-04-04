@@ -6,6 +6,7 @@ import './Home.css'
 
 
 export default function Home() {
+  
   return (
     <Box sx={{display:'flex'}}>
       <SideBar />
