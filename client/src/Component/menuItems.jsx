@@ -23,4 +23,3 @@ export const menuItems = [
   { text: "Report", icon: <ReportIcon  />, path: "/report" },
 ];
 
-
