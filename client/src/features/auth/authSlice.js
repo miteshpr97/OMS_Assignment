@@ -30,8 +30,6 @@ const authSlice = createSlice({
 });
 
 
-
-
 export const selectUserData = (state) => state.user.userData;
 
 export default authSlice.reducer;

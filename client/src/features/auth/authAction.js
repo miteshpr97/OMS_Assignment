@@ -1,17 +1,14 @@
-// authAction.js
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const userAPI = "http://localhost:3306/api/userDetails";
 
-
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
   async () => {
     try {
-      const response = await axios.get(userAPI);
-      const data = response.data.user;
+      const response = await axios.get(userAPI, { withCredentials: true }); 
+      const data = response.data;
      
       return data;
     } catch (error) {
@@ -19,35 +16,3 @@ export const fetchUserData = createAsyncThunk(
     }
   }
 );
-
-
-
-//authAction.js
-
-// import { createAsyncThunk } from "@reduxjs/toolkit";
-// import axios from "axios";
-
-// const userAPI = "http://localhost:3306/api/userDetails";
-
-// export const fetchUserData = createAsyncThunk(
-//   "user/fetchUserData",
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       // Retrieve JWT token from local storage
-//       const token = localStorage.getItem('token');
-      
-     
-//       const response = await axios.get(userAPI, {
-//         headers: {
-//           Authorization: `Bearer ${token}`
-//         }
-//       });
-
-//       // Return user data from response
-//       return response.data.user;
-//     } catch (error) {
-     
-//       return rejectWithValue(error.message);
-//     }
-//   }
-// );
