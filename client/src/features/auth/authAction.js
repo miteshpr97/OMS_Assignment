@@ -1,61 +1,53 @@
+// // authAction.js
+
+// import { createAsyncThunk } from "@reduxjs/toolkit";
+// import axios from "axios";
+
+// const userAPI = "http://localhost:3306/api/userDetails";
+
+
+// export const fetchUserData = createAsyncThunk(
+//   "user/fetchUserData",
+//   async () => {
+//     try {
+//       const response = await axios.get(userAPI);
+//       const data = response.data.user;
+     
+//       return data;
+//     } catch (error) {
+//       throw new Error(error.response.data);
+//     }
+//   }
+// );
+
+
+
+// authAction.js
+
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Define your API endpoints
-const loginAPI = "http://localhost:3306/api/userDetails/login";
-const signupAPI = "http://localhost:3306/api/userDetails";
-const logoutAPI = "http://localhost:3306/api/userDetails/logout";
+const userAPI = "http://localhost:3306/api/userDetails";
 
-// Action creator for login
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(loginAPI, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      
-      const data = response.data;
-      if (response.status === 200 && data.user) {
-        sessionStorage.setItem('userData', JSON.stringify(data.user));
-        localStorage.setItem('token', JSON.stringify(data.token));
-        return data;
-      } else {
-        return rejectWithValue('Invalid Employee ID or Password');
-      }
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-// Action creator for signup
-export const signupUser = createAsyncThunk(
-  "auth/signup",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(signupAPI, formData);
-      const data = response.data;
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-// Action creator for logout
-export const logoutUser = createAsyncThunk(
-  "auth/logout",
+export const fetchUserData = createAsyncThunk(
+  "user/fetchUserData",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(logoutAPI);
-      const data = response.data;
-      return data;
+      // Retrieve JWT token from local storage
+      const token = localStorage.getItem('token');
+      
+      // Make GET request to fetch user data with JWT token in headers
+      const response = await axios.get(userAPI, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // Return user data from response
+      return response.data.user;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      // If an error occurs, reject the promise with the error message
+      return rejectWithValue(error.message);
     }
   }
 );
