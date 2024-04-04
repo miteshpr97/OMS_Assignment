@@ -48,27 +48,8 @@ const authenticateUser = async (req, res, next) => {
     // Use queryAsync function to handle the database query asynchronously
     const results = await queryAsync(query, [verifyUser.EmployeeID]);
 
-<<<<<<< HEAD
     // If the user is not found, return Unauthorized
     if (results.length === 0) {
-=======
-        // If the user is not found, return Unauthorized
-        if (results.length === 0) {
-          console.log("User not found");
-          return res.status(401).json({ error: "Unauthorized" });
-        }
-
-        // You might want to store the user information in the request object
-        req.authenticatedUser = results[0];
-        // console.log("Authenticated User:", req.authenticatedUser);
-        next();
-      } catch (queryError) {
-        console.error("Error executing query:", queryError);
-        return res.status(500).json({ error: "Internal Server Error" });
-      }
-    } catch (verificationError) {
-      console.error("Token Verification Error:", verificationError);
->>>>>>> c6dfd59a9659ba4e2c5dca5b7336dfcbc46865e7
       return res.status(401).json({ error: "Unauthorized" });
     }
 
