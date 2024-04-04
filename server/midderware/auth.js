@@ -4,6 +4,7 @@ const { queryAsync } = require("../db");
 const authenticateUser = async (req, res, next) => {
   try {
     const token = req.cookies.token;
+    console.log(token);
 
     try {
       // Verify the JWT token
@@ -29,7 +30,7 @@ const authenticateUser = async (req, res, next) => {
 
         // You might want to store the user information in the request object
         req.authenticatedUser = results[0];
-        console.log("Authenticated User:", req.authenticatedUser);
+        // console.log("Authenticated User:", req.authenticatedUser);
         next();
       } catch (queryError) {
         console.error("Error executing query:", queryError);

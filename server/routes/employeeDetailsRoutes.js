@@ -5,6 +5,8 @@ const path = require("path");
 const multer = require("multer");
 // router.use(express.static("public"));
 router.use(express.static(path.join(__dirname, '../public')));
+// const { authenticateUser } = require("../midderware/auth");
+
 
 
 const { authorizeUser } = require("../midderware/auth");
