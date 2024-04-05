@@ -103,7 +103,7 @@ export default function ForgotPassword() {
                   required
                   fullWidth
                   id="Username"
-                  label="Your UserName"
+                  label="Your Email"
                   type="email"
                   name="Username"
                   autoComplete="Email"

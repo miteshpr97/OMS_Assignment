@@ -40,13 +40,15 @@
 //           <Route path="teamTask" element={<TeamTask />}></Route>
 //           <Route path="CreateAlert" element={<CreateAlert />}></Route>
 //           <Route path="/report" element={<Report />}></Route>
-        
+
 
 //         </Route>
 //       </Routes>
 //     </>
 //   );
 // }
+
+
 
 
 
@@ -73,15 +75,15 @@ import { useSelector } from "react-redux";
 
 
 export default function App() {
- // const userRole = JSON.parse(sessionStorage.getItem("userData"));//
-  const userRole = useSelector((state) => state.user.userData);
+   const userRole = JSON.parse(sessionStorage.getItem("userData"));//
+ // const userRole = useSelector((state) => state.user.userData);
   return (
     <>
       <Routes>
         <Route path="/loginpage" element={<Login />}></Route>
-        <Route path="/signuppage" element={<Signup />}></Route>       
-          <Route path="/forgetPassword" element={<ForgotPassword/>}></Route>
-       <Route path="/ResetPassword/:token" element={<ResetPassword/>}></Route>
+        <Route path="/signuppage" element={<Signup />}></Route>
+        <Route path="/forgetPassword" element={<ForgotPassword />}></Route>
+        <Route path="/ResetPassword/:token" element={<ResetPassword />}></Route>
         <Route path="/" element={<PrivateRoute />}>
           <Route path="/" element={<Home />}></Route>
           {userRole && (
@@ -105,7 +107,6 @@ export default function App() {
               )}
             </>
           )}
-
           <Route path="/report" element={<Report />}></Route>
         </Route>
       </Routes>
