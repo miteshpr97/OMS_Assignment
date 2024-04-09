@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Modal, Button, } from "@mui/material";
+import { Box, Typography, Modal, Button } from "@mui/material";
 import { format } from "date-fns";
 import SideBar from "../../Component/SideBar";
 import TaskTable from "./TaskTable";
@@ -20,8 +20,6 @@ import { fetchAssignmentData } from "../../features/assignment/assignmentAction"
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
 
-
-
 import Action from "./Action";
 
 const ViewAssignment = () => {
@@ -35,7 +33,6 @@ const ViewAssignment = () => {
   const dispatch = useDispatch();
   const assignment = useSelector(selectAssignment);
 
-
   useEffect(() => {
     dispatch(fetchAssignmentData());
   }, [dispatch]);
@@ -45,15 +42,13 @@ const ViewAssignment = () => {
     setUserData(userDataFromSession);
   }, []);
 
-
   if (!userData) {
     return <div>Loading...</div>;
   }
 
-  const assignmentData = assignment.filter(item => {
+  const assignmentData = assignment.filter((item) => {
     return item.EmployeeID_AssignTo === userData.EmployeeID;
   });
-
 
   const handleTabChangeA = (event, newValue) => {
     setActiveTabData(newValue);
@@ -168,14 +163,9 @@ const ViewAssignment = () => {
 const TableComponent = ({ data }) => {
   const [selectedDescription, setSelectedDescription] = useState(null);
 
-
-
   const handleDescriptionClick = (description) =>
     setSelectedDescription(description);
   const handleCloseDescription = () => setSelectedDescription(null);
-
-
-
 
   return (
     <div className="table-container">
@@ -247,14 +237,23 @@ const TableComponent = ({ data }) => {
                 className="vertical-border"
                 sx={{ padding: "10px 16px" }}
               >{`${item.EmployeeID}-${item.Assigner_FirstName}`}</TableCell>
+
               <TableCell
-                onClick={() =>
-                  handleDescriptionClick(item.Assignment_Description)
-                }
-                style={{ cursor: "pointer", padding: "10px 16px" }}
+                style={{ cursor: "pointer", width:"300px", padding:"6px" }}
                 className="vertical-border"
               >
-                {item.Assignment_Description.slice(0, 50)}
+                <div
+                  style={{
+                    maxWidth:"100%",
+                    maxHeight: "100px", // Set your maximum height here
+                    overflowY: "auto", // Enable vertical scrolling
+                  }}
+                  onClick={() =>
+                    handleDescriptionClick(item.Assignment_Description)
+                  }
+                >
+                  {item.Assignment_Description}
+                </div>
               </TableCell>
               <TableCell
                 className="vertical-border"
@@ -289,12 +288,12 @@ const TableComponent = ({ data }) => {
                     item.AssignmentStatus === "Assigned"
                       ? "blue"
                       : item.AssignmentStatus === "Progress"
-                        ? "orange"
-                        : item.AssignmentStatus === "Reject"
-                          ? "red"
-                          : item.AssignmentStatus === "Regret"
-                            ? "brown"
-                            : "green",
+                      ? "orange"
+                      : item.AssignmentStatus === "Reject"
+                      ? "red"
+                      : item.AssignmentStatus === "Regret"
+                      ? "brown"
+                      : "green",
                   padding: "10px 16px",
                 }}
                 className="vertical-border"
@@ -327,8 +326,6 @@ const TableComponent = ({ data }) => {
           <Button onClick={handleCloseDescription}>Close</Button>
         </Box>
       </Modal>
-
-
     </div>
   );
 };

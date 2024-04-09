@@ -16,8 +16,9 @@ import CardContent from "@mui/material/CardContent";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HeaderSignIn from "./HeaderSignIn";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,} from "react";
 import axios from "axios";
+
 
 const customTheme = createTheme({
   palette: {
@@ -31,6 +32,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
 
   const [formData, setFormData] = useState({
     EmployeeID: "",
@@ -76,6 +78,7 @@ export default function Login() {
       setLoading(false);
     }
   };
+
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -150,7 +153,7 @@ export default function Login() {
 
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    <Link href="/forgetPassword" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid>

@@ -273,6 +273,10 @@ import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useDispatch, useSelector } from 'react-redux';
+
+import { fetchUserData } from "../../features/auth/authAction";
+import { selectUserData } from "../../features/auth/authSlice";
 
 // Define the drawer width
 const drawerWidth = 240;
@@ -298,6 +302,8 @@ const AppBar = styled(MuiAppBar, {
 export default function Header({ open, handleDrawerOpen }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -308,15 +314,19 @@ export default function Header({ open, handleDrawerOpen }) {
   };
 
   const isOpen = Boolean(anchorEl);
+  
+  useEffect(() =>{
+    dispatch(fetchUserData())
+  }, [dispatch])
 
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
-    if (userDataFromSession) {
-      setUserData(userDataFromSession);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
+  //   if (userDataFromSession) {
+  //     setUserData(userDataFromSession);
+  //   }
+  // }, []);
 
   const handleLogout = async (e) => {
     e.preventDefault();

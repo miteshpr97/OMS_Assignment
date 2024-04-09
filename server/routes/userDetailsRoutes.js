@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateUser } = require("../midderware/auth");
+const {  verifyToken } = require("../midderware/auth");
 const userDetailsController = require("../controllers/userDetailsController");
 
 // get all user details
-router.get("/", authenticateUser , userDetailsController.getAllUserDetails);
+router.get("/", verifyToken , userDetailsController.getAllUserDetails);
 
 // add user details
 router.post("/", userDetailsController.addUserDetails);

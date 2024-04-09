@@ -35,7 +35,7 @@ function sendReminder(employeeEmail , Alert_Note) {
 
 function sendEmailForPasswordChange(email , token) {
   const subject = 'Password Reset';
-  const html = `Use this token to <a href="http://localhost:3306/api/userDetails/resetPassword/${token}">reset your password</a>`;
+  const html = `Use this token to <a href="http://localhost:3000/ResetPassword/${token}">reset your password</a>`;
 
   return sendEmail(email, subject, html);
 }
