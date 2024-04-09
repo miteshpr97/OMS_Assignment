@@ -48,17 +48,3 @@ function sendEmailForUserCredentials(Username, EmployeeID, Password) {
 }
 
 module.exports = { sendReminder, sendEmailForPasswordChange, sendEmailForUserCredentials};
-
-// function sendEmail(email, token) {
-//   const mailOptions = {
-//     from: 'miteshpradhan97@gmail.com',
-//     to: email,
-//     subject: 'Password Reset',
-//     html: 'Use this token to <a href="http://localhost:3306/api/userDetails/resetPassword/'+token+'">reset your password</a>'
-//   };
-
-//   return transporter.sendMail(mailOptions);
-// }
-
-// module.exports = sendEmail;
-

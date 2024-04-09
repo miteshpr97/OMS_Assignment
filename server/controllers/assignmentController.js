@@ -183,7 +183,7 @@ exports.reassignAssignment = async (req, res) => {
         CompletionTimestamp: null,
         AssignmentStatus: "Assigned",
         AssignmentPriority:
-          originalAssignment.AssignmentPriority || req.body.AssignmentPriority,
+          req.body.AssignmentPriority || originalAssignment.AssignmentPriority,
         Type: originalAssignment.Type,
         Feedback: null,
         Course: originalAssignment.Course + 1,

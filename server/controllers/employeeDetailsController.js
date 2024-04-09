@@ -69,39 +69,6 @@ exports.getAllDataOfEmployees = async (req, res) => {
   }
 };
 
-// Get All Data of Employees(experiment)
-
-// exports.getAllDataOfEmployees = async (req, res) => {
-//   try {
-//     const query = `
-//     SELECT
-//         e.*, u.Role, u.Username, d.DepartmentName, d2.DesignationName
-//     FROM
-//         tb_employee as e
-//         INNER JOIN tb_userdetails as u ON e.EmployeeID = u.EmployeeID
-//         INNER JOIN tb_department as d ON e.DepartmentID = d.DepartmentID
-//         INNER JOIN tb_designation as d2 ON e.DesignationID = d2.DesignationID
-//     WHERE
-//         e.EmploymentStatus = 'Active' AND e.EmployeeID = 'EMP003'
-//     ORDER BY
-//         e.EmployeeID;`;
-        
-//     const results = await queryAsync(query);
-//     // const userEmployees = results.filter(
-//     //   (employee) => employee.Role === "User"
-//     // );
-//      // Modify each result to include image data
-//      for (const employee of results) {
-//       // Load image data for Employee_Profile
-//       employee.Employee_Profile = await loadImageData(employee.Employee_Profile);
-//     }
-//     res.status(200).json(results);
-//   } catch (error) {
-//     console.error("Error executing query:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 // Get All Data of Employees by Employee ID
 
 exports.getAllDataOfEmployeesByEmployeeId = async (req, res) => {
@@ -209,9 +176,9 @@ exports.addEmployee = async (req, res) => {
 // Update Employee
 
 exports.updateEmployee = async (req, res) => {
-  const EmployeeID = req.params.EmployeeID;
+  const { EmployeeID } = req.params;
   const updatedEmployee = req.body;
-
+  
   // Check if a file is included in the request
   if (req.file) {
     updatedEmployee.Employee_Profile = req.file.filename;
@@ -219,37 +186,11 @@ exports.updateEmployee = async (req, res) => {
 
   const updateQuery = `
     UPDATE tb_employee 
-    SET 
-      FirstName = ?,
-      LastName = ?,
-      DateOfBirth = ?,
-      Gender = ?,
-      ContactNumber = ?,
-      Email = ?,
-      Address = ?,
-      JoinDate = ?,
-      Employee_Profile = ?,
-      EmploymentStatus = ?,
-      DepartmentID = ?,
-      DesignationID = ?
+    SET ? 
     WHERE EmployeeID = ?`;
 
   try {
-    const results = await queryAsync(updateQuery, [
-      updatedEmployee.FirstName,
-      updatedEmployee.LastName,
-      updatedEmployee.DateOfBirth,
-      updatedEmployee.Gender,
-      updatedEmployee.ContactNumber,
-      updatedEmployee.Email,
-      updatedEmployee.Address,
-      updatedEmployee.JoinDate,
-      updatedEmployee.Employee_Profile,
-      updatedEmployee.EmploymentStatus,
-      updatedEmployee.DepartmentID,
-      updatedEmployee.DesignationID,
-      EmployeeID,
-    ]);
+    const results = await queryAsync(updateQuery, [updatedEmployee, EmployeeID]);
 
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Employee not found" });
@@ -263,8 +204,6 @@ exports.updateEmployee = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
 
 // Delete Employee
 

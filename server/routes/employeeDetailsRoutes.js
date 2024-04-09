@@ -3,15 +3,12 @@ const router = express.Router();
 const employeeController = require("../controllers/employeeDetailsController");
 const path = require("path");
 const multer = require("multer");
-// router.use(express.static("public"));
+
 router.use(express.static(path.join(__dirname, '../public')));
 // const { authenticateUser } = require("../midderware/auth");
-
-
-
 const { authorizeUser } = require("../midderware/auth");
 
-// for saving image using registration form
+//For saving image from registration form
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     return cb(null, path.join(__dirname, "../public"));

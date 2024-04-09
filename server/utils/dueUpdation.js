@@ -2,7 +2,10 @@ const cron = require("node-cron");
 const { queryAsync } = require("../db");
 
 async function scheduleDueUpdation() {
-  cron.schedule("0 0 * * *", async () => {
+  cron.schedule("0 8 * * *", async () => {
+    await updateDueForAssignments();
+  });
+  cron.schedule("0 17 * * *", async () => {
     await updateDueForAssignments();
   });
 }
