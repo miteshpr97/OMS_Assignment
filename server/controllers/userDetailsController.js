@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { generateToken } = require("../midderware/auth");
 const { sendEmailForPasswordChange , sendEmailForUserCredentials } = require("../utils/emailServices");
 
+// Add user details 
 
 exports.addUserDetails = async (req, res) => {
   const { EmployeeID, Role, Username, Password, confirm_password } = req.body;
@@ -67,15 +68,13 @@ exports.updateUserDetails = async (req, res) => {
       10
     );
   }
-
   const updateQuery = "UPDATE tb_userdetails SET ? WHERE EmployeeID = ?";
-
   try {
     const results = await queryAsync(updateQuery, [
       updatedUserDetails,
       employeeId,
     ]);
-
+    
     if (results.affectedRows === 0) {
       res.status(404).json({ error: "Employee not found" });
     } else if (results.affectedRows > 0 && results.changedRows === 0) {

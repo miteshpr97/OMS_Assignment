@@ -1,4 +1,7 @@
 const { queryAsync } = require("../db");
+const { uploadOnCloudinary } = require("../utils/cloudinary");
+
+// send only those employees who don't have credentials 
 
 exports.getEmployeeWithNoUserCredential = async (req, res) => {
   try {
@@ -130,7 +133,7 @@ exports.addEmployee = async (req, res) => {
     DepartmentID,
     DesignationID,
   } = req.body;
-  const employeeProfile = req.file ? req.file.filename : null;
+  const employeeProfilePath = req.file ? req.file.filename : null;
 
   try {
     const maxIDQuery =
@@ -145,6 +148,7 @@ exports.addEmployee = async (req, res) => {
 
     const formattedID = `EMP${nextID.toString().padStart(3, "0")}`;
     const EmployeeID = formattedID;
+    const employeeProfile = await uploadOnCloudinary(employeeProfilePath)
 
     const insertQuery = `INSERT INTO tb_employee 
       (EmployeeID, FirstName, LastName, DateOfBirth, Gender, ContactNumber, Email, Address, JoinDate, Employee_Profile, EmploymentStatus, DepartmentID, DesignationID)
@@ -181,7 +185,8 @@ exports.updateEmployee = async (req, res) => {
   
   // Check if a file is included in the request
   if (req.file) {
-    updatedEmployee.Employee_Profile = req.file.filename;
+    const employeeProfilePath = req.file.filename;
+    updatedEmployee.Employee_Profile = await uploadOnCloudinary(employeeProfilePath);
   }
 
   const updateQuery = `

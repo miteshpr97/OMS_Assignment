@@ -145,11 +145,12 @@ export default function AllTeamMembers() {
                   <CardMedia
                     component="img"
                     sx={{ height: 120, width: 120, borderRadius: "50%" }}
-                    src={
-                      item.Employee_Profile
-                        ? `http://localhost:3306/api/employee/${item.Employee_Profile}`
-                        : ""
-                    }
+                    // src={
+                    //   item.Employee_Profile
+                    //     ? `http://localhost:3306/api/employee/${item.Employee_Profile}`
+                    //     : ""
+                    // }
+                    src={item.Employee_Profile}
                     alt="Employee Profile"
                   />
                 </div>
