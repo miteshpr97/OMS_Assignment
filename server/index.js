@@ -12,6 +12,7 @@ const userDetails = require("./routes/userDetailsRoutes");
 const assignmentDetails = require("./routes/assignmentRoutes");
 const taskDetails = require("./routes/taskRoutes");
 const alertDetails = require("./routes/alertRoutes");
+const complaintDetails = require("./routes/complaintRoutes");
 const { scheduleReminders } = require("./utils/reminderServices");
 const { scheduleDueUpdation } = require("./utils/dueUpdation");
 
@@ -43,6 +44,7 @@ app.use("/api/userDetails", userDetails);
 app.use("/api/assignmentDetails", assignmentDetails);
 app.use("/api/taskDetails", taskDetails);
 app.use("/api/alertDetails",alertDetails);
+app.use("/api/complaintDetails",complaintDetails);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
