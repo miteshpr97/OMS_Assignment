@@ -5,7 +5,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -16,9 +15,9 @@ import CardContent from "@mui/material/CardContent";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import HeaderSignIn from "./HeaderSignIn";
 import { useNavigate } from "react-router-dom";
-import { useState,} from "react";
+import { useState } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 
 const customTheme = createTheme({
   palette: {
@@ -32,7 +31,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
 
   const [formData, setFormData] = useState({
     EmployeeID: "",
@@ -79,7 +77,6 @@ export default function Login() {
     }
   };
 
-
   return (
     <ThemeProvider theme={customTheme}>
       <HeaderSignIn />
@@ -96,7 +93,7 @@ export default function Login() {
           <Card>
             <CardContent>
               <span style={{ display: "flex", justifyContent: "center" }}>
-                <Avatar sx={{ m: 1, bgcolor: "#055f85", color:"white" }}>
+                <Avatar sx={{ m: 1, bgcolor: "#055f85", color: "white" }}>
                   <LockOutlinedIcon />
                 </Avatar>
               </span>
@@ -145,7 +142,7 @@ export default function Login() {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2, bgcolor:"#055f85" }}
+                  sx={{ mt: 3, mb: 2, bgcolor: "#055f85" }}
                   disabled={loading}
                 >
                   {loading ? "Signing in..." : "Sign In"}
@@ -153,9 +150,7 @@ export default function Login() {
 
                 <Grid container>
                   <Grid item xs>
-                    <Link href="/forgetPassword" variant="body2">
-                      Forgot password?
-                    </Link>
+                    <Link to={"/forgetPassword"}>Forgot password?</Link>
                   </Grid>
                 </Grid>
                 {error && (

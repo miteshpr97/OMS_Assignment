@@ -21,9 +21,6 @@
 // //  import logo from "../assets/images/Gl-Logo.png";
 // import logo from "../assets/images/OWM_Final.png";
 
-
-
-
 // const drawerWidth = 240;
 
 // const openedMixin = (theme) => ({
@@ -65,7 +62,6 @@
 //   backgroundPosition: "center",
 // }));
 
-
 // const Drawer = styled(MuiDrawer, {
 //   shouldForwardProp: (prop) => prop !== "open",
 // })(({ theme, open }) => ({
@@ -103,14 +99,12 @@
 //       <Header open={open} handleDrawerOpen={handleDrawerOpen} />
 //       <Drawer variant="permanent" open={open}>
 //         <DrawerHeader>
-//           <IconButton onClick={handleDrawerClose} style={{ color: "#035d84" }}>   
+//           <IconButton onClick={handleDrawerClose} style={{ color: "#035d84" }}>
 //             {theme.direction === "rtl" ? <MenuIcon /> : <MenuIcon />}
 //           </IconButton>
-         
+
 //         </DrawerHeader>
-        
-        
-  
+
 //         <Divider style={{backgroundColor:"#055f85"}} />
 //         <List style={{ marginTop:'10px'}}>
 //           {menuItems.map((item, index) => (
@@ -172,15 +166,11 @@
 //             </ListItem>
 //           ))}
 //         </List>
-        
+
 //       </Drawer>
 //     </Box>
 //   );
 // }
-
-
-
-
 
 // SideBar.js
 import React, { useState } from "react";
@@ -204,8 +194,6 @@ import { menuItems } from "./menuItems"; // Import the menuItems
 
 //  import logo from "../assets/images/Gl-Logo.png";
 import logo from "../assets/images/OWM_Final.png";
-
-
 
 const drawerWidth = 240;
 
@@ -270,14 +258,17 @@ export default function SideBar() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
- 
 
   const userRole = JSON.parse(sessionStorage.getItem("userData"));
 
   // Check if userRole is null or undefined
   if (userRole === null || userRole === undefined) {
     // Render loading state or redirect to login page
-    return <div>Loading ......</div>;
+    return (
+      <div>
+        <Header/>
+      </div>
+    );
   }
 
   const handleDrawerOpen = () => {

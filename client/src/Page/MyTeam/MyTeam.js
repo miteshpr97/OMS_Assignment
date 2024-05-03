@@ -212,12 +212,14 @@ export default function MyTeam() {
 
                     <CardMedia
                       component="img"
-                      src={
-                        item.Assignee_Profile
-                          ? `http://localhost:3306/api/employee/${item.Assignee_Profile}`
-                          : "/placeholder_image.jpg"
-                      }
+                      // src={
+                      //   item.Assignee_Profile
+                      //     ? `http://localhost:3306/api/employee/${item.Assignee_Profile}`
+                      //     : "/placeholder_image.jpg"
+                      // }
+                      src={item.Assignee_Profile}
                       alt="Employee Profile"
+                  
                       sx={{ height: 120, width: 120, borderRadius: "50%" }}
                     />
                   </div>
