@@ -30,7 +30,7 @@ async function sendReminders() {
         ContactNumber,
         Alert_Note,
         Is_Sms,
-        Is_Whatsapp
+        Is_Whatsapp,
       } = row;
       const today = new Date();
       const eventDate = new Date(
@@ -40,7 +40,7 @@ async function sendReminders() {
       );
       const daysDifference = eventDate.getDate() - today.getDate();
 
-      if (daysDifference <= RemindBeforeEventDay && daysDifference >= 0){
+      if (daysDifference <= RemindBeforeEventDay && daysDifference >= 0) {
         for (let i = 1; i <= ReminderCounts; i++) {
           // Parse reminderTime as hours and minutes
           const reminderTimeParts = row[`ReminderTime${i}`].split(":");
@@ -57,13 +57,13 @@ async function sendReminders() {
             currentHour === reminderHour &&
             currentMinute === reminderMinute
           ) {
-              await sendReminder(Email, Alert_Note);
-              sendPopup(Alert_Note);
-            if (Is_Sms === 1){
+            await sendReminder(Email, Alert_Note);
+            sendPopup(Alert_Note);
+            if (Is_Sms === 1) {
               await sendSMS(ContactNumber, Alert_Note);
-            } 
-            if (Is_Whatsapp === 1){
-              await sendWhatsApp(ContactNumber, Alert_Note); 
+            }
+            if (Is_Whatsapp === 1) {
+              await sendWhatsApp(ContactNumber, Alert_Note);
             }
           }
         }

@@ -4,12 +4,10 @@ const { queryAsync } = require("../db");
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
- 
   const cookies = req.headers.cookie;
   if (!cookies) {
     return res.status(401).json({ message: "Authorization header is missing" });
   }
-
   // Extract token from cookies
   const token = cookies.split("=")[1];
 
