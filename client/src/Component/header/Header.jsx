@@ -303,7 +303,10 @@ export default function Header({ open, handleDrawerOpen }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userData = useSelector(selectUserData);
+  // const userData = useSelector(selectUserData);
+
+
+  // console.log(userData, "iiiiii")
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -319,14 +322,14 @@ export default function Header({ open, handleDrawerOpen }) {
     dispatch(fetchUserData())
   }, [dispatch])
 
-  // const [userData, setUserData] = useState(null);
+   const [userData, setUserData] = useState(null);
 
-  // useEffect(() => {
-  //   const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
-  //   if (userDataFromSession) {
-  //     setUserData(userDataFromSession);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
+    if (userDataFromSession) {
+      setUserData(userDataFromSession);
+    }
+  }, []);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -411,12 +414,13 @@ export default function Header({ open, handleDrawerOpen }) {
                   border: "none",
                   cursor:"pointer"
                 }}
-                src={
-                  userData.Employee_Profile
-                    ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
-                    : ""
-                }
-                alt="Employee Profile"
+                // src={
+                //   userData.Employee_Profile
+                //     ? `http://localhost:3306/api/employee/${userData.Employee_Profile}`
+                //     : ""
+                // }
+                src={userData.Employee_Profile}
+                alt="data"
                 aria-describedby={isOpen ? "popover" : undefined}
                 onClick={handleClick}
               />

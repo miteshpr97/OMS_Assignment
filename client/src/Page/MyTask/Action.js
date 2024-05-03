@@ -6,13 +6,11 @@ import StatusDialog from "./StatusDialog";
 
 function Action({ StatusData }) {
   const [selectedValue, setSelectedValue] = useState("select");
-
-
-
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [feedbackInput, setFeedbackInput] = useState("");
   const [assignment, setAssignmentData] = useState("");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
   const handleFeedbackClick = (item) => {
@@ -44,9 +42,9 @@ function Action({ StatusData }) {
       const confirmed = window.confirm(`Move data to ${newStatus}?`);
   
       if (confirmed) {
-        const apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/${newStatus}`;
+        const apiUrlData = `${apiUrl}/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/${newStatus}`;
   
-        const response = await fetch(apiUrl, {
+        const response = await fetch(apiUrlData, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           credentials: "include",

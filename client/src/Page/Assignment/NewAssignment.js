@@ -313,6 +313,9 @@ export default function NewAssignment() {
   const loading = useSelector(selectAssignmentLoading);
   const error = useSelector(selectAssignmentError);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+
   useEffect(() => {
     dispatch(fetchAssignmentData());
     dispatch(fetchAssignmentCounts());
@@ -330,7 +333,7 @@ export default function NewAssignment() {
     const fetchAssignedEmployees = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3306/api/workGroup/allData"
+          `${apiUrl}/api/workGroup/allData`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -432,35 +435,35 @@ export default function NewAssignment() {
                   />
                 </Grid>
                 <Grid item md={6}>
-                <FormControl fullWidth variant="outlined">
-                      <InputLabel>Select Employee AssignTo</InputLabel>
-                  <Select
-                    multiple
-                    fullWidth
-                    label="Select Employee AssignTo"
-                    id="EmployeeID_AssignTo"
-                    name="EmployeeID_AssignTo"
-                    value={assignmentData.EmployeeID_AssignTo || []}
-                    onChange={handleEmployeeSelect}
-                    renderValue={(selected) => selected.join(", ")}
-                    required
-                  >
-                    {assignedEmployees.map((employee) => (
-                      <MenuItem
-                        key={employee.EmployeeID_AssignTo}
-                        value={employee.EmployeeID_AssignTo}
-                      >
-                        <Checkbox
-                          checked={assignmentData.EmployeeID_AssignTo.includes(
-                            employee.EmployeeID_AssignTo
-                          )}
-                        />
-                        <ListItemText
-                          primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`}
-                        />
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <FormControl fullWidth variant="outlined">
+                    <InputLabel>Select Employee AssignTo</InputLabel>
+                    <Select
+                      multiple
+                      fullWidth
+                      label="Select Employee AssignTo"
+                      id="EmployeeID_AssignTo"
+                      name="EmployeeID_AssignTo"
+                      value={assignmentData.EmployeeID_AssignTo || []}
+                      onChange={handleEmployeeSelect}
+                      renderValue={(selected) => selected.join(", ")}
+                      required
+                    >
+                      {assignedEmployees.map((employee) => (
+                        <MenuItem
+                          key={employee.EmployeeID_AssignTo}
+                          value={employee.EmployeeID_AssignTo}
+                        >
+                          <Checkbox
+                            checked={assignmentData.EmployeeID_AssignTo.includes(
+                              employee.EmployeeID_AssignTo
+                            )}
+                          />
+                          <ListItemText
+                            primary={`${employee.EmployeeID_AssignTo} - ${employee.Assignee_FirstName}`}
+                          />
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </FormControl>
                 </Grid>
               </Grid>

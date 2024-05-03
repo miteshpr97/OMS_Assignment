@@ -197,6 +197,7 @@ const ReassignModal = ({
   });
   const dispatch = useDispatch();
 
+  const apiUrl = process.env.REACT_APP_API_URL;
 
 
   useEffect(() => {
@@ -224,7 +225,7 @@ const ReassignModal = ({
     console.log("Form Data:", reassignmentData);
 
     try {
-      const response = await axios.patch(`http://localhost:3306/api/assignmentDetails/${assignmentData.AssignmentID}/${assignmentData.EmployeeID}/${assignmentData.EmployeeID_AssignTo}/reassign`, reassignmentData);
+      const response = await axios.patch(`${apiUrl}/api/assignmentDetails/${assignmentData.AssignmentID}/${assignmentData.EmployeeID}/${assignmentData.EmployeeID_AssignTo}/reassign`, reassignmentData);
       console.log("Update response:", response.data);
       dispatch(fetchAssignmentData(reassignmentData));
 

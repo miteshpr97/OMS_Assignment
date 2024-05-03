@@ -2,10 +2,7 @@
 import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3306/api/employee/";
-const UPDATE_EMPLOYEE_URL = `${API_BASE_URL}update/`;
-const NEXT_EMPLOYEE_ID_URL = `${API_BASE_URL}nextEmployeeId`;
-const DELETE_EMPLOYEE_URL = `${API_BASE_URL}delete/`;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const createEmployee = createAsyncThunk(
   "employee/addEmployee",
@@ -16,7 +13,7 @@ export const createEmployee = createAsyncThunk(
         formDataWithImage.append(key, formData[key]);
       }
 
-      const response = await fetch(API_BASE_URL, {
+      const response = await fetch(`${apiUrl}/api/employee/`, {
         method: "POST",
         body: formDataWithImage,
       });
@@ -36,7 +33,7 @@ export const showEmployee = createAsyncThunk(
   "employee/showEmployee",
   async () => {
     try {
-      const response = await axios.get(API_BASE_URL);
+      const response = await axios.get(`${apiUrl}/api/employee/`);
       const reversedData = response.data.reverse();
       return reversedData;
     } catch (error) {
@@ -49,7 +46,7 @@ export const fetchNextEmployeeId = createAsyncThunk(
   "employee/fetchNextEmployeeId",
   async () => {
     try {
-      const response = await axios.get(NEXT_EMPLOYEE_ID_URL);
+      const response = await axios.get(`${apiUrl}/api/employee/nextEmployeeId`);
       return response.data;
     } catch (error) {
       throw new Error("Failed to fetch next employee ID");
@@ -57,11 +54,13 @@ export const fetchNextEmployeeId = createAsyncThunk(
   }
 );
 
+
+
 export const deleteEmployee = createAsyncThunk(
   "employee/deleteEmployee",
   async (employeeId, { dispatch, rejectWithValue }) => {
     try {
-      await axios.delete(`${DELETE_EMPLOYEE_URL}${employeeId}`);
+      await axios.delete(`${apiUrl}/api/employee/delete/${employeeId}`);
       await dispatch(fetchNextEmployeeId());
     } catch (error) {
       return rejectWithValue(error.message);
@@ -72,7 +71,7 @@ export const deleteEmployee = createAsyncThunk(
 export const fetchEmployeeProfileData = createAsyncThunk(
   'employee/fetchEmployeeProfileData',
   async (id) => {
-    const response = await fetch(`${API_BASE_URL}allData/${id}`);
+    const response = await fetch(`${apiUrl}/api/employee/allData/${id}`);
     if (!response.ok) {
       throw new Error('Failed to fetch employee data');
     }
@@ -87,7 +86,7 @@ export const updateEmployee = createAsyncThunk(
   async (employeeData, { rejectWithValue }) => {
     try {
       const { EmployeeID, ...updatedData } = employeeData;
-      const response = await axios.patch(`${UPDATE_EMPLOYEE_URL}${EmployeeID}`, updatedData);
+      const response = await axios.patch(`${apiUrl}/api/employee/update/${EmployeeID}`, updatedData);
 
       if (!response.ok) {
         throw new Error("Failed to update employee");

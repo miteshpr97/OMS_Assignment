@@ -229,11 +229,12 @@ const Create = () => {
                       <CardMedia
                         component="img"
                         sx={{ height: 100, width: 100, borderRadius: "50%" }}
-                        src={
-                          items.Employee_Profile
-                            ? `http://localhost:3306/api/employee/${items.Employee_Profile}`
-                            : ""
-                        }
+                        // src={
+                        //   items.Employee_Profile
+                        //     ? `http://localhost:3306/api/employee/${items.Employee_Profile}`
+                        //     : ""
+                        // }
+                        src={items.Employee_Profile}
                         alt="Employee Profile"
                       />
                     </Box>
