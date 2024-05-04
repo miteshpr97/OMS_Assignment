@@ -1,62 +1,63 @@
 const { queryAsync } = require("../db");
 
-// Function to add a new alert with an auto-generated ID.
-
-exports.addAlert = async (req, res) => {
-  // Extract new alert details from the request body.
-  const newAlert = req.body;
+// Function to get the highest alert ID from the database
+const getHighestAlertID = async () => {
+  const query =
+    "SELECT MAX(CAST(SUBSTRING(AlertID, 3) AS SIGNED)) AS maxID FROM tb_alert";
   try {
-    // Extracting the EmployeeID to which the alert should be assigned.
-    const EmployeeID_AssignTo = req.body.EmployeeID_AssignTo;
+    const results = await queryAsync(query);
+    const maxID = results[0].maxID || 0;
+    return maxID;
+  } catch (error) {
+    throw error; // Propagate error to be handled by caller
+  }
+};
 
-    // SQL query to find the current maximum AlertID in the database.
-    const maxIDQuery =
-      "SELECT MAX(SUBSTRING(AlertID,3)) AS maxID FROM tb_alert";
-    const results = await queryAsync(maxIDQuery);
-    let nextID = 1;
-    if (results && results[0].maxID !== null) {
-      nextID = parseInt(results[0].maxID, 10) + 1;
-    }
-    // Format new AlertID by padding with zeros (e.g., AT001).
-    const formattedAlertId = `AT${nextID.toString().padStart(3, "0")}`;
-    newAlert.AlertID = formattedAlertId;
+// Function to generate Alert IDs like AT001, AT002, etc.
+const generateAlertID = (index) => {
+  const paddedIndex = String(index).padStart(3, "0"); // Ensure three-digit padding
+  return `AT${paddedIndex}`;
+};
 
-    // SQL query to insert a new alert into the database.
+// Inserting multiple alerts with auto-generated AlertID
+exports.addAlert = async (req, res) => {
+  const newAlerts = req.body;
+  // Check if newAlerts is actually an array
+  if (!Array.isArray(newAlerts)) {
+    return res
+      .status(400)
+      .json({ error: "Invalid input: expected an array of alerts." });
+  }
+
+  try {
+    const maxID = await getHighestAlertID();
     const insertQuery =
       "INSERT INTO tb_alert (AlertID, EmployeeID, EmployeeID_AssignTo, Alert_Note, ReminderDay, RemindBeforeEventDay, ReminderCounts, Is_Sms, Is_Whatsapp, EmailCount, PopUpCount, WhatsappCount, SmsCount, ReminderStatusCount, ReminderTime1, ReminderTime2, ReminderTime3) VALUES ?";
+    const values = newAlerts.map((alert, index) => [
+      generateAlertID(maxID + index + 1),
+      alert.EmployeeID_Assigner,
+      alert.EmployeeID_AssignTo,
+      alert.Alert_Note,
+      alert.ReminderDay,
+      alert.RemindBeforeEventDay,
+      alert.ReminderCounts,
+      alert.Is_Sms,
+      alert.Is_Whatsapp,
+      alert.EmailCount,
+      alert.PopUpCount,
+      alert.WhatsappCount,
+      alert.SmsCount,
+      alert.ReminderStatusCount,
+      alert.ReminderTime1,
+      alert.ReminderTime2,
+      alert.ReminderTime3,
+    ]);
 
-    let values = [];
-    // Check if EmployeeID_AssignTo is an array to handle multiple assignees.
-    if (Array.isArray(EmployeeID_AssignTo)) {
-      values = EmployeeID_AssignTo.map((employeeId) => [
-        newAlert.AlertID,
-        newAlert.EmployeeID,
-        employeeId,
-        newAlert.Alert_Note,
-        newAlert.ReminderDay,
-        newAlert.RemindBeforeEventDay,
-        newAlert.ReminderCounts,
-        newAlert.Is_Sms,
-        newAlert.Is_Whatsapp,
-        newAlert.EmailCount,
-        newAlert.PopUpCount,
-        newAlert.WhatsappCount,
-        newAlert.SmsCount,
-        newAlert.ReminderStatusCount,
-        newAlert.ReminderTime1,
-        newAlert.ReminderTime2,
-        newAlert.ReminderTime3,
-      ]);
-    } else {
-      throw new Error("EmployeeID_AssignTo must be an array");
-    }
-
-    // Execute the SQL query with the values.
     await queryAsync(insertQuery, [values]);
-    res.status(201).json({ message: "Alert added successfully" });
+    res.status(200).json({ message: "Alerts inserted successfully" });
   } catch (error) {
-    console.error("Error executing query", error);
-    res.status(500).json({ error: "Internal server Error" });
+    console.error("Error inserting alerts:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
