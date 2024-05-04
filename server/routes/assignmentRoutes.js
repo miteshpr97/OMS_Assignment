@@ -50,7 +50,7 @@ router.patch(
   assignmentController.reassignAssignment
 );
 
-// update assignment status to completed
+// update assignment status to closed
 router.patch(
   "/:AssignmentID/:EmployeeID/:EmployeeID_AssignTo/closed",
   assignmentController.updateAssignmentStatusToClosed
