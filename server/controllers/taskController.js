@@ -32,7 +32,7 @@ exports.getTaskById = async (req, res) => {
 
 exports.addTaskWithId = async (req, res) => {
   const newTask = req.body;
-  newTask.TaskStatus = newTask.TaskStatus || "Pending";
+  newTask.TaskStatus = newTask.TaskStatus || "Assigned";
   newTask.Type = newTask.Type || "T";
   const createdAt = new Date().toISOString(); 
 
@@ -91,7 +91,7 @@ exports.updateTask = async (req, res) => {
 exports.progressTaskStatus = async (req, res) => {
   const taskId = req.params.TaskID;
   const query =
-    "UPDATE tb_task SET TaskStatus = 'Progress' WHERE TaskID = ? AND TaskStatus = 'Pending';";
+    "UPDATE tb_task SET TaskStatus = 'Progress' WHERE TaskID = ? AND TaskStatus = 'Assigned';";
 
   try {
     const results = await queryAsync(query, [taskId]);
