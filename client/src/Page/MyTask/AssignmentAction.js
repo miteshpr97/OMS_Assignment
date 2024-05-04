@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, Grid, InputLabel } from "@mui/material";
-import StatusDialog from "./StatusDialog";
+import StatusDialog from "./AssignStatusDialog";
 
 function Action({ StatusData }) {
   const [selectedValue, setSelectedValue] = useState("select");
@@ -67,8 +67,8 @@ function Action({ StatusData }) {
 
   return (
     <>
-      <Grid item xs={4} md={4}>
-        <FormControl fullWidth variant="outlined">
+      <Grid item xs={4} md={4} >
+        <FormControl fullWidth variant="outlined" sx={{width:"80px"}}>
           <InputLabel>Select</InputLabel>
           <Select
             value={selectedValue}

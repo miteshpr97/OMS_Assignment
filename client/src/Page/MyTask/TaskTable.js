@@ -18,9 +18,8 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTaskData } from "../../features/Task/TaskActions";
 import { selectTaskData } from "../../features/Task/TaskSlice";
-import AddBoxIcon from "@mui/icons-material/AddBox";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import TaskEditModal from "./TaskEditModal";
+import TaskAction from "./TaskAction";
 
 const TaskTable = () => {
   const dispatch = useDispatch();
@@ -28,10 +27,8 @@ const TaskTable = () => {
   const [userData, setUserData] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState("All"); // Default filter is 'all'
+  const [filter, setFilter] = useState("All"); // Default filter is 'All'
   const taskData = useSelector(selectTaskData);
-
-  console.log(taskData, "llll");
 
   useEffect(() => {
     dispatch(fetchTaskData());
@@ -48,7 +45,6 @@ const TaskTable = () => {
         const assigned = taskData.filter(
           (employee) => userData.EmployeeID === employee.EmployeeID
         );
-        // const reversedData = assigned.reverse();
         setAssignedEmployees(assigned);
       } catch (error) {
         console.error("Error fetching assigned employees:", error);
@@ -58,7 +54,7 @@ const TaskTable = () => {
     if (userData) {
       fetchAssignedEmployees();
     }
-  }, [userData]);
+  }, [userData, taskData]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -100,46 +96,17 @@ const TaskTable = () => {
     if (filter === "All") {
       return true;
     } else {
-      return task.TaskStatus.toLowerCase() === filter;
+      return task.TaskStatus.toLowerCase() === filter.toLowerCase();
     }
   });
 
-
-
-  const handleAdd = async (TaskID, TaskStatus) => {
-    try {
-      const apiUrl = `http://localhost:3306/api/taskDetails/${TaskID}/${
-        TaskStatus === "Pending" ? "Progress" : "Closed"
-      }`;
-      const response = await fetch(apiUrl, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-
-      if (response.ok) {
-        alert(
-          `Data moved to ${
-          TaskStatus === "Pending" ? "Progress" : "Closed"
-          }`
-        );
-        window.location.reload();
-      } else {
-        console.error("Error updating task:", response.status);
-      }
-    } catch (error) {
-      console.error("Error updating task:", error);
-    }
-  };
-
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedtaskData, setSelectedtaskData] = useState(null);
+  const [selectedTaskData, setSelectedTaskData] = useState(null);
 
-  const handleEditClick = (assignedEmployees) => {
+  const handleEditClick = (taskData) => {
     setIsEditModalOpen(true);
-    setSelectedtaskData(assignedEmployees);
+    setSelectedTaskData(taskData);
   };
-
 
   return (
     <div className="viewTask-table">
@@ -149,8 +116,8 @@ const TaskTable = () => {
         aria-label="Task Filters"
       >
         <Tab label="All" value="All" />
-        <Tab label="Pending" value="pending" />
-        <Tab label="Progress" value="progress" />
+        <Tab label="Assigned" value="Assigned" />
+        <Tab label="Progress" value="Progress" />
         <Tab label="Closed" value="Closed" />
       </Tabs>
 
@@ -197,12 +164,7 @@ const TaskTable = () => {
               >
                 Created At
               </TableCell>
-              <TableCell
-                className="vertical-border"
-                sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
-              >
-                Task Status
-              </TableCell>
+              
               <TableCell
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
@@ -213,7 +175,7 @@ const TaskTable = () => {
                 className="vertical-border"
                 sx={{ color: "white", padding: "10px 16px", fontSize: "15px" }}
               >
-                Add
+                Task Status
               </TableCell>
             </TableRow>
           </TableHead>
@@ -240,20 +202,8 @@ const TaskTable = () => {
                   <TableCell className="vertical-border">
                     {moment(item.CreatedAt).format("DD/MM/YYYY")}
                   </TableCell>
-                  <TableCell
-                    className="vertical-border"
-                    style={{
-                      color:
-                        item.TaskStatus === "Pending"
-                          ? "red"
-                          : item.TaskStatus === "Progress"
-                          ? "orange"
-                          : "green",
-                    }}
-                  >
-                    {item.TaskStatus}
-                  </TableCell>
-                  <TableCell className="vertical-border">
+                  
+                  <TableCell className="vertical-border" style={{display:"flex"}}>
                     <IconButton
                       sx={{
                         color: "#055f85",
@@ -275,17 +225,22 @@ const TaskTable = () => {
                     >
                       <DeleteIcon sx={{fontSize:"1.3rem"}}/>
                     </IconButton>
+                    <TaskAction StatusData={item}/>
                   </TableCell>
 
-                  <TableCell className="vertical-border">
-                    {item.TaskStatus === "Completed" ? (
-                      <CheckCircleIcon sx={{ color: "green", fontSize:"1.4rem" }} />
-                    ) : (
-                      <AddBoxIcon
-                        sx={{ color: "#055f85", cursor: "pointer", fontSize:"1.5rem" }}
-                        onClick={() => handleAdd(item.TaskID, item.TaskStatus)}
-                      />
-                    )}
+               
+              <TableCell
+                    className="vertical-border"
+                    style={{
+                      color:
+                        item.TaskStatus === "Pending"
+                          ? "red"
+                          : item.TaskStatus === "Progress"
+                          ? "orange"
+                          : "green",
+                    }}
+                  >
+                    {item.TaskStatus}
                   </TableCell>
                 </TableRow>
               ))}
@@ -301,10 +256,10 @@ const TaskTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-       <TaskEditModal
+      <TaskEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        taskData={selectedtaskData}
+        taskData={selectedTaskData}
       />
     </div>
   );
