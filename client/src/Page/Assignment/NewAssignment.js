@@ -315,7 +315,6 @@ export default function NewAssignment() {
 
   const apiUrl = process.env.REACT_APP_API_URL;
 
-
   useEffect(() => {
     dispatch(fetchAssignmentData());
     dispatch(fetchAssignmentCounts());
@@ -407,7 +406,7 @@ export default function NewAssignment() {
     dispatch(fetchAssignmentCounts(selectedEmployeeIds));
   };
 
-  console.log(countAssignmentData, "count");
+ 
 
 
   return (
