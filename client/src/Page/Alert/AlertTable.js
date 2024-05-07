@@ -8,88 +8,33 @@ import {
   TableRow,
   Paper,
   IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TablePagination,
+
+  Pagination,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { format } from "date-fns";
 
 import "./Alert.css";
 
-const AlertTable = () => {
-  const [data, setData] = useState([]);
-  const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedAlertID, setSelectedAlertID] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [filter, setFilter] = useState("All");
+const AlertTable = ({alertData, handleDeleteAlert}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(25);
+  const [selectedAlertData, setSelectedAlertData] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  const fetchData = async () => {
-    try {
-      const apiUrl = "http://localhost:3306/api/alertDetails";
-      const response = await fetch(apiUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const result = await response.json();
-      setData(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+
+  alertData = Array.isArray(alertData) ? alertData : [];
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = alertData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(alertData.length / itemsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
-  const handleDelete = async () => {
-    try {
-      const apiUrl = `http://localhost:3306/api/alertDetails/delete/${selectedAlertID}`;
-      const response = await fetch(apiUrl, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        // Remove the deleted item from the data array
-        setData((prevData) =>
-          prevData.filter((item) => item.AlertID !== selectedAlertID)
-        );
-        // Close the confirmation dialog
-        setOpenConfirmation(false);
-      } else {
-        console.error("Failed to delete item");
-      }
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
-  };
-
-  const handleOpenConfirmation = (alertID) => {
-    setSelectedAlertID(alertID);
-    setOpenConfirmation(true);
-  };
-
-  const handleCloseConfirmation = () => {
-    setOpenConfirmation(false);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
   return (
     <div>
@@ -167,7 +112,7 @@ const AlertTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item) => (
+          {currentItems.map((item) => (
               <TableRow key={item.AlertID} className="custom-row">
                 <TableCell className="vertical-border">
                   {item.AlertID}
@@ -187,7 +132,7 @@ const AlertTable = () => {
                 <TableCell className="vertical-border">
                   <IconButton
                     sx={{ color: "red" }}
-                    onClick={() => handleOpenConfirmation(item.AlertID)}
+                    onClick={() => handleDeleteAlert(item.AlertID)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -197,19 +142,20 @@ const AlertTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        component="div"
-        count={data.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-     
+     {/* Pagination */}
+     <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        variant="outlined"
+        shape="rounded"
+        size="large"
+        style={{ marginTop: "20px", display: "flex" }}
       />
 
+
       {/* Confirmation Dialog */}
-      <Dialog
+      {/* <Dialog
         open={openConfirmation}
         onClose={handleCloseConfirmation}
         aria-labelledby="alert-dialog-title"
@@ -225,7 +171,7 @@ const AlertTable = () => {
             Delete
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

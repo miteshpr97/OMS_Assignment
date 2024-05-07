@@ -20,7 +20,7 @@ import { fetchAssignmentData } from "../../features/assignment/assignmentAction"
 import { selectAssignment } from "../../features/assignment/assignmentSlice";
 import TaskDialog from "./Task";
 
-import Action from "./Action";
+import Action from "./AssignmentAction";
 
 const ViewAssignment = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -280,6 +280,7 @@ const TableComponent = ({ data }) => {
                 sx={{ padding: "10px 16px" }}
               >
                 <Action StatusData={item} />
+                
               </TableCell>
 
               <TableCell

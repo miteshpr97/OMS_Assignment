@@ -502,6 +502,9 @@
 
 // export default CreateAlert;
 
+
+
+
 import React, { useState, useEffect } from "react";
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
@@ -531,6 +534,13 @@ import PermPhoneMsgIcon from "@mui/icons-material/PermPhoneMsg";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
+import {
+  createAlertData,
+  fetchAlertData,
+  deleteAlertData,
+} from "../../features/alert/alertAction";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAlertData } from "../../../src/features/alert/alertSlice";
 
 const CreateAlert = () => {
   const [successMessage, setSuccessMessage] = useState("");
@@ -538,8 +548,16 @@ const CreateAlert = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);
   const [userData, setUserData] = useState(null);
+  const dispatch = useDispatch();
+  const alertData = useSelector(selectAlertData);
 
-  console.log(userData, "userdta");
+
+  // console.log("alert", alertData);
+
+
+  useEffect(() => {
+    dispatch(fetchAlertData());
+  }, [dispatch]);
 
   useEffect(() => {
     const userDataFromSession = JSON.parse(sessionStorage.getItem("userData"));
@@ -577,7 +595,7 @@ const CreateAlert = () => {
 
   const [formData, setFormData] = useState({
     EmployeeID: " ",
-    EmployeeID_AssignTo: "",
+    EmployeeID_AssignTo: [],
     Alert_Note: "",
     ReminderDay: "",
     RemindBeforeEventDay: "",
@@ -585,7 +603,7 @@ const CreateAlert = () => {
     ReminderTime1: "",
     ReminderTime2: "",
     Is_Sms: "",
-    Is_Whatsapp:"",
+    Is_Whatsapp: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -600,57 +618,189 @@ const CreateAlert = () => {
     setFormData((prevData) => ({ ...prevData, [fieldName]: checked }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  
+  //   // Extract EmployeeID from userData
+  //   const { EmployeeID } = userData;
+  
+  //   // Combine EmployeeID with form data
+  //   const formDataWithEmployeeID = {
+  //     ...formData,
+  //     EmployeeID: EmployeeID, // Include the EmployeeID from userData
+  //   };
+
+
+  //   console.log(formDataWithEmployeeID, "hhhhh")
+  
+  //   try {
+  //     // Dispatch the action to create an alert with complete data
+  //     await dispatch(createAlertData(formDataWithEmployeeID));
+  
+  //     // Handle success response
+  //     setSuccessMessage("Alert created successfully!");
+  
+  //     // Clear the success message after 2 seconds
+  //     setTimeout(() => {
+  //       setSuccessMessage("");
+  //     }, 2000);
+  
+  //     // Reset form data
+  //     setFormData({
+  //       EmployeeID_AssignTo: "",
+  //       Alert_Note: "",
+  //       ReminderDay: "",
+  //       RemindBeforeEventDay: "",
+  //       ReminderCounts: "",
+  //       ReminderTime1: "",
+  //       ReminderTime2: "",
+  //       Is_Sms: "",
+  //       Is_Whatsapp: "",
+  //     });
+  
+  //     // // Close the dialog
+  //     // handleClose();
+  
+  //     // // Refresh alert data after creation
+  //     // dispatch(fetchAlertData());
+  //   } catch (error) {
+  //     console.error("Error creating alert:", error);
+  //     setError("Error adding alert");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+
+  //   const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const form = event.currentTarget;
+  //   if (form.checkValidity() === false) {
+  //     event.stopPropagation();
+  //     return;
+  //   }
+
+  //   try {
+  //     setIsLoading(true);
+  //     // Include EmployeeID in formData
+  //     const formDataWithEmployeeID = {
+  //       ...formData,
+  //       EmployeeID: userData.EmployeeID,
+  //     };
+
+  //     console.log(formDataWithEmployeeID, "kjjjj")
+  //     const apiUrl = "http://localhost:3306/api/alertDetails";
+  //     const response = await fetch(apiUrl, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(formDataWithEmployeeID),
+  //     });
+  //     if (response.ok) {
+  //       setSuccessMessage("Registration successful!");
+  //       // Reset form inputs to null
+  //       setFormData({
+  //         EmployeeID: "",
+  //         EmployeeID_AssignTo: "",
+  //         Alert_Note: "",
+  //         ReminderDay: "",
+  //         RemindBeforeEventDay: "",
+  //         ReminderCounts: "",
+  //         ReminderTime1: "",
+  //         ReminderTime2: "",
+  //         ReminderTime3: "",
+  //         Is_Sms: "",
+  //       });
+  //       form.reset();
+  //       // Close the modal dialog
+  //       handleClose();
+  //       // Automatically hide the success message after 3 seconds
+  //       setTimeout(() => {
+  //         setSuccessMessage("");
+  //       }, 3000);
+  //     } else {
+  //       setError("Registration failed:" + response.statusText);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting data:", error);
+  //     setError("Error submitting data: " + error.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  
+
+
+ const handleSubmit = async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+
+  try {
     if (form.checkValidity() === false) {
       event.stopPropagation();
       return;
     }
 
+    setIsLoading(true);
+    const formDataWithEmployeeID = {
+      ...formData,
+      EmployeeID: userData.EmployeeID,
+    };
+
+    console.log(formDataWithEmployeeID, "kkk");
+
+    const apiUrl = "http://localhost:3306/api/alertDetails";
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formDataWithEmployeeID),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit data: " + response.statusText);
+    }
+
+    setSuccessMessage("Registration successful!");
+    form.reset();
+    handleClose();
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    setError("Error submitting data: " + error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+ 
+  
+  const handleDeleteAlert = async (AlertID) => {
     try {
-      setIsLoading(true);
-      // Include EmployeeID in formData
-      const formDataWithEmployeeID = {
-        ...formData,
-        EmployeeID: userData.EmployeeID,
-      };
-      const apiUrl = "http://localhost:3306/api/alertDetails";
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formDataWithEmployeeID),
-      });
-      if (response.ok) {
-        setSuccessMessage("Registration successful!");
-        // Reset form inputs to null
-        setFormData({
-          EmployeeID: "",
-          EmployeeID_AssignTo: "",
-          Alert_Note: "",
-          ReminderDay: "",
-          RemindBeforeEventDay: "",
-          ReminderCounts: "",
-          ReminderTime1: "",
-          ReminderTime2: "",
-          Is_Sms: "",
-          Is_Whatsapp:"",
-        });
-        form.reset();
-        // Close the modal dialog
-        handleClose();
-        // Automatically hide the success message after 3 seconds
-        setTimeout(() => {
-          setSuccessMessage("");
-        }, 3000);
-      } else {
-        setError("Registration failed:" + response.statusText);
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this alert?"
+      );
+      if (!confirmed) {
+        setLoading(false);
+        return; // Exit function if user cancels deletion
       }
+
+      await dispatch(deleteAlertData(AlertID));
+
+      setSuccessMessage("alert deleted successfully!");
+
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
+      // console.log(DesignationID)
+      dispatch(fetchAlertData());
     } catch (error) {
-      console.error("Error submitting data:", error);
-      setError("Error submitting data: " + error.message);
+      console.error("Error deleting alert:", error);
+      setError("Error deleting alert");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -747,7 +897,10 @@ const CreateAlert = () => {
               CREATE NEW Alert
             </Button>
           </div>
-          <AlertTable />
+          <AlertTable
+            alertData={alertData}
+            handleDeleteAlert={handleDeleteAlert}
+          />
         </div>
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
           <DialogTitle sx={{ fontSize: "22px", padding: "16px 24px 5px 24px" }}>
@@ -775,7 +928,7 @@ const CreateAlert = () => {
                       id="EmployeeID"
                       label="Employee ID"
                       placeholder="Employee ID"
-                      value={userData.EmployeeID}
+                      value={userData.EmployeeID || ""} // Use optional chaining and fallback to empty string
                       InputProps={{
                         readOnly: true,
                       }}
