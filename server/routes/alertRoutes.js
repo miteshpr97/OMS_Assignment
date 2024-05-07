@@ -9,6 +9,6 @@ router.get("/",alertController.getAllAlert);
 router.post("/",alertController.addAlert);
 
 // delete alert details
-router.delete("/delete/:AlertID",alertController.deleteAlertDetails);
+router.delete("/delete/:AlertID/:EmployeeID/:EmployeeID_AssignTo",alertController.deleteAlertDetails);
 
 module.exports = router;
