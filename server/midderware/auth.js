@@ -28,33 +28,32 @@ const verifyToken = (req, res, next) => {
 
 // Middleware to authenticate user
 const authenticateUser = async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized - No token provided" });
+  }
+
   try {
-    const token = req.cookies.token;
-    console.log(token);
-
-    // Verify the JWT token
     const verifyUser = jwt.verify(token, process.env.SECRET_KEY);
-
-    // Query to check if the user exists in the database
     const query = `
       SELECT e.*, u.Role
       FROM tb_employee e
       JOIN tb_userdetails u ON e.EmployeeID = u.EmployeeID
       WHERE e.EmployeeID = ?
     `;
-
-    // Use queryAsync function to handle the database query asynchronously
     const results = await queryAsync(query, [verifyUser.EmployeeID]);
 
-    // If the user is not found, return Unauthorized
     if (results.length === 0) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: "Unauthorized - User does not exist" });
     }
 
-    // Attach user information to the request object
     req.authenticatedUser = results[0];
     next();
   } catch (error) {
+    if (error.name === 'JsonWebTokenError') {
+      console.error("JWT Error:", error);
+      return res.status(403).json({ error: "Forbidden - Invalid token" });
+    }
     console.error("Internal Server Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }

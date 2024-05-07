@@ -17,7 +17,11 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import CreateAlert from "./Page/Alert/CreateAlert";
 import ForgotPassword from "./Component/forgotPassword/ForgotPassword";
 import ResetPassword from "./Component/forgotPassword/ResetPassword";
+import setAuthToken from "./utils/setAuthToken";
 
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 export default function App() {
   return (
