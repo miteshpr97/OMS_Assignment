@@ -18,6 +18,11 @@ import SideBar from "../../Component/SideBar";
 
 import { MyTeamInfoModal } from "./MyTeamInfoModal";
 
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 export default function MyTeam() {
   // const dispatch = useDispatch();
   // const assignmentData = useSelector(selectAssignment);
@@ -51,7 +56,7 @@ export default function MyTeam() {
     const fetchAssignedEmployees = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3306/api/workGroup/allData"
+          `${apiBasedUrl}/api/workGroup/allData`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -78,7 +83,7 @@ export default function MyTeam() {
   const fetchDepartmentData = async () => {
     try {
       // Make an API call to fetch department data
-      const response = await fetch("http://localhost:3306/api/department");
+      const response = await fetch(`${apiBasedUrl}/api/department`);
       const data = await response.json();
       // Update the state with the fetched department data
       setDepartments(data);

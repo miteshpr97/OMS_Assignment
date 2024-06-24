@@ -3,12 +3,14 @@ import { Modal, Box, TextField, Button, IconButton } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloseIcon from "@mui/icons-material/Close";
 
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
+
 const StatusDialog = ({ open, onClose, statusData }) => {
   const [feedbackInput, setFeedbackInput] = useState({
     Feedback: "",
   });
-
-  
 
   const handleFeedbackInputChange = (event) => {
     setFeedbackInput({
@@ -23,10 +25,10 @@ const StatusDialog = ({ open, onClose, statusData }) => {
       let actionVerb;
 
       if (statusData.AssignmentStatus === "Progress") {
-        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/regret`;
+        apiUrl = `${apiBasedUrl}/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/regret`;
         actionVerb = "regreted";
       } else if (statusData.AssignmentStatus === "Assigned") {
-        apiUrl = `http://localhost:3306/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/reject`;
+        apiUrl = `${apiBasedUrl}/api/assignmentDetails/${statusData.AssignmentID}/${statusData.EmployeeID}/${statusData.EmployeeID_AssignTo}/reject`;
         actionVerb = "rejected";
       } else {
         // Handle other cases or throw an error

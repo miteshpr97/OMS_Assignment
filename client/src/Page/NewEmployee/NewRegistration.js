@@ -20,6 +20,11 @@ import axios from "axios";
 
 import "./RegisterPage.css";
 
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
+
 function NewRegistration({ addEmployee }) {
   const dispatch = useDispatch();
   const [errors, setErrors] = useState({});
@@ -52,7 +57,7 @@ function NewRegistration({ addEmployee }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3306/api/assignmentDetails/allData');
+        const response = await axios.get(`${apiBasedUrl}/api/assignmentDetails/allData`);
         setData(response.data);
       } catch (error) {
         // Handle error

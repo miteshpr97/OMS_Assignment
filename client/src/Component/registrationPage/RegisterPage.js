@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import "./RegisterPage.css";
-import logo from "../../assets/images/Gl-Logo.png";
+
 import SideBar from "../../Component/SideBar";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 
 function RegisterPage() {
   const [validated, setValidated] = useState(false);
@@ -50,7 +55,7 @@ function RegisterPage() {
     if (form.checkValidity() === true) {
       try {
         setIsLoading(true);
-        const apiUrl = "http://localhost:3306/api/employee";
+        const apiUrl = `${apiBasedUrl}/api/employee`;
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },

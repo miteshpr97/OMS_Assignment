@@ -16,6 +16,11 @@ import {
 // import EditNoteIcon from "@mui/icons-material/EditNote";
 import moment from "moment";
 
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
+
 const TeamTaskTable = () => {
   const [data, setData] = useState([]);
 
@@ -24,8 +29,6 @@ const TeamTaskTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [filter, setFilter] = useState("All");
 
-
-console.log(data, "kdvjdb");
 
 
 useEffect(() => {
@@ -37,7 +40,7 @@ useEffect(() => {
   const fetchData = async () => {
       try {
           if (userData) {
-              const apiUrl = `http://localhost:3306/api/workGroup/task`;
+              const apiUrl = `${apiBasedUrl}/api/workGroup/task`;
               const response = await fetch(apiUrl, {
                   method: "GET",
                   headers: {

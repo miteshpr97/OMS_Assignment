@@ -15,7 +15,8 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 
 import HeaderForgotPassword from "./HeaderForgotPassword";
-import { Grid } from "@mui/material";
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
 
 const customTheme = createTheme({
   palette: {
@@ -26,9 +27,10 @@ const customTheme = createTheme({
 });
 
 export default function ResetPassword() {
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const {token} = useParams();
+  const { token } = useParams();
 
   const [formData, setFormData] = useState({
     newPassword: "",
@@ -43,7 +45,7 @@ export default function ResetPassword() {
     event.preventDefault();
 
     try {
-      const apiUrl = `http://localhost:3306/api/userDetails/resetPassword/${token}`;
+      const apiUrl = `${apiBasedUrl}/api/userDetails/resetPassword/${token}`;
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
@@ -56,7 +58,7 @@ export default function ResetPassword() {
         console.log("Form data submitted successfully");
         // Reset form inputs
         setFormData({
-            newPassword: "",
+          newPassword: "",
         });
       } else {
         console.error("Failed to submit form data:", response.statusText);
@@ -112,7 +114,7 @@ export default function ResetPassword() {
                   value={formData.newPassword}
                   onChange={handleInputChange}
                 />
-{/* 
+                {/* 
                 <TextField
                   required
                   fullWidth

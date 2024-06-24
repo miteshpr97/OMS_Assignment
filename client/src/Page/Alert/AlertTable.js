@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   Table,
   TableBody,
@@ -19,7 +19,7 @@ import "./Alert.css";
 const AlertTable = ({alertData, handleDeleteAlert}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(25);
-  const [selectedAlertData, setSelectedAlertData] = useState(null);
+
 
 
 

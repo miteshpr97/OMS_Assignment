@@ -35,6 +35,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { selectAlertData } from "../../../src/features/alert/alertSlice";
 
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 const CreateAlert = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,10 +45,6 @@ const CreateAlert = () => {
   const [userData, setUserData] = useState(null);
   const dispatch = useDispatch();
   const alertData = useSelector(selectAlertData);
-
-
- 
-
 
   useEffect(() => {
     dispatch(fetchAlertData());
@@ -71,7 +69,7 @@ const CreateAlert = () => {
   useEffect(() => {
     (async () => {
       try {
-        const apiUrl = "http://localhost:3306/api/employee/allData";
+        const apiUrl = `${apiBasedUrl}/api/employee/allData`;
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -113,19 +111,13 @@ const CreateAlert = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
     // Extract EmployeeID from userData
     const { EmployeeID } = userData;
-  
     // Combine EmployeeID with form data
     const formDataWithEmployeeID = {
       ...formData,
       EmployeeID: EmployeeID, // Include the EmployeeID from userData
     };
-
-
-    console.log(formDataWithEmployeeID, "hhhhh")
-  
     try {
       // Dispatch the action to create an alert with complete data
       await dispatch(createAlertData(formDataWithEmployeeID));

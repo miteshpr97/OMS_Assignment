@@ -1,6 +1,4 @@
 
-
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -73,19 +71,7 @@ const AssignmentEditModal = ({ isOpen, onClose, assignmentData }) => {
   };
 
 
-  // const handleSave = () => {
-  //   // Create an object with only the fields you want to update
-  //   const updatedFields = {
-  //     AssignmentPriority: formData.AssignmentPriority,
-  //     Assignment_Description: formData.Assignment_Description,
-  //     DeadlineDate: formData.DeadlineDate,
-  //   };
 
-  //   // Dispatch action to update assignment data with only the updated fields
-  //   dispatch(updateAssignmentData(updatedFields));
-
-  //   handleClose();
-  // };
 
 
   if (!isOpen || !formData) {
