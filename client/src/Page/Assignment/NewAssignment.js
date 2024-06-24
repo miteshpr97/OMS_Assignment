@@ -406,8 +406,6 @@ export default function NewAssignment() {
     dispatch(fetchAssignmentCounts(selectedEmployeeIds));
   };
 
- 
-
 
   return (
     <Box sx={{ display: "flex" }}>

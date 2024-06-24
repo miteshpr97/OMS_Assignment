@@ -37,7 +37,6 @@ const RegisterPage = () => {
       for (const key in formData) {
         formDataWithImage.append(key, formData[key]);
       }
-
       // Dispatch the createEmployee action
       await dispatch(createEmployee(formData));
 
