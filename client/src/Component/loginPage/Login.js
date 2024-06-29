@@ -27,6 +27,9 @@ const customTheme = createTheme({
   },
 });
 
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,7 +51,7 @@ export default function Login() {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3306/api/userDetails/login",
+        `${apiBasedUrl}/api/userDetails/login`,
         {
           EmployeeID: formData.EmployeeID,
           Password: formData.Password,

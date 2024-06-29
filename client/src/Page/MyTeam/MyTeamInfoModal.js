@@ -3,7 +3,7 @@ import { Modal, Box, Typography, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export function MyTeamInfoModal({ isOpen, onClose, employeeData }) {
-  console.log(employeeData, "dhodw123");
+
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box

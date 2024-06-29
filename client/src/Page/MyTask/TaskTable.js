@@ -21,6 +21,12 @@ import { selectTaskData } from "../../features/Task/TaskSlice";
 import TaskEditModal from "./TaskEditModal";
 import TaskAction from "./TaskAction";
 
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
+
 const TaskTable = () => {
   const dispatch = useDispatch();
   const [assignedEmployees, setAssignedEmployees] = useState([]);
@@ -75,7 +81,7 @@ const TaskTable = () => {
     }
 
     try {
-      const apiUrl = `http://localhost:3306/api/taskDetails/delete/${TaskID}`;
+      const apiUrl = `${apiBasedUrl}/api/taskDetails/delete/${TaskID}`;
       const response = await fetch(apiUrl, {
         method: "DELETE",
       });

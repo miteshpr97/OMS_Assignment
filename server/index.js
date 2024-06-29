@@ -15,7 +15,7 @@ const complaintDetails = require("./routes/complaintRoutes");
 const { scheduleReminders } = require("./utils/reminderServices");
 const { scheduleDueUpdation } = require("./utils/dueUpdation");
 
-const { verifyToken } = require("./midderware/auth");
+// const { verifyToken } = require("./midderware/auth");
 
 const app = express();
 const port = process.env.PORT || 3306;
@@ -33,7 +33,7 @@ app.post("/api/userDetails/login", userDetailsController.loginUser);
 
 // Global authentication middleware
 // (Commented because of issue from frontend)
-// app.use(verifyToken);
+ //app.use(verifyToken);
 
 app.use("/api/employee", employeeDetails);
 app.use("/api/workGroup", workGroup);

@@ -299,6 +299,10 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 export default function Header({ open, handleDrawerOpen }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -341,7 +345,7 @@ export default function Header({ open, handleDrawerOpen }) {
     }
 
     try {
-      const apiUrl = "http://localhost:3306/api/userDetails/logout";
+      const apiUrl = `${apiBasedUrl}/api/userDetails/logout`;
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {

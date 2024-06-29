@@ -16,6 +16,10 @@ import "./Team.css";
 import SideBar from "../../Component/SideBar"; // Assuming you have a SideBar component
 import { EmployeeInfoModal } from "./EmployeeInfoModal";
 
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 export default function AllTeamMembers() {
   const [data, setData] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -32,7 +36,7 @@ export default function AllTeamMembers() {
   // GET ALL EMPLOYEE DATA USING THIS APIs
   const fetchEmployeeData = async () => {
     try {
-      const apiUrl = "http://localhost:3306/api/employee/allData";
+      const apiUrl = `${apiBasedUrl}/api/employee/allData`;
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
@@ -50,7 +54,7 @@ export default function AllTeamMembers() {
   const fetchDepartmentData = async () => {
     try {
       // Make an API call to fetch department data
-      const response = await fetch("http://localhost:3306/api/department");
+      const response = await fetch(`${apiBasedUrl}/api/department`);
       const data = await response.json();
       // Update the state with the fetched department data
       setDepartments(data);

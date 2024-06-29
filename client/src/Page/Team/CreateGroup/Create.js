@@ -35,6 +35,13 @@ import {
 } from "../../../features/workGroup/workGroupAction";
 import { addSelectedEmployee } from "../../../features/workGroup/workGroupSlice";
 
+
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
+
 const Create = () => {
   const { EmployeeID } = useParams();
   const dispatch = useDispatch();
@@ -51,7 +58,7 @@ const Create = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  console.log(departmentData, "fkfjjfjfjfjfj");
+
 
   useEffect(() => {
     dispatch(fetchEmployeeProfileData(EmployeeID));
@@ -64,7 +71,7 @@ const Create = () => {
     setSelectedDepartment(department);
     try {
       const response = await fetch(
-        `http://localhost:3306/api/employee/dNames?department=${department.DepartmentName}`
+        `${apiBasedUrl}/api/employee/dNames?department=${department.DepartmentName}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

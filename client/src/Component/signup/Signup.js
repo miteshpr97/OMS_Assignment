@@ -30,6 +30,8 @@ const customTheme = createTheme({
   },
 });
 
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 export default function SignUp() {
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState({
@@ -46,7 +48,7 @@ export default function SignUp() {
     const fetchData = async () => {
       try {
         const apiUrl =
-          "http://localhost:3306/api/employee/extra-employees-without-credentials";
+          `${apiBasedUrl}/api/employee/extra-employees-without-credentials`;
         const response = await fetch(apiUrl, {
           method: "GET",
           headers: {
@@ -96,7 +98,7 @@ export default function SignUp() {
     }
 
     try {
-      const apiUrl = "http://localhost:3306/api/userDetails";
+      const apiUrl = `${apiBasedUrl}/api/userDetails`;
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {

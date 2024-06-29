@@ -15,9 +15,15 @@ import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDepartmentData } from "../../features/department/departmentActions";
-import { fetchDesignationData } from "../../features/designation/designationAction"; // Import the fetchDesignationData action
+import { fetchDesignationData } from "../../features/designation/designationAction";
+import axios from "axios";
 
 import "./RegisterPage.css";
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
+
 
 function NewRegistration({ addEmployee }) {
   const dispatch = useDispatch();
@@ -40,6 +46,27 @@ function NewRegistration({ addEmployee }) {
   const departmentData = useSelector((state) => state.department.departmentName);
   const deginationData = useSelector((state) => state.designation.designationData); // Select designation data from the Redux store
   const [open, setOpen] = useState(false);
+
+
+
+  const [data, setData] = useState(null);
+
+
+  console.log(data , "shshhshs")
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${apiBasedUrl}/api/assignmentDetails/allData`);
+        setData(response.data);
+      } catch (error) {
+        // Handle error
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);

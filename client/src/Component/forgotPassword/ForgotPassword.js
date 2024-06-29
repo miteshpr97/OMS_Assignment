@@ -10,9 +10,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LockResetIcon from "@mui/icons-material/LockReset";
-
 import { useState } from "react";
-
 import HeaderForgotPassword from "./HeaderForgotPassword";
 
 const customTheme = createTheme({
@@ -22,6 +20,11 @@ const customTheme = createTheme({
     },
   },
 });
+
+
+
+
+const apiBasedUrl = process.env.REACT_APP_API_URL;
 
 export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
@@ -40,7 +43,7 @@ export default function ForgotPassword() {
     event.preventDefault();
 
     try {
-      const apiUrl = "http://localhost:3306/api/userDetails/forgetPassword";
+      const apiUrl = `${apiBasedUrl}/api/userDetails/forgetPassword`;
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
