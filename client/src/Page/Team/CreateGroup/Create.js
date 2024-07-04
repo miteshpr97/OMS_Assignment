@@ -25,7 +25,6 @@ import {
 } from "@mui/material";
 import WorkGroup from "./WorkGroup";
 import SelectedEmployeesTable from "./SelectedEmployeesTable";
-
 import { fetchEmployeeProfileData } from "../../../features/employee/createAction";
 import { fetchDepartmentData } from "../../../features/department/departmentActions";
 import { fetchWorkGroupData } from "../../../features/workGroup/workGroupAction";
@@ -35,12 +34,7 @@ import {
 } from "../../../features/workGroup/workGroupAction";
 import { addSelectedEmployee } from "../../../features/workGroup/workGroupSlice";
 
-
-
-
-
 const apiBasedUrl = process.env.REACT_APP_API_URL;
-
 
 const Create = () => {
   const { EmployeeID } = useParams();

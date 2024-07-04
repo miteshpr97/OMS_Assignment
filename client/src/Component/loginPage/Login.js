@@ -30,6 +30,9 @@ const customTheme = createTheme({
 
 const apiBasedUrl = process.env.REACT_APP_API_URL;
 
+
+console.log(apiBasedUrl, "lkkkk");
+
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
