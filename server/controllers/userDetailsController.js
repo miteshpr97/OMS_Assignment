@@ -145,7 +145,7 @@ exports.loginUser = async (req, res) => {
         res.cookie("token", token);
 
         // Avoid logging sensitive information
-        console.log("User authenticated successfully");
+        console.log("login successful");
 
         res.json({
           message: "Login successful",
