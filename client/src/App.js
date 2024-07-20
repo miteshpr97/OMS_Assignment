@@ -12,12 +12,12 @@ import NewAssignment from "./Page/Assignment/NewAssignment";
 import MyTask from "./Page/MyTask/ViewAssignment";
 import TeamTask from "./Page/TeamTask/TeamTask";
 import Report from "./Page/Report/Report";
-
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import CreateAlert from "./Page/Alert/CreateAlert";
 import ForgotPassword from "./Component/forgotPassword/ForgotPassword";
 import ResetPassword from "./Component/forgotPassword/ResetPassword";
 import setAuthToken from "./utils/setAuthToken";
+
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -44,8 +44,6 @@ export default function App() {
           <Route path="teamTask" element={<TeamTask />}></Route>
           <Route path="CreateAlert" element={<CreateAlert />}></Route>
           <Route path="/report" element={<Report />}></Route>
-
-
         </Route>
       </Routes>
     </>
@@ -117,3 +115,5 @@ export default function App() {
 //     </>
 //   );
 // }
+
+
